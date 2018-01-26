@@ -8,7 +8,7 @@ Major Features
     - Provide point of interest specific links (directions,uber, open table, tripit) and more detailed information from google places api, and trip advisor.
 - Location-Based notifications (google maps api) 
     - creates geo-fences around points of interest and alerts when a user is nearby
-    - gives current location relative to points of interest (Google maps) while viewing a collection.
+    - gives current location relative to points of interest while viewing a collection.
 - User profiles 
     - CRUD collections of points of interest
     - CRUD user profile
