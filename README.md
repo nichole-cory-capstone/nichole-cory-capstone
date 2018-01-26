@@ -12,5 +12,5 @@ Major Features
 - User profiles 
     - CRUD collections of points of interest
     - CRUD user profile
-    - User profile store image urls
+    - Store user image urls
     - Social network sharing of user images? 
