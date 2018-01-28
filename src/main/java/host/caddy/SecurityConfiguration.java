@@ -41,7 +41,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                     .and()
                     // Allow without login
                     .authorizeRequests()
-                    .antMatchers("/", "/search**", "/static/**", "/logout")
+                    .antMatchers("/", "/search", "/static/**", "/logout")
                     .permitAll()
                     .and()
                     //logout
@@ -50,7 +50,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                     .and()
                     // restricted area
                     .authorizeRequests()
-                    .antMatchers("/collection**", "/profile**")
+                    .antMatchers("/collection/**", "/profile/**")
                     .authenticated()
             ;
         }
