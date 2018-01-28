@@ -8,6 +8,6 @@ public class Landing {
 
     @GetMapping("/")
     public String index() {
-        return "temp";
+       return "temp";
     }
 }

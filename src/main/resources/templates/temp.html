@@ -3,6 +3,58 @@
 <head th:replace="fragments/header :: main-header('')">
 </head>
 <body>
+<meta th:name="_csrf" th:content="${_csrf.token}"/>
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
 Placeholder
+<div id="map"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcg-lOtySjyOVfjGHxr6AWyKTnAGFktK0"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var geocoder = new google.maps.Geocoder;
+
+       function forwardGeocode(cityStr) {
+               geocoder.geocode({address: cityStr}, function (results, status) {
+                   if (status === 'OK') {
+                       var currentLatLng = {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()};
+                       console.log(currentLatLng);
+                   } else {
+                            console.log("nope")
+               }
+           })
+           }
+
+            // forwardGeocode("CodeUp");
+
+       function yelpTest(query) {
+           var headers = {};
+           headers[csrfHeader] = csrfToken;
+           console.log(headers);
+           $.ajax({
+                   url: "/search/yelp",
+                   type: "POST",
+                   data: {
+                         name: "blah",
+                         lat: "29.426785",
+                         lon: "-98.4895763999999"
+                   },
+                   headers: headers
+               }).done(function (data) {
+                   data = JSON.parse(data);
+                   console.log(data);
+
+               }).fail(function (jqXhr, status, error) {
+                   console.log("he ded");
+                              });
+
+       }
+yelpTest();
+
+     });
+    </script>
+
 </body>
 </html>
+
