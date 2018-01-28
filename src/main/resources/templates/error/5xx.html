@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: main-header(title=('Server Error')"/>
+<body>
+<main class="container">
+    <th:block th:switch="${error}">
+        <header class="page-header" th:case="'Internal Server Error'">
+            <h1>Internal Server Error</h1>
+        </header>
+        <header class="page-header" th:case="'Not Implemented'">
+            <h1>Not Implemented</h1>
+        </header>
+        <header class="page-header" th:case="'Service Unavailable'">
+            <h1>Service Unavailable</h1>
+        </header>
+    </th:block>
+</main>
+</body>
+</html>
