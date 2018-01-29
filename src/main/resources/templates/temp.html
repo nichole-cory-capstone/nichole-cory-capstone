@@ -31,7 +31,6 @@ Placeholder
        function yelpTest(query) {
            var headers = {};
            headers[csrfHeader] = csrfToken;
-           console.log(headers);
            $.ajax({
                    url: "/search/yelp",
                    type: "POST",
@@ -42,8 +41,9 @@ Placeholder
                    },
                    headers: headers
                }).done(function (data) {
-                   data = JSON.parse(data);
+                   // data = JSON.parse(data);
                    console.log(data);
+                   $('#map').html(data.toString());
 
                }).fail(function (jqXhr, status, error) {
                    console.log("he ded");
