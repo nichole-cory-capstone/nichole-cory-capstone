@@ -41,9 +41,9 @@ Placeholder
                    },
                    headers: headers
                }).done(function (data) {
-                   // data = JSON.parse(data);
-                   console.log(data);
                    $('#map').html(data.toString());
+                   data = JSON.parse(data);
+                   console.log(data);
 
                }).fail(function (jqXhr, status, error) {
                    console.log("he ded");
