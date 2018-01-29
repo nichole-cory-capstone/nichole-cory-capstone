@@ -1,0 +1,2 @@
+BUILD_COMMAND='./mvnw package'
+WAR_FILE=target/caddy-0.0.1-SNAPSHOT.war
