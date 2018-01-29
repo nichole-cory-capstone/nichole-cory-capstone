@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-    <head th:replace="fragments/header :: main-header('index')">
+    <head th:replace="fragments/header :: main-header('Caddy')">
 </head>
-<body>
-<div th:include="fragments/navbar :: navbar-partial"></div>
-Landing page
+<body class="container">
+    <div th:include="fragments/navbar :: navbar-partial"></div>
+    <hr />
+
+    <h1 class="searchhere">Where do you want to go? </h1>
+        <div class="ui hidden divider" />
+        <div class="ui local search">
+            <div class="ui left icon input">
+                <!--<i class="world icon prompt" />-->
+                <input type="text" placeholder="Type here"/>
+            </div>
+            <button type="button" class="ui submit button">Search</button>
+        </div>
+
 </body>
 </html>
