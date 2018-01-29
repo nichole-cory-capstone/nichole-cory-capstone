@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -13,6 +14,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="user_id")
     private int id;
 
     @Column(nullable = false)
@@ -34,6 +36,11 @@ public class User {
     @NotBlank(message = "Enter an email")
     private String email;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Image> images;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Collection> collections;
 
     public User(User copy) {
         id = copy.id;
@@ -81,5 +88,21 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
+    public List<Collection> getCollections() {
+        return collections;
+    }
+
+    public void setCollections(List<Collection> collections) {
+        this.collections = collections;
     }
 }
