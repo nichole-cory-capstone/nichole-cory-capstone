@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="fragments/header :: main-header('')">
+<head>
 </head>
-
-<body class="container">
-
+<body>
 <nav th:fragment="navbar-partial" class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#"><h1>CADDY</h1></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +32,5 @@
             </ul>
         </div>
     </nav>
-
 </body>
 </html>
