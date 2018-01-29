@@ -3,6 +3,7 @@ package host.caddy.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import host.caddy.models.yelp.Yelp;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ public class YelpSearch {
     private Map map = new HashMap<String, String>();
     private Gson gson = new Gson();
 
+    @Value("${yelp-bearer-token}")
+    private String bearer_token;
+
 
 
     public Yelp byName(String name, String lat, String lon) {
@@ -37,8 +41,11 @@ public class YelpSearch {
 
 
     private String query(String name, String lat, String lon){
+
+
             map.put("Content-Type", "application/graphql");
-            map.put("Authorization", "Bearer SOmPECWYjuUJavKVazVl9GRrX9XJF0uaSe3n7361trmT2e_5BCgJucbNTg-o-VurkN2c60qZqOSylvtRrmw1njqDnEVZvzyZNShCMHXYE9U542-Fe4O3uJPFFkRtWnYx");
+            //Like map.put("Authorization", "Bearer <TOKEN>");
+            map.put("Authorization", bearer_token);
             headers.setAll(map);
 
             String req_payload = "{search(term: \"" + name + "\",latitude: " + lat + ", longitude: " + lon + ", limit: 1, radius: 1600){ business {name id rating url display_phone price photos location{address1 city state zip_code country formatted_address} coordinates {latitude longitude}}}}";
