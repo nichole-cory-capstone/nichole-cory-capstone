@@ -4,22 +4,22 @@ public class Coordinates {
         private Float latitude;
         private Float longitude;
 
-    public Coordinates() {
-    }
+        public Coordinates() {
+        }
 
-    public Float getLatitude() {
-        return latitude;
-    }
+        public Float getLatitude() {
+            return latitude;
+        }
 
-    public void setLatitude(Float latitude) {
-        this.latitude = latitude;
-    }
+        public void setLatitude(Float latitude) {
+            this.latitude = latitude;
+        }
 
-    public Float getLongitude() {
-        return longitude;
-    }
+        public Float getLongitude() {
+            return longitude;
+        }
 
-    public void setLongitude(Float longitude) {
-        this.longitude = longitude;
+        public void setLongitude(Float longitude) {
+            this.longitude = longitude;
+        }
     }
-}
