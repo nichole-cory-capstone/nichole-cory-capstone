@@ -41,17 +41,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                     .and()
                     // Allow without login
                     .authorizeRequests()
-                    .antMatchers("/", "/search", "/static/**", "/logout")
+                    .antMatchers("/","/search/**", "/static/**", "/logout")
                     .permitAll()
-                    .and()
-                    //logout
-                    .logout()
-                    .logoutSuccessUrl("/login?logout")
                     .and()
                     // restricted area
                     .authorizeRequests()
                     .antMatchers("/collection/**", "/profile/**")
                     .authenticated()
+                    .and()
+                    //logout
+                    .logout()
+                    .logoutSuccessUrl("/login?logout")
+
             ;
         }
     }
