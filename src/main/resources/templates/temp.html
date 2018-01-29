@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="fragments/header :: main-header('')">
-
+    <head th:replace="fragments/header :: main-header('temp')">
 </head>
 <body>
+
+<div th:replace="fragments/navbar :: navbar-partial"></div>
 <meta th:name="_csrf" th:content="${_csrf.token}"/>
 <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
 Placeholder
