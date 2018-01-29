@@ -3,6 +3,7 @@ package host.caddy.controllers;
 import host.caddy.services.YelpSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,8 +16,13 @@ public class SearchController {
     private YelpSearch yelpSearch;
 
     @PostMapping("/search/yelp")
-    public @ResponseBody String search(@RequestParam String name, @RequestParam String lat, @RequestParam String lon){
+    public @ResponseBody String yelpSearchPost(@RequestParam String name, @RequestParam String lat, @RequestParam String lon){
         return yelpSearch.byNameJSON(name,lat,lon);
+    }
+
+    @GetMapping("/search/yelp")
+    public String yelpSearchGet(){
+        return "temp";
     }
 
 }

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-    <head th:replace="fragments/header :: main-header('temp')">
+    <head th:include="fragments/header :: main-header('temp')">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 
-<div th:replace="fragments/navbar :: navbar-partial"></div>
-<meta th:name="_csrf" th:content="${_csrf.token}"/>
-<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+<div th:include="fragments/navbar :: navbar-partial"></div>
+
 Placeholder
 <div id="map"></div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcg-lOtySjyOVfjGHxr6AWyKTnAGFktK0"></script>
