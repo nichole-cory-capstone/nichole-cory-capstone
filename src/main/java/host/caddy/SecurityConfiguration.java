@@ -42,6 +42,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                     // Allow without login
                     .authorizeRequests()
                     .antMatchers("/","/search/**", "/static/**", "/logout")
+
                     .permitAll()
                     .and()
                     // restricted area
