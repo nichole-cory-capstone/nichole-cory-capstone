@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/header :: main-header('Profile')">
+</head>
+<body class="container">
+<div th:include="fragments/navbar :: navbar-partial"></div>
+
+
+<div class="ui standard demo button">
+    Standard Modal
+</div>
+
+
+
+<script>
+    $(document).ready(function() {
+        $('.demo.modal')
+            .modal()
+        ;
+        $('.standard.demo.modal')
+            .modal('attach events', '.standard.demo.button')
+        ;
+    });
+</script>
+</body>
+</html>
+

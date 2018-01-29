@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/header :: main-header('Profile')">
+</head>
+<body class="container">
+<div th:include="fragments/navbar :: navbar-partial"></div>
+
+<!--space for the user's saved restaurants in a specific trips + the map -->
+
+<div class="ui card">
+    <div class="content">
+        <div class="header">
+            <img class="ui avatar image" src="/static/kitchen-sink/images/wireframe/square-image.png"> City
+        </div>
+    </div>
+    <div class="ui two bottom attached buttons">
+        <div class="ui button">
+            Saved!
+        </div>
+        <div class="ui button">
+            Delete
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

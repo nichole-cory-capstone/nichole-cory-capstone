@@ -5,5 +5,17 @@
 <body class="container">
 <div th:include="fragments/navbar :: navbar-partial"></div>
 
+<!--space for pre-populated map and search box-->
+
+
+    <h1>Search for a city</h1>
+        <div class="ui hidden divider" />
+            <div class="ui local search">
+                <div class="ui left icon input">
+                <input type="text" placeholder="Type here"/>
+            </div>
+            <button type="button" class="ui submit button">Search</button>
+        </div>
+
 </body>
 </html>
