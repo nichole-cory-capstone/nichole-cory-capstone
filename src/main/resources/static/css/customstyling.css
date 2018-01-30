@@ -6,14 +6,6 @@
     float: right;
 }
 
-.searchhere {
-    margin-left: 500px;
-}
-
-.marginhere {
-    margin-top: 200px;
-}
-
 #map {
     width: 600px;
     height: 400px;
@@ -22,4 +14,8 @@
     margin-left: auto;
     margin-right: auto;
 
+}
+
+.enterhere{
+    margin-top: 200px;
 }
