@@ -15,4 +15,9 @@ public class LandingController {
     public String about() {
         return "aboutus";
     }
+
+    @GetMapping("/saved")
+    public String saved() {
+        return "userstrips";
+    }
 }
