@@ -45,19 +45,24 @@ public class AuthenticationController {
             @RequestParam(name = "password_confirm") String passwordConfirmation
     ) {
         if (!passwordConfirmation.equals(user.getPassword())) {
+            System.out.println("password");
             validation.rejectValue(
                     "password",
                     "user.password",
                     "Your passwords do not match"
             );
         }
+
         if (validation.hasErrors()) {
+            System.out.println("validation problem");
+            System.out.println(user.getUsername());
             viewModel.addAttribute("errors", validation);
             viewModel.addAttribute("user", user);
-            return "users/register";
+            return "users//register";
         }
 
         user.setPassword(encoder.encode(user.getPassword()));
+        System.out.println("db problem");
         repository.save(user);
 
         return "redirect:/login";

@@ -18,14 +18,6 @@ public class User {
     private int id;
 
     @Column(nullable = false)
-    @NotBlank(message = "Your first name cannot be empty")
-    private String firstname;
-
-    @Column(nullable = false)
-    @NotBlank(message = "Your last name cannot be empty")
-    private String lastname;
-
-    @Column(nullable = false)
     @NotBlank(message = "Your password cannot be empty")
     @Size(min = 8, message = "Your password should have at least 8 characters")
     @JsonIgnore
@@ -36,7 +28,8 @@ public class User {
     @NotBlank(message = "Enter an email")
     private String email;
 
-    @Column(nullable = false)
+    @Column()
+//    @NotBlank(message = "Enter a username")
     private String username;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
@@ -49,8 +42,6 @@ public class User {
         id = copy.id;
         username = copy.username;
         email = copy.email;
-        firstname = copy.firstname;
-        lastname = copy.lastname;
         password = copy.password;
     }
 
@@ -63,22 +54,6 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
     }
 
     public String getPassword() {
@@ -95,7 +70,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-        setUsername(email);
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public List<Image> getImages() {
@@ -113,13 +95,4 @@ public class User {
     public void setCollections(List<Collection> collections) {
         this.collections = collections;
     }
-
-    public String getUsername() {
-        return username;
-    }
-
-    private void setUsername(String username) {
-        this.username = username;
-    }
-
 }
