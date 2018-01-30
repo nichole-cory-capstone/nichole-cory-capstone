@@ -21,6 +21,7 @@ public class PointOfInterest {
     @JoinColumn (name = "coll_id")
     private Collection collection;
 
+
     public PointOfInterest() {
     }
 
@@ -46,6 +47,14 @@ public class PointOfInterest {
 
     public void setPlaceId(String placeId) {
         this.placeId = placeId;
+    }
+
+    public Collection getCollection() {
+        return collection;
+    }
+
+    public void setCollection(Collection collection) {
+        this.collection = collection;
     }
 
 

@@ -1,26 +1,29 @@
 package host.caddy.services;
 
 import host.caddy.models.User;
-import host.caddy.models.UserWithRoles;
-import host.caddy.repositories.Users;
+import host.caddy.repositories.UsersRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class UserDetailsLoader implements UserDetailsService {
-    private final Users users;
+    private final UsersRepository users;
 
-    public UserDetailsLoader(Users users) {
+
+    @Autowired
+    public UserDetailsLoader(UsersRepository users) {
         this.users = users;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = users.findByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = users.findByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("No user found for " + email);
+            throw new UsernameNotFoundException("No user found for " + username);
         }
 
         return new UserWithRoles(user);
