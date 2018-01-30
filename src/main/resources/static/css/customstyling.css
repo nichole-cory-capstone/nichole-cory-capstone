@@ -1,0 +1,25 @@
+.container{
+    text-align: center;
+}
+
+.goright {
+    float: right;
+}
+
+.searchhere {
+    margin-left: 500px;
+}
+
+.marginhere {
+    margin-top: 200px;
+}
+
+#map {
+    width: 600px;
+    height: 400px;
+    background-color: grey;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+
+}

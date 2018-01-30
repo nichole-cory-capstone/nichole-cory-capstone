@@ -39,6 +39,11 @@ public class SearchController {
         return "temp";
     }
 
+    @GetMapping("/search/guest")
+    public String guestSearch(){
+        return "guestsearch";
+    }
+
     @PostMapping("/search/google/geocode")
     public @ResponseBody String geocodeSearchPost(@RequestParam String address) throws IOException, InterruptedException, ApiException{
         return googleSearch.getGMapsJSON(googleSearch.geocodeAddress(address));
