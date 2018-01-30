@@ -12,3 +12,11 @@
 
 .marginhere {
     margin-top: 200px;
+}
+
+#map {
+    width: 600px;
+    height: 400px;
+    background-color: grey;
+    justify-content: center;
+}

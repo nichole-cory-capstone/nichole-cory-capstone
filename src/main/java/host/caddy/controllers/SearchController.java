@@ -25,4 +25,9 @@ public class SearchController {
         return "temp";
     }
 
+    @GetMapping("/search/guest")
+    public String guestSearch(){
+        return "guestsearch";
+    }
+
 }
