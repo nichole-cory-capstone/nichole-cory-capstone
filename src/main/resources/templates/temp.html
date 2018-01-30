@@ -6,7 +6,10 @@
 <meta th:name="_csrf" th:content="${_csrf.token}"/>
 <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
 <div th:include="fragments/navbar :: navbar-partial"></div>
-<div id="map"></div>
+<br/>
+<div id="yelp"></div>
+<br/>
+<div id="google"></div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcg-lOtySjyOVfjGHxr6AWyKTnAGFktK0"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
@@ -41,7 +44,7 @@
                    },
                    headers: headers
                }).done(function (data) {
-                   $('#map').html(data.toString());
+                   $('#yelp').html(data.toString());
                    data = JSON.parse(data);
                    console.log(data);
 
@@ -51,6 +54,29 @@
 
        }
 yelpTest();
+
+
+       function geoTest(query) {
+                  var headers = {};
+                  headers[csrfHeader] = csrfToken;
+                  $.ajax({
+                          url: "/search/google/geocode",
+                          type: "POST",
+                          data: {
+                                address: "600 Navarro St San Antonio, TX 78205"
+                          },
+                          headers: headers
+                      }).done(function (data) {
+                          $('#google').html(data.toString());
+                          data = JSON.parse(data);
+                          console.log(data);
+
+                      }).fail(function (jqXhr, status, error) {
+                          console.log("he ded");
+                                     });
+
+              }
+       geoTest();
 
      });
     </script>

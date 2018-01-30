@@ -15,11 +15,7 @@ public class Image {
 
     @ManyToOne
     @JoinColumn (name = "user_id")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn (name = "coll_id")
-    private Collection collection;
+    private User owner;
 
     public Image() {
     }
@@ -40,19 +36,18 @@ public class Image {
         this.url = url;
     }
 
-    public User getUser() {
-        return user;
+    public User getOwner() {
+        return owner;
+    }
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Collection getCollection() {
-        return collection;
-    }
-
-    public void setCollection(Collection collection) {
-        this.collection = collection;
-    }
+//    public Collection getCollection() {
+//        return collection;
+//    }
+//
+//    public void setCollection(Collection collection) {
+//        this.collection = collection;
+//    }
 }
