@@ -10,4 +10,5 @@ public class LandingController {
     public String index() {
        return "index";
     }
+
 }

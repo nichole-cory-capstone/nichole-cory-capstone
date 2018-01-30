@@ -30,4 +30,9 @@ public class SearchController {
         return "guestsearch";
     }
 
+    @GetMapping("/about")
+    public String aboutGet(){
+        return "aboutus";
+    }
+
 }
