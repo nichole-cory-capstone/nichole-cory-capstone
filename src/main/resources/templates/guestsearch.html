@@ -4,24 +4,23 @@
 <head></head>
 <body class="container">
     <div th:include="fragments/navbar :: navbar-partial"></div>
-        <h1>Search For A City:</h1>
+        <h2>SEARCH FOR A CITY:</h2>
             <div class="ui hidden divider" />
                 <div class="ui local search">
                     <div class="ui left icon input">
-                        <input type="text" placeholder="Type here"/>
+                        <input type="text" placeholder="TYPE HERE"/>
                     </div>
-                    <button type="button" class="ui submit button">Search</button>
+                    <button type="button" class="ui submit button">SEARCH</button>
                 </div>
                 <br />
             <div id="map"></div>
-
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-Fq2UspbtyX0spv_22WGd4ChnxFIQREQ"></script>
 <script>
     $(document).ready(function () {
         function initMap() {
-        var sanantonio = {lat: 29.424122, lng: -98.493629};
-        var map = new google.maps.Map(document.getElementById('map'), {
+            var sanantonio = {lat: 29.426786, lng: -98.489576};
+            var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 15,
             center: sanantonio
         });
