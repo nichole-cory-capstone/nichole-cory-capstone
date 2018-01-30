@@ -44,10 +44,10 @@ public class SearchController {
         return googleSearch.getGMapsJSON(googleSearch.geocodeAddress(address));
     }
 
-    @PostMapping("/search/google/places")
-    public @ResponseBody String geocodeSearchPost(@RequestParam String address) throws IOException, InterruptedException, ApiException{
-        GeoApiContext context = googleSearch.getContext();
-        return googleSearch.geocodeAddress(address, context);
-    }
+//    @PostMapping("/search/google/places")
+//    public @ResponseBody String geocodeSearchPost(@RequestParam String address) throws IOException, InterruptedException, ApiException{
+//        GeoApiContext context = googleSearch.getContext();
+//        return googleSearch.geocodeAddress(address, context);
+//    }
 
 }
