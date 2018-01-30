@@ -2,6 +2,7 @@ package host.caddy.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import host.caddy.models.yelp.Yelp;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -22,7 +23,7 @@ public class YelpSearch {
     private RestTemplate restTemplate = new RestTemplate();
     private MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
     private Map map = new HashMap<String, String>();
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Value("${yelp-bearer-token}")
     private String bearer_token;
