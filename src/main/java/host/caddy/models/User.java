@@ -36,18 +36,25 @@ public class User {
     @NotBlank(message = "Enter an email")
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @Column(nullable = false)
+    private String username;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Image> images;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Collection> collections;
 
     public User(User copy) {
         id = copy.id;
+        username = copy.username;
         email = copy.email;
         firstname = copy.firstname;
         lastname = copy.lastname;
         password = copy.password;
+    }
+
+    public User() {
     }
 
     public int getId() {
@@ -88,6 +95,7 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+        setUsername(email);
     }
 
     public List<Image> getImages() {
@@ -105,4 +113,13 @@ public class User {
     public void setCollections(List<Collection> collections) {
         this.collections = collections;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    private void setUsername(String username) {
+        this.username = username;
+    }
+
 }

@@ -40,6 +40,4 @@ public class GMapsService {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(results);
     }
-
-    public
 }
