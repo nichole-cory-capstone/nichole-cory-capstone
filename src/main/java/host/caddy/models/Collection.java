@@ -28,11 +28,11 @@ public class Collection {
     )
 
     @ManyToOne
-    @JoinColumn (name = "user")
-    private User user;
+    @JoinColumn (name = "user_id")
+    private User owner;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "collection")
-    private List<Image> images;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "collection")
+//    private List<Image> images;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "collection")
     private List<PointOfInterest> pointOfInterestList;
@@ -41,20 +41,20 @@ public class Collection {
     }
 
     public User getUser() {
-        return user;
+        return owner;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.owner = user;
     }
 
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(List<Image> images) {
-        this.images = images;
-    }
+//    public List<Image> getImages() {
+//        return images;
+//    }
+//
+//    public void setImages(List<Image> images) {
+//        this.images = images;
+//    }
 
     public List<PointOfInterest> getPointOfInterestList() {
         return pointOfInterestList;
@@ -87,5 +87,13 @@ public class Collection {
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

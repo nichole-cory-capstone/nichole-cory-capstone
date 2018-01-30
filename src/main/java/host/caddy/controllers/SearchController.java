@@ -47,7 +47,7 @@ public class SearchController {
 //    @PostMapping("/search/google/places")
 //    public @ResponseBody String geocodeSearchPost(@RequestParam String address) throws IOException, InterruptedException, ApiException{
 //        GeoApiContext context = googleSearch.getContext();
-//        return googleSearch.geocodeAddress(address, context);
+//        return googleSearch.getGMapsJSON(googleSearch.geocodeAddress(address, context));
 //    }
 
 }
