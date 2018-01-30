@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head th:include="fragments/header :: main-header('temp')">
+</head>
+<body>
+<div th:include="fragments/navbar :: navbar-partial"></div>
+<br/>
+    <main class="container">
+        <form th:action="@{/users/create}" method="post" th:object="${user}">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input
+                id="username"
+                class="form-control"
+                autofocus="autofocus"
+                th:field="*{username}"
+            />
+            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" />
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input
+                id="email"
+                class="form-control"
+                th:field="*{email}"
+            />
+            <div
+                th:if="${#fields.hasErrors('email')}"
+                class="alert alert-danger alert-dismissible"
+                role="alert"
+            >
+                <span th:errors="*{email}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                class="form-control"
+                th:field="*{password}"
+            />
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" />
+        </div>
+        <div class="form-group">
+            <label for="password_confirm">Confirm your password</label>
+            <input
+                type="password"
+                class="form-control"
+                name="password_confirm"
+                id="password_confirm"
+            />
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </main>
+</body>
+</html>

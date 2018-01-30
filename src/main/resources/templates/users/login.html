@@ -1,0 +1,29 @@
+ <!DOCTYPE html>
+ <html xmlns:th="http://www.thymeleaf.org" lang="en">
+     <head th:include="fragments/header :: main-header('temp')">
+ </head>
+ <body>
+ <div th:include="fragments/navbar :: navbar-partial"></div>
+ <br/>
+    <main class="container">
+        <header class="page-header"><h1>Log In</h1></header>
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input
+                    id="username"
+                    name="username"
+                    class="form-control"
+                    autofocus="autofocus"
+                    type="text"
+                />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" class="form-control" name="password" type="password" />
+            </div>
+            <input class="btn btn-primary" type="submit" value="Log In" />
+        </form>
+    </main>
+</body>
+</html>
