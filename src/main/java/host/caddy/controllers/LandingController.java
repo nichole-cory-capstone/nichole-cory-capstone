@@ -11,4 +11,8 @@ public class LandingController {
        return "index";
     }
 
+    @GetMapping("/about")
+    public String about() {
+        return "aboutus";
+    }
 }
