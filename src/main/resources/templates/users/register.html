@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-    <head th:include="fragments/header :: main-header('temp')">
+    <head th:include="fragments/header :: main-header('Register')">
 </head>
 <body>
 <div th:include="fragments/navbar :: navbar-partial"></div>
 <br/>
     <main class="container">
-        <form th:action="@{/users/create}" method="post" th:object="${user}">
+        <form th:action="@{/register}" method="post" th:object="${user}">
         <div class="form-group">
             <label for="username">Username</label>
             <input

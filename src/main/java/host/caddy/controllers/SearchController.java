@@ -1,16 +1,13 @@
 package host.caddy.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
-import com.google.maps.model.GeocodingResult;
+import host.caddy.models.Collection;
 import host.caddy.services.GMapsService;
 import host.caddy.services.YelpSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +20,7 @@ import java.io.IOException;
 public class SearchController {
     @Value("${gmaps-api-key}")
     String mapsApiKey;
+
     @Autowired
     private YelpSearch yelpSearch;
 
@@ -45,7 +43,10 @@ public class SearchController {
     }
 
     @GetMapping("/search/user")
-    public String userSearch(){ return "usersearch"; }
+    public String userSearch(Model model){
+        Collection collection = new Collection();
+        model.addAttribute("trip", collection);
+        return "usersearch"; }
 
     @PostMapping("/search/google/geocode")
     public @ResponseBody String geocodeSearchPost(@RequestParam String address) throws IOException, InterruptedException, ApiException{
