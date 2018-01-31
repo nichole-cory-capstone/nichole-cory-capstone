@@ -2,6 +2,10 @@
     text-align: center;
 }
 
+.bghere{
+    background-color: #2B3E50;
+}
+
 .goright {
     float: right;
 }
@@ -30,4 +34,8 @@
 
 .spacinghere{
     margin: 7px;
+}
+
+#sidebutton{
+    float:right;
 }
