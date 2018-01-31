@@ -27,6 +27,7 @@
 <script>
     $(document).ready(function () {
         function initMap() {
+
             var sanantonio = {lat: 29.426786, lng: -98.489576};
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 15,
@@ -36,8 +37,16 @@
                 position: sanantonio,
                 map: map
             });
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
+            });
         }
         initMap();
+
+        var infowindow = new google.maps.InfoWindow({
+            content: "here"
+//            content takes in name of restaurant?
+        });
     });
 </script>
 </body>
