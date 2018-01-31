@@ -21,6 +21,10 @@ public class PointOfInterest {
     private List<Collection> collections;
 
 
+
+
+
+
     public PointOfInterest() {
     }
 
