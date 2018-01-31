@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
     <head th:include="fragments/header :: main-header('temp')">
 </head>
-<body>
+    <body class="ui container">
 <meta th:name="_csrf" th:content="${_csrf.token}"/>
 <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
 <div th:include="fragments/navbar :: navbar-partial"></div>

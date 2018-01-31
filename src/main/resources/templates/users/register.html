@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-    <head th:include="fragments/header :: main-header('Register')">
+<head th:replace="fragments/header :: main-header('Register')">
 </head>
-<body>
+<body class="ui container">
 <div th:include="fragments/navbar :: navbar-partial"></div>
-<br/>
+
     <main class="container">
+        <header class="page-header"><h1>Register</h1></header>
+
         <form th:action="@{/register}" method="post" th:object="${user}">
-        <div class="form-group">
+        <div class="form-group spacinghere">
             <label for="username">Username</label>
             <input
                 id="username"
@@ -17,7 +19,7 @@
             />
             <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" />
         </div>
-        <div class="form-group">
+        <div class="form-group spacinghere">
             <label for="email">Email</label>
             <input
                 id="email"
@@ -32,7 +34,7 @@
                 <span th:errors="*{email}"/>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group spacinghere">
             <label for="password">Password</label>
             <input
                 type="password"
@@ -42,7 +44,7 @@
             />
             <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" />
         </div>
-        <div class="form-group">
+        <div class="form-group spacinghere">
             <label for="password_confirm">Confirm your password</label>
             <input
                 type="password"
@@ -51,7 +53,7 @@
                 id="password_confirm"
             />
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary spacinghere">Register</button>
         </form>
     </main>
 </body>

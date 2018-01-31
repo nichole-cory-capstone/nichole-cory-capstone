@@ -3,51 +3,33 @@
 <head>
 </head>
 <body>
-<nav th:fragment="navbar-partial" class="navbar navbar-expand-lg navbar-light bg-light">
+<nav th:fragment="navbar-partial" >
     <br />
-        <a class="navbar-brand" href="/"><h1>CADDY</h1></a>
-        <div class="navbar-header" id="navbarColor03">
-            <ul class="navbar-nav mr-auto ui buttons">
+    <a class="navbar-brand" href="/"><h1>CADDY</h1></a>
+    <br />
 
-                <!--on logged in authorization: profile, log out. all others visible on logged out-->
-
-                <!--<div class="ui right sidebar active button" data-transition="overlay" data-direction="right">-->
-                    <!--<div class="ui button" data-transition="overlay">-->
-                        <!--<div class="ui button">Home</div>-->
-                        <!--<div class="ui button">Log In</div>-->
-                        <!--<div class="ui button">Profile</div>-->
-                        <!--<div class="ui button">Search</div>-->
-                        <!--<div class="ui button">About</div>-->
-                        <!--<div class="ui button">Log Out</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-
-            </ul>
-            <div class="ui left demo vertical inverted sidebar labeled icon menu">
-                <a class="item">
-                    <i class="home icon"></i>
-                    Home
-                </a>
-                <a class="item">
-                    <i class="block layout icon"></i>
-                    Topics
-                </a>
-                <a class="item">
-                    <i class="smile icon"></i>
-                    Friends
-                </a>
-            </div>
+        <div id="launch button" class="ui right sidebar vertical inverted labeled icon menu">
+            <a href="#" class="item">
+                Home
+            </a>
+            <a href="#" class="item">
+                Profile
+            </a>
+            <a href="#" class="item">
+                Search
+            </a>
         </div>
     <hr />
 </nav>
-
+<div class="dimmed pusher"></div>
 
 <script>
-    $(document).ready(function() {
-        $('.ui.labeled.icon.sidebar')
+//    $(document).ready(function() {
+        $('.ui.sidebar')
             .sidebar('toggle');
-    });
+//    });
 </script>
+
+
 </body>
 </html>
