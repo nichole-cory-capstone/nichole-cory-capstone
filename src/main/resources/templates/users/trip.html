@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/header :: main-header('Trip')">
+</head>
+<body class="container">
+<div th:include="fragments/navbar :: navbar-partial"></div>
+
+<!--space for the user's saved restaurants in a specific trips + the map -->
+
+<div class="ui card">
+    <div class="content">
+        <div class="header">
+            <!--<img class="ui avatar image" src="/static/kitchen-sink/images/wireframe/square-image.png"> City-->
+        </div>
+    </div>
+    <div class="ui two bottom attached buttons">
+        <div class="ui button">
+            SAVED
+        </div>
+        <div class="ui button">
+            DELETE
+        </div>
+    </div>
+</div>
+
+<div id="map"></div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-Fq2UspbtyX0spv_22WGd4ChnxFIQREQ"></script>
+<script>
+    $(document).ready(function () {
+        function initMap() {
+            var sanantonio = {lat: 29.426786, lng: -98.489576};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: sanantonio
+            });
+            var marker = new google.maps.Marker({
+                position: sanantonio,
+                map: map
+            });
+        }
+        initMap();
+    });
+</script>
+</body>
+</html>

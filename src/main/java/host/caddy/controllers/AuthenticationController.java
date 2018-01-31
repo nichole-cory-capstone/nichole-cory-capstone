@@ -37,7 +37,7 @@ public class AuthenticationController {
         return "users/register";
     }
 
-    @PostMapping("/users/create")
+    @PostMapping("/register")
     public String registerUser(
             @Valid User user,
             Errors validation,
@@ -54,17 +54,15 @@ public class AuthenticationController {
         }
 
         if (validation.hasErrors()) {
-            System.out.println("validation problem");
-            System.out.println(user.getUsername());
             viewModel.addAttribute("errors", validation);
             viewModel.addAttribute("user", user);
-            return "users//register";
+            return "users/register";
         }
 
         user.setPassword(encoder.encode(user.getPassword()));
-        System.out.println("db problem");
         repository.save(user);
 
         return "redirect:/login";
     }
+
 }

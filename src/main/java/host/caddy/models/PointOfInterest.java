@@ -1,6 +1,9 @@
 package host.caddy.models;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "poi_table")
@@ -11,15 +14,11 @@ public class PointOfInterest {
     @Column(name="poi_id")
     private int id;
 
-    @Column(name = "yelp_id")
-    private String yelpId;
-
     @Column(name= "place_id",nullable = false)
     private String placeId;
 
-    @ManyToOne
-    @JoinColumn (name = "coll_id")
-    private Collection collection;
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy="pointsOfInterest")
+    private List<Collection> collections;
 
 
     public PointOfInterest() {
@@ -33,13 +32,6 @@ public class PointOfInterest {
         this.id = id;
     }
 
-    public String getYelpId() {
-        return yelpId;
-    }
-
-    public void setYelpId(String yelpId) {
-        this.yelpId = yelpId;
-    }
 
     public String getPlaceId() {
         return placeId;
@@ -49,13 +41,11 @@ public class PointOfInterest {
         this.placeId = placeId;
     }
 
-    public Collection getCollection() {
-        return collection;
+    public List<Collection> getCollections() {
+        return collections;
     }
 
-    public void setCollection(Collection collection) {
-        this.collection = collection;
+    public void setCollections(List<Collection> collections) {
+        this.collections = collections;
     }
-
-
 }

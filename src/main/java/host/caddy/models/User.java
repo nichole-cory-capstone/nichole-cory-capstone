@@ -23,13 +23,13 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     @Email(message = "Enter a valid email address")
     @NotBlank(message = "Enter an email")
     private String email;
 
-    @Column()
-//    @NotBlank(message = "Enter a username")
+    @Column(nullable = false, unique = true)
+    @NotBlank(message = "Enter a username")
     private String username;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")

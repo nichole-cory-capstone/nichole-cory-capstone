@@ -15,17 +15,10 @@ public class Collection {
     private int id;
 
     @Column(nullable = false)
-    private String longitude;
+    private Float longitude;
 
     @Column(nullable = false)
-    private String latitude;
-
-    @ManyToMany(cascade = ALL)
-    @JoinTable(
-            name="collection_members",
-            joinColumns={@JoinColumn(name="coll_id")},
-            inverseJoinColumns={@JoinColumn(name="poi_id")}
-    )
+    private Float latitude;
 
     @ManyToOne
     @JoinColumn (name = "user_id")
@@ -34,8 +27,19 @@ public class Collection {
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "collection")
 //    private List<Image> images;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "collection")
-    private List<PointOfInterest> pointOfInterestList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "collection")
+//    private List<PointOfInterest> pointOfInterestList;
+
+    @ManyToMany
+    @JoinTable(
+            name="collection_members",
+            joinColumns={@JoinColumn(name="coll_id")},
+            inverseJoinColumns={@JoinColumn(name="poi_id")}
+    )
+    private List<PointOfInterest> pointsOfInterest;
+
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    private List<PointOfInterest> pointsOfInterest;
 
     public Collection() {
     }
@@ -56,12 +60,12 @@ public class Collection {
 //        this.images = images;
 //    }
 
-    public List<PointOfInterest> getPointOfInterestList() {
-        return pointOfInterestList;
+    public List<PointOfInterest> getPointsOfInterest() {
+        return pointsOfInterest;
     }
 
     public void setPointOfInterestList(List<PointOfInterest> pointOfInterestList) {
-        this.pointOfInterestList = pointOfInterestList;
+        this.pointsOfInterest = pointOfInterestList;
     }
 
     public int getId() {
@@ -73,19 +77,19 @@ public class Collection {
     }
 
 
-    public String getLongitude() {
+    public Float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(Float longitude) {
         this.longitude = longitude;
     }
 
-    public String getLatitude() {
+    public Float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(Float latitude) {
         this.latitude = latitude;
     }
 
