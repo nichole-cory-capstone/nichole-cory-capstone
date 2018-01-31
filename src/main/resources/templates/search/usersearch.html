@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="fragments/header :: main-header('User Search')">
 </head>
-<body class="container">
+<body class="ui container">
     <div th:include="fragments/navbar :: navbar-partial"></div>
         <h2>SEARCH FOR A LOCALE:</h2>
             <div class="ui hidden divider" />
                 <div class="ui local search">
                     <div class="ui left icon input">
-                        <input type="text" placeholder="TYPE HERE"/>
+                        <input type="text" placeholder="e. g. Il Mulino"/>
                     </div>
                     <button type="button" class="ui submit button">SEARCH</button>
             </div>
@@ -31,6 +31,7 @@
             });
         }
         initMap();
+
     });
 </script>
 </body>
