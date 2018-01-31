@@ -39,6 +39,8 @@ public class UsersController {
         return "users/trip";
     }
 
+
+
     @PostMapping("/user/trips/save")
     public String saveTrip(@ModelAttribute Collection collection){
         User owner = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

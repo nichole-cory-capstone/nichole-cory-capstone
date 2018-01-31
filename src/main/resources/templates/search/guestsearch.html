@@ -16,16 +16,27 @@
             <div id="map"></div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-Fq2UspbtyX0spv_22WGd4ChnxFIQREQ"></script>
-<script>
+<script th:inline="javascript">
+
+      /*<![CDATA[*/
+
+         var lat = /*[[${collection.latitude}]]*/ '29.426786';
+         var lon = /*[[${collection.longitude}]]*/ '-98.489576';
+         lat = parseFloat(lat);
+         lon = parseFloat(lon);
+
+       /*]]>*/
+</script>
+<script th:inline="javascript">
     $(document).ready(function () {
         function initMap() {
-            var sanantonio = {lat: 29.426786, lng: -98.489576};
+            var location = {lat: lat, lng: lon};
             var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 15,
-            center: sanantonio
+            center: location
         });
         var marker = new google.maps.Marker({
-            position: sanantonio,
+            position: location,
             map: map
         });
     }

@@ -15,16 +15,20 @@ public class Collection {
     private int id;
 
     @Column(nullable = false)
-    private Float longitude;
+    private String longitude;
 
     @Column(nullable = false)
-    private Float latitude;
+    private String latitude;
 
     @ManyToOne
     @JoinColumn (name = "user_id")
     private User owner;
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "collection")
+    private String formattedAddress;
+
+
+
+    //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "collection")
 //    private List<Image> images;
 
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "collection")
@@ -64,8 +68,8 @@ public class Collection {
         return pointsOfInterest;
     }
 
-    public void setPointOfInterestList(List<PointOfInterest> pointOfInterestList) {
-        this.pointsOfInterest = pointOfInterestList;
+    public void setPointsOfInterest(List<PointOfInterest> pointsOfInterest) {
+        this.pointsOfInterest = pointsOfInterest;
     }
 
     public int getId() {
@@ -76,20 +80,17 @@ public class Collection {
         this.id = id;
     }
 
+    public String getLongitude() { return longitude; }
 
-    public Float getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Float longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
-    public Float getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Float latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
@@ -100,4 +101,14 @@ public class Collection {
     public void setOwner(User owner) {
         this.owner = owner;
     }
+
+    public String getFormattedAddress() {
+        return formattedAddress;
+    }
+
+    public void setFormattedAddress(String formattedAddress) {
+        this.formattedAddress = formattedAddress;
+    }
+
+
 }
