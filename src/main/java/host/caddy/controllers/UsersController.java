@@ -28,7 +28,7 @@ public class UsersController {
 
     @GetMapping("/user/trips")
     public String saved() {
-        return "users/profile";
+        return "users/userstrips";
     }
 
     @GetMapping("/user/trips/{id}")
@@ -48,7 +48,7 @@ public class UsersController {
         return "finished";
     }
 
-    @PostMapping("/user/trip/{id}/save")
+    @PostMapping("/user/trips/{id}/save")
     public String savePoint(@ModelAttribute Collection collection, @RequestParam(name = "placeId")String placeId) {
         if (placeId != null) {
             List<PointOfInterest> pointOfInterestList = collection.getPointsOfInterest();
