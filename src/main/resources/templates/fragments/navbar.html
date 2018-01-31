@@ -3,33 +3,30 @@
 <head>
 </head>
 <body>
-<nav th:fragment="navbar-partial" >
-    <br />
-    <a class="navbar-brand" href="/"><h1>CADDY</h1></a>
-    <br />
+    <nav th:fragment="navbar-partial">
+    <div id="launch button" class="ui right visible sidebar vertical inverted labeled icon menu">
+        <a href="#" class="item">Home</a>
+        <a href="#" class="item">Profile</a>
+        <a href="#" class="item">Search</a>
+        <a href="#" class="item">About</a>
+        <a href="#" class="item">Log In</a>
+        <a href="#" class="item">Log Out</a>
+    </div>
+    <div class="dimmed pusher"></div>
+        <br />
+        <button type="button" class="ui submit button" id="sidebutton"> > </button>
+        <a class="navbar-brand" href="/"><h1>CADDY</h1></a>
+            <br />
+            <hr />
 
-        <div id="launch button" class="ui right sidebar vertical inverted labeled icon menu">
-            <a href="#" class="item">
-                Home
-            </a>
-            <a href="#" class="item">
-                Profile
-            </a>
-            <a href="#" class="item">
-                Search
-            </a>
-        </div>
-    <hr />
-</nav>
-<div class="dimmed pusher"></div>
+    <script>
+        $(document).ready(function() {
 
-<script>
-//    $(document).ready(function() {
-        $('.ui.sidebar')
-            .sidebar('toggle');
-//    });
-</script>
-
-
+            $('#sidebutton').click(function() {
+                $('.ui.sidebar').sidebar('toggle');
+            });
+        });
+    </script>
+    </nav>
 </body>
 </html>
