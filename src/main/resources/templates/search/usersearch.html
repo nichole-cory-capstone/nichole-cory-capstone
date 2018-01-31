@@ -29,8 +29,15 @@
                 position: sanantonio,
                 map: map
             });
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
+            });
         }
         initMap();
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
 
     });
 </script>
