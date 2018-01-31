@@ -3,27 +3,43 @@
 <head>
 </head>
 <body>
-    <nav th:fragment="navbar-partial">
+<nav th:fragment="navbar-partial">
     <div id="launch button" class="ui right visible sidebar vertical inverted labeled icon menu">
-        <a href="#" class="item">Home</a>
+        <a href="/" class="item">Home</a>
         <a href="#" class="item">Profile</a>
         <a href="#" class="item">Search</a>
-        <a href="#" class="item">About</a>
-        <a href="#" class="item">Log In</a>
+        <a href="/about" class="item">About</a>
+        <a href="/login" class="item">Log In</a>
         <a href="#" class="item">Log Out</a>
     </div>
     <div class="dimmed pusher"></div>
-        <br />
-        <button type="button" class="ui submit button" id="sidebutton"> > </button>
-        <a class="navbar-brand" href="/"><h1>CADDY</h1></a>
-            <br />
-            <hr />
+    <br />
+    <button type="button" class="ui submit button" id="sidebutton"> > </button>
+    <a class="navbar-brand" href="/"><h1>CADDY</h1></a>
+    <br />
+    <hr />
+
+
+    <!--semantic modal-->
+    <button type="button" class="ui submit button" id="modalbutton"> modal </button>
+    <div class="ui demo modal button">
+        <button type="button" class="close modalclose" data-dismiss="modal">X</button>
+        <div class="header"><h1>Log In Here: </h1></div>
+        <h3>insert login form here</h3>
+        <a href="#" class="item basic modal"><button type="button" class="ui submit button">LOGIN</button></a>
+    </div>
+
 
     <script>
         $(document).ready(function() {
 
             $('#sidebutton').click(function() {
                 $('.ui.sidebar').sidebar('toggle');
+            });
+
+            $('#modalbutton').click(function() {
+                console.log("test");
+                $('.ui.modal').modal('toggle');
             });
         });
     </script>
