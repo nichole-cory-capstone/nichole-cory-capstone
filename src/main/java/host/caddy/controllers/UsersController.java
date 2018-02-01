@@ -37,7 +37,7 @@ public class UsersController {
     public String getTrip(@PathVariable long id, Model model) {
         Collection collection =  collectionRepository.findOne(id);
         model.addAttribute("points",collection.getPointsOfInterest());
-        model.addAttribute("trip", collection);
+        model.addAttribute("collection", collection);
         return "users/trip";
     }
 
