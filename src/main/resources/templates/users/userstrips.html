@@ -2,8 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="fragments/header :: main-header('Saved')">
 </head>
-<body class="ui container">
-<div th:include="fragments/navbar :: navbar-partial"></div>
+<body>
+<main class="ui container">
+    <div th:include="fragments/navbar :: navbar-partial"></div>
 
 <!--space for the user's saved restaurants in a specific trips + the map -->
 
@@ -22,6 +23,7 @@
         </div>
     </div>
 </div>
+</main>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-Fq2UspbtyX0spv_22WGd4ChnxFIQREQ"></script>
 <script>
