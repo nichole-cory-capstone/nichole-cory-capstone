@@ -28,5 +28,5 @@ Look and Feel
 [x] Profile page
 [x] Saved collection page
 [x] Search/Collection create page
-[] Login/Register Pages/Modal
-[] Mobile responsive*
+[x] Login/Register Pages/Modal
+[x?] Mobile responsive*
