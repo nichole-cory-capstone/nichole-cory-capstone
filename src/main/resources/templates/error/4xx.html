@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: main-header(title=('Client Error')"/>
-<body>
+<body class="ui container">
 <main class="container">
     <th:block th:switch="${error}">
         <header class="page-header" th:case="'Not Found'">

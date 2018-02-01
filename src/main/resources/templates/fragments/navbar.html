@@ -3,51 +3,46 @@
 <head>
 </head>
 <body>
-<nav th:fragment="navbar-partial" class="navbar navbar-expand-lg navbar-light bg-light">
+<nav th:fragment="navbar-partial">
+    <div id="launch button" class="ui right visible sidebar vertical inverted labeled icon menu">
+        <a href="/" class="item">Home</a>
+        <a href="#" class="item">Profile</a>
+        <a href="#" class="item">Search</a>
+        <a href="/about" class="item">About</a>
+        <a href="/login" class="item">Log In</a>
+        <a href="#" class="item">Log Out</a>
+    </div>
+    <div class="dimmed pusher"></div>
     <br />
-        <a class="navbar-brand" href="/"><h1>CADDY</h1></a>
-        <div class="navbar-header" id="navbarColor03">
-            <ul class="navbar-nav mr-auto ui buttons">
-
-                <!--on logged in authorization: profile, log out. all others visible on logged out-->
-
-                <!--<div class="ui right sidebar active button" data-transition="overlay" data-direction="right">-->
-                    <!--<div class="ui button" data-transition="overlay">-->
-                        <!--<div class="ui button">Home</div>-->
-                        <!--<div class="ui button">Log In</div>-->
-                        <!--<div class="ui button">Profile</div>-->
-                        <!--<div class="ui button">Search</div>-->
-                        <!--<div class="ui button">About</div>-->
-                        <!--<div class="ui button">Log Out</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-
-            </ul>
-            <div class="ui left demo vertical inverted sidebar labeled icon menu">
-                <a class="item">
-                    <i class="home icon"></i>
-                    Home
-                </a>
-                <a class="item">
-                    <i class="block layout icon"></i>
-                    Topics
-                </a>
-                <a class="item">
-                    <i class="smile icon"></i>
-                    Friends
-                </a>
-            </div>
-        </div>
+    <button type="button" class="ui submit button" id="sidebutton"> > </button>
+    <a class="navbar-brand" href="/"><h1>CADDY</h1></a>
+    <br />
     <hr />
-</nav>
 
 
-<script>
-    $(document).ready(function() {
-        $('.ui.labeled.icon.sidebar')
-            .sidebar('toggle');
-    });
-</script>
+    <!--semantic modal-->
+    <button type="button" class="ui submit button" id="modalbutton"> modal </button>
+    <div class="ui demo modal button tiny">
+        <button type="button" class="close modalclose" data-dismiss="modal">X</button>
+        <div class="header"><h1>Log In Here: </h1></div>
+        <h3>insert login form here</h3>
+        <a href="#" class="item basic modal"><button type="button" class="ui submit button">LOGIN</button></a>
+    </div>
+
+
+    <script>
+        $(document).ready(function() {
+
+            $('#sidebutton').click(function() {
+                $('.ui.sidebar').sidebar('toggle');
+            });
+
+            $('#modalbutton').click(function() {
+                console.log("test");
+                $('.ui.modal').modal('toggle');
+            });
+        });
+    </script>
+    </nav>
 </body>
 </html>

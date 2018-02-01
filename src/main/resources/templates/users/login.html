@@ -1,14 +1,14 @@
- <!DOCTYPE html>
- <html xmlns:th="http://www.thymeleaf.org" lang="en">
-     <head th:include="fragments/header :: main-header('temp')">
- </head>
- <body>
- <div th:include="fragments/navbar :: navbar-partial"></div>
- <br/>
-    <main class="container">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/header :: main-header('Login')">
+</head>
+<body class="ui container">
+<div th:include="fragments/navbar :: navbar-partial"></div>
+
+    <main class="ui container">
         <header class="page-header"><h1>Log In</h1></header>
         <form th:action="@{/login}" method="post">
-            <div class="form-group">
+            <div class="form-group spacinghere">
                 <label for="username">Username</label>
                 <input
                     id="username"
@@ -22,8 +22,12 @@
                 <label for="password">Password</label>
                 <input id="password" class="form-control" name="password" type="password" />
             </div>
-            <input class="btn btn-primary" type="submit" value="Log In" />
+            <input class="ui submit button spacinghere" type="submit" value="Log In" />
         </form>
     </main>
+
+
+
+
 </body>
 </html>

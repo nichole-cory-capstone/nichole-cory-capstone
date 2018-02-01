@@ -2,33 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="fragments/header :: main-header('Saved')">
 </head>
-<body class="container">
+<body class="ui container">
 <div th:include="fragments/navbar :: navbar-partial"></div>
 
 <!--space for the user's saved restaurants in a specific trips + the map -->
 
-<div class="ui card">
+<div id="map"></div>
+
+<div class="ui card movecard">
     <div class="content">
-        <div class="header">
-            <!--<img class="ui avatar image" src="/static/kitchen-sink/images/wireframe/square-image.png"> City-->
-        </div>
+        <div class="header">$ { CITY }</div>
     </div>
     <div class="ui two bottom attached buttons">
         <div class="ui button">
-            SAVED
+            Saved
         </div>
         <div class="ui button">
-            DELETE
+            Delete
         </div>
     </div>
 </div>
-
-<div id="map"></div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-Fq2UspbtyX0spv_22WGd4ChnxFIQREQ"></script>
 <script>
     $(document).ready(function () {
         function initMap() {
+
             var sanantonio = {lat: 29.426786, lng: -98.489576};
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 15,
@@ -38,8 +37,16 @@
                 position: sanantonio,
                 map: map
             });
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
+            });
         }
         initMap();
+
+        var infowindow = new google.maps.InfoWindow({
+            content: "here"
+//            content takes in name of restaurant?
+        });
     });
 </script>
 </body>

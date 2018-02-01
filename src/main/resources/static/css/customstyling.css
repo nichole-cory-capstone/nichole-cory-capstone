@@ -2,6 +2,10 @@
     text-align: center;
 }
 
+.bghere{
+    background-color: #2B3E50;
+}
+
 .goright {
     float: right;
 }
@@ -13,9 +17,25 @@
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
 
 }
 
 .enterhere{
     margin-top: 200px;
+}
+
+.movecard{
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.spacinghere{
+    margin: 7px;
+}
+
+#sidebutton{
+    float:right;
 }
