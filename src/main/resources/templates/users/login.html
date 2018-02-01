@@ -4,7 +4,7 @@
 </head>
 <body class="ui container">
 <div th:include="fragments/navbar :: navbar-partial"></div>
-
+<!--
     <main class="ui container">
         <header class="page-header"><h1>Log In</h1></header>
         <form th:action="@{/login}" method="post">
@@ -26,8 +26,85 @@
         </form>
     </main>
 
+-->
+  <style type="text/css">
+    body > .grid {
+      height: 100%;
+    }
+    .column {
+      max-width: 450px;
+    }
+  </style>
+  <script>
+  $(document)
+    .ready(function() {
+        $('#login').click(function(){
+            window.location = "/login";
+        });
+      $('.ui.form')
+        .form({
+          fields: {
+            email: {
+              identifier  : 'username',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'Please enter your username'
+                }
+              ]
+            },
+            password: {
+              identifier  : 'password',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'Please enter your password'
+                },
+                {
+                  type   : 'length[8]',
+                  prompt : 'Your password must be at least 8 characters'
+                }
+              ]
+            }
+          }
+        })
+      ;
+    })
+  ;
+  </script>
 
+<div class="ui aligned center aligned grid">
+  <div class="column">
+    <h2 class="ui image header">
+      <div class="content">
+        Log-in to your account
+      </div>
+    </h2>
+    <form class="ui large form" th:action="@{/login}" method="post">
+      <div class="ui stacked segment">
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <input type="text" name="username" placeholder="Username"/>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <input type="password" name="password" placeholder="Password"/>
+          </div>
+        </div>
+        <div id="login" class="ui fluid large submit button">Login</div>
+      </div>
 
+      <div class="ui error message"></div>
 
+    </form>
+
+    <div class="ui message">
+      New to us? <a href="/register">Sign Up</a>
+    </div>
+  </div>
+</div>
 </body>
 </html>

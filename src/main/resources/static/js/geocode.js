@@ -7,4 +7,9 @@ $(document).ready(function() {
             window.location.href = url + inputCity;
             return false;
         });
+    $('#register-btn').click(function (e) {
+        // e.preventDefault();
+        window.location.href = "/register";
+        return false;
+    });
 });

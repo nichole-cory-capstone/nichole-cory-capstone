@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
     <head th:replace="fragments/header :: main-header('Caddy')">
 </head>
-<body class="ui container">
+<body class="ui container-fluid">
     <div th:include="fragments/navbar :: navbar-partial"></div>
 
     <div class="enterhere">
@@ -13,7 +13,7 @@
                 <input id="city-name"  type="text" placeholder="e. g. New York City"/>
             </div>
             <button id="search-btn" type="button" class="ui submit button">Search</button>
-            <button type="button" class="ui submit button">Register</button>
+            <button id="register-btn" type="button" class="ui submit button">Register</button>
         </div>
     </div>
     <script src="/js/geocode.js"></script>
