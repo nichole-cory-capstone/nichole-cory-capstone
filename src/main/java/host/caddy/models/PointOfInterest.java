@@ -1,5 +1,6 @@
 package host.caddy.models;
 
+import com.google.maps.model.PlaceDetails;
 import host.caddy.models.yelp.Business;
 import org.hibernate.validator.constraints.NotBlank;
 

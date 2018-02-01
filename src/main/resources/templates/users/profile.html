@@ -9,27 +9,44 @@
     <a href="#" class="item" id="editprofile"><button type="button" class="ui submit button">Edit Profile</button></a>
     <br />
 
-<!--saved trip card-->
+<!--placeholder trip card-->
 <div class="ui card">
     <div class="content">
         <div class="header">
             <!--<img class="ui avatar image" src="">-->
-            $ { saved city }
+            Add City
         </div>
-        <div class="description">
-            Short Description
-        </div>
+        <div class="image">
+            <img class="ui wireframe image" src="/images/placeholder_image.png"/>
+          </div>
     </div>
-    <div class="ui two bottom attached buttons">
+    <div class="ui bottom attached buttons">
         <div class="ui button">
-            Search/Add
-        </div>
-        <div class="ui button">
-            Delete
+            Add
         </div>
     </div>
 </div>
 
+<th:block th:each="collection : ${collections}">
+<div class="ui card">
+    <div class="content">
+        <div class="header">
+         <span th:text="${collection.location}">My Trip</span>
+        </div>
+        <div class="image" th:if="${collection.imageRef == null}">
+            <img class="ui wireframe image" src="/images/placeholder_image.png"/>
+        </div>
+        <div class="image" th:if="${collection.imageRef != null}">
+             <img class="ui wireframe image" th:src="@{https://maps.googleapis.com/maps/api/place/photo(maxwidth=260,maxheight=216,key=AIzaSyBcg-lOtySjyOVfjGHxr6AWyKTnAGFktK0,photoreference=${collection.imageRef})}"/>
+        </div>
+    </div>
+    <div class="ui bottom attached buttons">
+        <div class="ui button">
+            View
+        </div>
+    </div>
+</div>
+</th:block>
 
 <!--edit profile modal-->
 <div class="ui demo modal button tiny profilemodal">

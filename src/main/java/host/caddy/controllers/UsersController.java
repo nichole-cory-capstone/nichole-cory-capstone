@@ -23,7 +23,8 @@ public class UsersController {
     PointOfInterestRepository pointOfInterestRepository;
 
     @GetMapping("/user/profile")
-    public String profile() {
+    public String profile(Model model) {
+        model.addAttribute("collections",collectionRepository.findAll());
         return "users/profile";
     }
 

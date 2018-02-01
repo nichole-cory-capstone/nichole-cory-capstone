@@ -24,7 +24,37 @@ public class Collection {
     @JoinColumn (name = "user_id")
     private User owner;
 
-    private String formattedAddress;
+    @Column
+    private String imageRef;
+
+    @Column(nullable = false)
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getImageRef() {
+        return imageRef;
+    }
+
+    public void setImageRef(String imageRef) {
+        this.imageRef = imageRef;
+    }
+
+    private String placeId;
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
+    }
 
 
 
@@ -101,14 +131,5 @@ public class Collection {
     public void setOwner(User owner) {
         this.owner = owner;
     }
-
-    public String getFormattedAddress() {
-        return formattedAddress;
-    }
-
-    public void setFormattedAddress(String formattedAddress) {
-        this.formattedAddress = formattedAddress;
-    }
-
 
 }
