@@ -6,8 +6,8 @@
 <nav th:fragment="navbar-partial">
     <div id="launch button" class="ui right visible sidebar vertical inverted labeled icon menu">
         <a href="/" class="item"><button type="button" class="ui inverted button">Home</button></a>
-        <a href="/profile" class="item"><button type="button" class="ui inverted button">Profile</button></a>
-        <a href="/search" class="item"><button type="button" class="ui inverted button">Search</button></a>
+        <a href="/user/profile" class="item"><button type="button" class="ui inverted button">Profile</button></a>
+        <a href="/search/guest" class="item"><button type="button" class="ui inverted button">Search</button></a>
         <a href="/about" class="item"><button type="button" class="ui inverted button">About</button></a>
         <a href="#" id="modalbutton" class="item"><button type="button" class="ui inverted button">Log In</button></a>
         <a href="/" class="item"><button type="button" class="ui inverted button">Log Out</button></a>
@@ -20,7 +20,7 @@
     <hr />
 
     <!--semantic modal-->
-    <div class="ui demo modal button tiny">
+    <div class="ui demo modal button tiny loginmodal">
         <button type="button" class="close modalclose" data-dismiss="modal">X</button>
         <div class="ui aligned center aligned grid">
                 <h2 class="ui image header"><div class="content">Log in to your account</div></h2>
@@ -57,7 +57,7 @@
             });
 
             $('#modalbutton').click(function() {
-                $('.ui.modal').modal('toggle');
+                $('.loginmodal').modal('toggle');
             });
 
                     $('#login').click(function(){
