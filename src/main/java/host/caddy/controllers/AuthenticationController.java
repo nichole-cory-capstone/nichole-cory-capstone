@@ -24,7 +24,7 @@ public class AuthenticationController {
         this.repository = repository;
         this.encoder = encoder;
     }
-
+`
     @GetMapping("/login")
     public String showLoginForm() {
         return "users/login";
