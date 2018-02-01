@@ -8,8 +8,10 @@ import com.google.gson.JsonObject;
 import com.google.maps.GeoApiContext;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
+import com.google.maps.model.PlaceDetails;
 import com.google.maps.model.PlacesSearchResponse;
 import host.caddy.models.Collection;
+import host.caddy.repositories.CollectionRepository;
 import host.caddy.services.GMapsService;
 import host.caddy.services.YelpSearch;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class SearchController {
     @Autowired
     private GMapsService googleSearch;
 
+    @Autowired
+    private CollectionRepository collectionRepository;
+
     @PostMapping("/search/yelp")
     public @ResponseBody String yelpSearchPlace(@RequestParam String name, @RequestParam String lat, @RequestParam String lon){
         return yelpSearch.byNameJSON(name,lat,lon);
@@ -47,14 +52,23 @@ public class SearchController {
         GeoApiContext context = googleSearch.getContext();
         Collection collection = new Collection();
 
+        //Geocode the search terms
         GeocodingResult[] results = googleSearch.geocodeAddress(location, context);
-        PlacesSearchResponse nearbyResults = googleSearch.nearbySearch(context, googleSearch.getLatLng(results[0]));
-        String nearbyJSON = googleSearch.getGMapsJSON(nearbyResults.results);
+
+        //Setup the collection object
         String latLng[] = results[0].geometry.location.toString().split(",");
         collection.setLatitude(latLng[0]);
         collection.setLongitude(latLng[1]);
-        collection.setFormattedAddress(results[0].formattedAddress);
+        collection.setLocation(location);
+        collection.setPlaceId(results[0].placeId);
+        PlaceDetails details = googleSearch.placeDetailsSearch(context,collection.getPlaceId());
+        collection.setImageRef(details.photos[0].photoReference);
 
+        //Get default nearby places
+        PlacesSearchResponse nearbyResults = googleSearch.nearbySearch(context, googleSearch.getLatLng(results[0]));
+        String nearbyJSON = googleSearch.getGMapsJSON(nearbyResults.results);
+
+        model.addAttribute("searchTerm", location);
         model.addAttribute("nextPageToken", nearbyResults.nextPageToken);
         model.addAttribute("nearBy", nearbyJSON);
         model.addAttribute("goeApiContext", context);

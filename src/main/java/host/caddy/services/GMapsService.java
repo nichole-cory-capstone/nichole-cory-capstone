@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
+import com.google.maps.PlaceDetailsRequest;
 import com.google.maps.PlacesApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.*;
@@ -68,5 +69,10 @@ public class GMapsService {
         }
        public PlacesSearchResponse nearbyNextSearch(GeoApiContext context, String pageToken) throws IOException, InterruptedException, ApiException {
         return PlacesApi.nearbySearchNextPage(context, pageToken).await();
+    }
+
+
+    public PlaceDetails placeDetailsSearch(GeoApiContext context, String placeId) throws IOException, InterruptedException, ApiException {
+       return PlacesApi.placeDetails(context,placeId).await();
     }
 }
