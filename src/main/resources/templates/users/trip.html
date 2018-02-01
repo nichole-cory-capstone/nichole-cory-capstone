@@ -1,47 +1,131 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="fragments/header :: main-header('Trip')">
-</head>
+<head th:replace="fragments/header :: main-header('Guest Search')"></head>
 <body class="ui container">
-<div th:include="fragments/navbar :: navbar-partial"></div>
+<meta th:name="_csrf" th:content="${_csrf.token}"/>
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <div th:include="fragments/navbar :: navbar-partial"></div>
+        <h2>SEARCH FOR A CITY:</h2>
+            <div class="ui hidden divider" />
+                <div class="ui local search">
+                    <div class="ui left icon input">
+                        <input type="text" placeholder="TYPE HERE"/>
+                    </div>
+                    <button type="button" class="ui submit button">SEARCH</button>
+                </div>
+                <br />
+                <!--space for the user's saved restaurants in a specific trips + the map -->
 
-<!--space for the user's saved restaurants in a specific trips + the map -->
+                <div class="ui card">
+                    <div class="content">
+                        <div class="header">
+                            <!--<img class="ui avatar image" src="/static/kitchen-sink/images/wireframe/square-image.png"> City-->
+                        </div>
+                    </div>
+                    <div class="ui two bottom attached buttons">
+                        <div class="ui button">
+                            SAVED
+                        </div>
+                        <div class="ui button">
+                            DELETE
+                        </div>
+                    </div>
+                </div>
+                <br />
+            <div id="map"></div>
 
-<div class="ui card">
-    <div class="content">
-        <div class="header">
-            <!--<img class="ui avatar image" src="/static/kitchen-sink/images/wireframe/square-image.png"> City-->
-        </div>
-    </div>
-    <div class="ui two bottom attached buttons">
-        <div class="ui button">
-            SAVED
-        </div>
-        <div class="ui button">
-            DELETE
-        </div>
-    </div>
-</div>
-
-<div id="map"></div>
-
-
+           <button id="more-btn" type="button" class="ui submit button">MORE</button>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-Fq2UspbtyX0spv_22WGd4ChnxFIQREQ"></script>
-<script>
-    $(document).ready(function () {
-        function initMap() {
-            var sanantonio = {lat: 29.426786, lng: -98.489576};
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 15,
-                center: sanantonio
-            });
-            var marker = new google.maps.Marker({
-                position: sanantonio,
-                map: map
-            });
-        }
-        initMap();
-    });
+<script th:inline="javascript">
+      /*<![CDATA[*/
+      $(document).ready(function () {
+         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+         var csrfToken = $("meta[name='_csrf']").attr("content");
+         var headers = {};
+         headers[csrfHeader] = csrfToken;
+         var map;
+         var nearByResults = /*[[${nearBy}]]*/ 'unknown';
+         var nearBy = JSON.parse(nearByResults);
+         var latStr = /*[[${collection.latitude}]]*/ '29.426786';
+         var lat = parseFloat(latStr);
+         var lonStr = /*[[${collection.longitude}]]*/ '-98.489576';
+         var lon = parseFloat(lonStr);
+         var pageToken = /*[[${nextPageToken}]]*/ '';
+         var markers = [];
+
+         function initMap() {
+             var location = {lat: lat, lng: lon};
+             map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 13,
+                center: location
+              });
+              getMarkers();
+              setMarkers();
+             }
+
+         initMap();
+
+         $('#more-btn').click(function(){
+             if(pageToken !== null){
+              $.ajax({
+                      url: "/search/next",
+                      type: "POST",
+                      data: {
+                          pageToken: pageToken
+                      },
+                      headers: headers
+                  }).done(function (data) {
+                      nearBy = JSON.parse(data);
+                      clearMarkers();
+                      getMarkers();
+                      setMarkers();
+                      pageToken = nearBy.nextPageToken;
+                      if(pageToken === null){
+                          $('#more-btn').addClass("disabled")
+                      }
+                  }).fail(function (jqXhr, status, error) {
+                      console.log("Error");
+                  });
+              }
+         });
+
+
+         function getMarkers(){
+              for(var i = 0; i < nearBy.length; i++){
+                  markers[i] = new google.maps.Marker({
+                                   position: {lat: nearBy[i].geometry.location.lat, lng: nearBy[i].geometry.location.lng},
+                                   map: map,
+                                   id: i
+                                   })
+              }
+           }
+
+         function setMarkers() {
+              for (var i = 0; i < markers.length; i++) {
+                  markers[i].setMap(map);
+              }
+         }
+
+         function clearMarkers() {
+               for (var i = 0; i < markers.length; i++) {
+                   markers[i].setMap(null); //Remove the marker from the map
+                   }
+              }
+          // function setMarkers(){
+          //     console.log(nearBy.length);
+          //     for(var i = 0; i < nearBy.length; i++ ) {
+          //        markers[i] = new google.maps.Marker({
+          //        position: {lat: nearBy[i].geometry.location.lat, lng: nearBy[i].geometry.location.lng},
+          //        map: map,
+          //        id: i
+          //        })
+          //     }
+          // }
+
+
+      });
+       /*]]>*/
 </script>
 </body>
 </html>
+
