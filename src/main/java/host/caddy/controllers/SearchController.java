@@ -64,8 +64,12 @@ public class SearchController {
 
     @PostMapping("/search/next")
     public @ResponseBody String nextPageSearch(@RequestParam String pageToken) throws IOException, InterruptedException, ApiException{
-        GeoApiContext context = googleSearch.getContext();
-        return googleSearch.getGMapsJSON(googleSearch.nearbyNextSearch(context,pageToken));
+        if(pageToken != null) {
+            GeoApiContext context = googleSearch.getContext();
+            return googleSearch.getGMapsJSON(googleSearch.nearbyNextSearch(context, pageToken));
+        }else{
+            return "Error: pageToken cannot be false";
+        }
     }
 
     @GetMapping("/search/guest")

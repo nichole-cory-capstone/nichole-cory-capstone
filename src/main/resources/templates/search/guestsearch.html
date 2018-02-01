@@ -26,8 +26,8 @@
          var headers = {};
          headers[csrfHeader] = csrfToken;
          var map;
-         var nearBy = /*[[${nearBy}]]*/ 'unknown';
-         nearBy = JSON.parse(nearBy);
+         var nearByResults = /*[[${nearBy}]]*/ 'unknown';
+         var nearBy = JSON.parse(nearByResults);
          var latStr = /*[[${collection.latitude}]]*/ '29.426786';
          var lat = parseFloat(latStr);
          var lonStr = /*[[${collection.longitude}]]*/ '-98.489576';
@@ -48,6 +48,7 @@
          initMap();
 
          $('#more-btn').click(function(){
+             if(pageToken !== null){
               $.ajax({
                       url: "/search/next",
                       type: "POST",
@@ -61,10 +62,15 @@
                       getMarkers();
                       setMarkers();
                       pageToken = nearBy.nextPageToken;
+                      if(pageToken === null){
+                          $('#more-btn').addClass("disabled")
+                      }
                   }).fail(function (jqXhr, status, error) {
                       console.log("Error");
                   });
+              }
          });
+
 
          function getMarkers(){
               for(var i = 0; i < nearBy.length; i++){

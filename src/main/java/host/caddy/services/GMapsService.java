@@ -60,8 +60,9 @@ public class GMapsService {
 
         public PlacesSearchResponse nearbySearch(GeoApiContext context, LatLng location) throws IOException, InterruptedException, ApiException {
             return PlacesApi.nearbySearchQuery(context, location)
-                    .radius(6000)
+                    .radius(10000)
                     .rankby(RankBy.PROMINENCE)
+                    .type(PlaceType.RESTAURANT)
                     .language("en")
                     .await();
         }

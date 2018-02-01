@@ -36,7 +36,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
             http
                     .formLogin()
                     .loginPage("/login")
-                    .defaultSuccessUrl("/profile") // user's home page
+                    .defaultSuccessUrl("/user/profile") // user's home page
                     .permitAll() // Anyone can go to the login page
                     .and()
                     // Allow without login
@@ -46,7 +46,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                     .and()
                     // restricted area
                     .authorizeRequests()
-                    .antMatchers("/collection/**", "/profile/**")
+                    .antMatchers("/collection/**", "/profile/**","/user/**")
                     .authenticated()
                     .and()
                     //logout
