@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="fragments/header :: main-header('Guest Search')"></head>
-<head></head>
 <body class="ui container">
+<meta th:name="_csrf" th:content="${_csrf.token}"/>
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <div th:include="fragments/navbar :: navbar-partial"></div>
         <h2>SEARCH FOR A CITY:</h2>
             <div class="ui hidden divider" />
@@ -15,33 +16,95 @@
                 <br />
             <div id="map"></div>
 
+           <button id="more-btn" type="button" class="ui submit button">MORE</button>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-Fq2UspbtyX0spv_22WGd4ChnxFIQREQ"></script>
 <script th:inline="javascript">
-
       /*<![CDATA[*/
+      $(document).ready(function () {
+         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+         var csrfToken = $("meta[name='_csrf']").attr("content");
+         var headers = {};
+         headers[csrfHeader] = csrfToken;
+         var map;
+         var nearBy = /*[[${nearBy}]]*/ 'unknown';
+         nearBy = JSON.parse(nearBy);
+         var latStr = /*[[${collection.latitude}]]*/ '29.426786';
+         var lat = parseFloat(latStr);
+         var lonStr = /*[[${collection.longitude}]]*/ '-98.489576';
+         var lon = parseFloat(lonStr);
+         var pageToken = /*[[${nextPageToken}]]*/ '';
+         var markers = [];
 
-         var lat = /*[[${collection.latitude}]]*/ '29.426786';
-         var lon = /*[[${collection.longitude}]]*/ '-98.489576';
-         lat = parseFloat(lat);
-         lon = parseFloat(lon);
+         function initMap() {
+             var location = {lat: lat, lng: lon};
+             map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 13,
+                center: location
+              });
+              getMarkers();
+              setMarkers();
+             }
 
+         initMap();
+
+         $('#more-btn').click(function(){
+              $.ajax({
+                      url: "/search/next",
+                      type: "POST",
+                      data: {
+                          pageToken: pageToken
+                      },
+                      headers: headers
+                  }).done(function (data) {
+                      nearBy = JSON.parse(data);
+                      clearMarkers();
+                      getMarkers();
+                      setMarkers();
+                      pageToken = nearBy.nextPageToken;
+                  }).fail(function (jqXhr, status, error) {
+                      console.log("Error");
+                  });
+         });
+
+         function getMarkers(){
+              for(var i = 0; i < nearBy.length; i++){
+                  markers[i] = new google.maps.Marker({
+                                   position: {lat: nearBy[i].geometry.location.lat, lng: nearBy[i].geometry.location.lng},
+                                   map: map,
+                                   id: i
+                                   })
+              }
+           }
+
+         function setMarkers() {
+              for (var i = 0; i < markers.length; i++) {
+                  markers[i].setMap(map);
+              }
+         }
+
+         function clearMarkers() {
+                            for (var i = 0; i < markers.length; i++) {
+                                    markers[i].setMap(null); //Remove the marker from the map
+                                }
+                         }
+
+          // function setMarkers(){
+          //     console.log(nearBy.length);
+          //     for(var i = 0; i < nearBy.length; i++ ) {
+          //        markers[i] = new google.maps.Marker({
+          //        position: {lat: nearBy[i].geometry.location.lat, lng: nearBy[i].geometry.location.lng},
+          //        map: map,
+          //        id: i
+          //        })
+          //     }
+          // }
+
+
+      });
        /*]]>*/
 </script>
-<script th:inline="javascript">
-    $(document).ready(function () {
-        function initMap() {
-            var location = {lat: lat, lng: lon};
-            var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 15,
-            center: location
-        });
-        var marker = new google.maps.Marker({
-            position: location,
-            map: map
-        });
-    }
-    initMap();
-});
+<script>
+
 </script>
 </body>
 </html>

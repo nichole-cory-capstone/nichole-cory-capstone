@@ -1,8 +1,14 @@
 package host.caddy.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.maps.GeoApiContext;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
+import com.google.maps.model.PlacesSearchResponse;
 import host.caddy.models.Collection;
 import host.caddy.services.GMapsService;
 import host.caddy.services.YelpSearch;
@@ -40,16 +46,26 @@ public class SearchController {
             GeoApiContext context = googleSearch.getContext();
             Collection collection = new Collection();
             GeocodingResult[] results = googleSearch.geocodeAddress(location, context);
+            PlacesSearchResponse nearbyResults = googleSearch.nearbySearch(context,googleSearch.getLatLng(results[0]));
+            String nearbyJSON = googleSearch.getGMapsJSON(nearbyResults.results);
             String latLng[] = results[0].geometry.location.toString().split(",");
             collection.setLatitude(latLng[0]);
             collection.setLongitude(latLng[1]);
             collection.setFormattedAddress(results[0].formattedAddress);
+            model.addAttribute("nextPageToken", nearbyResults.nextPageToken);
+            model.addAttribute("nearBy", nearbyJSON);
             model.addAttribute("goeApiContext",context);
             model.addAttribute("collection",collection);
             return "/search/guestsearch";
         }else {
             return "redirect:/";
         }
+    }
+
+    @PostMapping("/search/next")
+    public @ResponseBody String nextPageSearch(@RequestParam String pageToken) throws IOException, InterruptedException, ApiException{
+        GeoApiContext context = googleSearch.getContext();
+        return googleSearch.getGMapsJSON(googleSearch.nearbyNextSearch(context,pageToken));
     }
 
     @GetMapping("/search/guest")
