@@ -5,12 +5,12 @@
 <body>
 <nav th:fragment="navbar-partial">
     <div id="launch button" class="ui right visible sidebar vertical inverted labeled icon menu">
-        <a href="/" class="item">Home</a>
-        <a href="#" class="item">Profile</a>
-        <a href="#" class="item">Search</a>
-        <a href="/about" class="item">About</a>
-        <a href="/login" class="item">Log In</a>
-        <a href="#" class="item">Log Out</a>
+        <a href="/" class="item"><button type="button" class="ui inverted button">Home</button></a>
+        <a href="/profile" class="item"><button type="button" class="ui inverted button">Profile</button></a>
+        <a href="/search" class="item"><button type="button" class="ui inverted button">Search</button></a>
+        <a href="/about" class="item"><button type="button" class="ui inverted button">About</button></a>
+        <a href="#" id="modalbutton" class="item"><button type="button" class="ui inverted button">Log In</button></a>
+        <a href="/" class="item"><button type="button" class="ui inverted button">Log Out</button></a>
     </div>
     <div class="dimmed pusher"></div>
     <br />
@@ -19,16 +19,35 @@
     <br />
     <hr />
 
-
     <!--semantic modal-->
-    <button type="button" class="ui submit button" id="modalbutton"> modal </button>
     <div class="ui demo modal button tiny">
         <button type="button" class="close modalclose" data-dismiss="modal">X</button>
-        <div class="header"><h1>Log In Here: </h1></div>
-        <h3>insert login form here</h3>
-        <a href="#" class="item basic modal"><button type="button" class="ui submit button">LOGIN</button></a>
-    </div>
+        <div class="ui aligned center aligned grid">
+                <h2 class="ui image header"><div class="content">Log in to your account</div></h2>
+            <form class="ui form" th:action="@{/login}" method="post">
+                <div class="ui segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="username" placeholder="Username"/>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="password" placeholder="Password"/>
+                        </div>
+                    </div>
+                    <div id="login" class="ui large submit button">Login</div>
+                </div>
+                <div class="ui error message"></div>
+            </form>
 
+            <div class="ui tiny message">
+                New to us? <a href="/register">Sign Up</a>
+            </div>
+        </div>
+    </div>
 
     <script>
         $(document).ready(function() {
@@ -38,10 +57,41 @@
             });
 
             $('#modalbutton').click(function() {
-                console.log("test");
                 $('.ui.modal').modal('toggle');
             });
-        });
+
+                    $('#login').click(function(){
+                        window.location = "/login";
+                    });
+                    $('.ui.form')
+                        .form({
+                            fields: {
+                                email: {
+                                    identifier  : 'username',
+                                    rules: [
+                                        {
+                                            type   : 'empty',
+                                            prompt : 'Please enter your username'
+                                        }
+                                    ]
+                                },
+                                password: {
+                                    identifier  : 'password',
+                                    rules: [
+                                        {
+                                            type   : 'empty',
+                                            prompt : 'Please enter your password'
+                                        },
+                                        {
+                                            type   : 'length[8]',
+                                            prompt : 'Your password must be at least 8 characters'
+                                        }
+                                    ]
+                                }
+                            }
+                        })
+                    ;
+                });
     </script>
     </nav>
 </body>
