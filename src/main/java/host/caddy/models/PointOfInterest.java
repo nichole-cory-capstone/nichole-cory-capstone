@@ -1,5 +1,6 @@
 package host.caddy.models;
 
+import host.caddy.models.yelp.Business;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -19,10 +20,6 @@ public class PointOfInterest {
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy="pointsOfInterest")
     private List<Collection> collections;
-
-
-
-
 
 
     public PointOfInterest() {
@@ -52,4 +49,5 @@ public class PointOfInterest {
     public void setCollections(List<Collection> collections) {
         this.collections = collections;
     }
+
 }

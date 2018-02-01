@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@SessionAttributes({"trip"})
 public class UsersController {
 
     @Autowired
@@ -28,6 +29,7 @@ public class UsersController {
 
     @GetMapping("/user/trips")
     public String saved() {
+
         return "users/userstrips";
     }
 
@@ -42,7 +44,7 @@ public class UsersController {
 
 
     @PostMapping("/user/trips/save")
-    public String saveTrip(@ModelAttribute Collection collection){
+    public String saveTrip(@ModelAttribute(name = "trip") Collection collection){
         User owner = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         collection.setOwner(owner);
@@ -50,7 +52,7 @@ public class UsersController {
         return "finished";
     }
 
-    @PostMapping("/user/trips/{id}/save")
+    @PostMapping("/user/trips/save_poi")
     public String savePoint(@ModelAttribute Collection collection, @RequestParam(name = "placeId")String placeId) {
         if (placeId != null) {
             List<PointOfInterest> pointOfInterestList = collection.getPointsOfInterest();
