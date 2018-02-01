@@ -52,7 +52,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                     //logout
                     .logout()
                     .logoutSuccessUrl("/login?logout")
-
             ;
         }
     }
