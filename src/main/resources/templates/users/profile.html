@@ -6,7 +6,10 @@
 <div th:include="fragments/navbar :: navbar-partial"></div>
 
     <h2>My Locations</h2>
+    <a href="#" class="item" id="editprofile"><button type="button" class="ui submit button">Edit Profile</button></a>
+    <br />
 
+<!--saved trip card-->
 <div class="ui card">
     <div class="content">
         <div class="header">
@@ -27,5 +30,89 @@
     </div>
 </div>
 
+
+<!--edit profile modal-->
+<div class="ui demo modal button tiny profilemodal">
+    <button type="button" class="close modalclose" data-dismiss="modal">X</button>
+    <div class="ui aligned center aligned grid">
+        <h4 class="ui image header"><div class="content">Edit Profile</div></h4>
+        <form class="ui form" th:action="@{user/profile/edit}" method="post">
+            <div class="ui segment">
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="text" name="username" placeholder="Username"/>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="text" name="email" placeholder="Email"/>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="password" name="password" placeholder="Password"/>
+                    </div>
+                </div>
+                <div id="editprofile" class="ui large submit button">Update</div>
+            </div>
+            <div class="ui error message"></div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+
+        $('#editprofile').click(function() {
+            console.log("testing edit profile modal 1");
+            $('.profilemodal').modal('toggle');
+        });
+
+//        $('#modalbutton').click(function(){
+//            console.log("testing edit modal profile 2");
+//            window.location = "/user/profile";
+//        });
+//        $('.ui.form')
+//            .form({
+//                fields: {
+//                    username: {
+//                        identifier  : 'username',
+//                        rules: [
+//                            {
+//                                type   : 'empty',
+//                                prompt : 'Please enter your username'
+//                            }
+//                        ]
+//                    },
+//                    email: {
+//                        identifier  : 'username',
+//                        rules: [
+//                            {
+//                                type   : 'empty',
+//                                prompt : 'Please enter your username'
+//                            }
+//                        ]
+//                    },
+//                    password: {
+//                        identifier  : 'password',
+//                        rules: [
+//                            {
+//                                type   : 'empty',
+//                                prompt : 'Please enter your password'
+//                            },
+//                            {
+//                                type   : 'length[8]',
+//                                prompt : 'Your password must be at least 8 characters'
+//                            }
+//                        ]
+//                    }
+//                }
+//            });
+    });
+</script>
 </body>
 </html>
