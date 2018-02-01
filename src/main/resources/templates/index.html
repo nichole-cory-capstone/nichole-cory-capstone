@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
     <head th:replace="fragments/header :: main-header('Caddy')">
 </head>
-<body class="ui container">
+<body>
+<main class="ui container">
     <div th:include="fragments/navbar :: navbar-partial"></div>
-
     <div class="enterhere">
     <h2>WHERE DO YOU WANT TO GO?</h2>
         <div class="ui hidden divider"></div>
@@ -17,5 +17,6 @@
         </div>
     </div>
     <script src="/js/geocode.js"></script>
+</main>
 </body>
 </html>
