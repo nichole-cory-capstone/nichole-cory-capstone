@@ -24,7 +24,7 @@
     <!--semantic modal-->
     <div class="ui demo modal button tiny loginmodal">
         <button type="button" class="close modalclose" data-dismiss="modal">X</button>
-        <div class="ui aligned center aligned grid">
+        <div class="ui aligned center">
                 <h2 class="ui image header"><div class="content">Log in to your account</div></h2>
             <form class="ui form" th:action="@{/login}" method="post">
                 <div class="ui segment">
@@ -40,7 +40,7 @@
                             <input type="password" name="password" placeholder="Password"/>
                         </div>
                     </div>
-                    <div id="login" class="ui large submit button">Login</div>
+                    <div id="login" class="ui fluid large submit button">Login</div>
                 </div>
                 <div class="ui error message"></div>
             </form>
