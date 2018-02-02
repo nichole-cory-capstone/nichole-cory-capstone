@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="fragments/header :: main-header('Guest Search')"></head>
+<head th:replace="fragments/header :: main-header('Search')"></head>
 <body>
 <main class="ui container">
-<meta th:name="_csrf" th:content="${_csrf.token}"/>
-<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <div th:include="fragments/navbar :: navbar-partial"></div>
-        <h3>WHAT ARE YOU LOOKING FOR?</h3>
-            <div th:include="fragments/map :: map"></div>
+    <h3>WHAT ARE YOU LOOKING FOR?</h3>
+    <div th:include="fragments/map :: map"></div>
+</main>
 </body>
 </html>
 
