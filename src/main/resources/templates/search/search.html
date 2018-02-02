@@ -95,16 +95,17 @@
                    markers[i].setMap(null); //Remove the marker from the map
                    }
               }
-          // function setMarkers(){
-          //     console.log(nearBy.length);
-          //     for(var i = 0; i < nearBy.length; i++ ) {
-          //        markers[i] = new google.maps.Marker({
-          //        position: {lat: nearBy[i].geometry.location.lat, lng: nearBy[i].geometry.location.lng},
-          //        map: map,
-          //        id: i
-          //        })
-          //     }
-          // }
+           function setMarkers(){
+               console.log(nearBy.length);
+               for(var i = 0; i < nearBy.length; i++ ) {
+                  markers[i] = new google.maps.Marker({
+                  position: {lat: nearBy[i].geometry.location.lat, lng: nearBy[i].geometry.location.lng},
+                  map: map,
+                  id: i
+                  })
+               }
+           }
+
 
 
       });

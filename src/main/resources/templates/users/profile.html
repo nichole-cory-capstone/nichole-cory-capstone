@@ -52,14 +52,14 @@
 <!--edit profile modal-->
 <div class="ui demo modal button tiny profilemodal">
     <button type="button" class="close modalclose" data-dismiss="modal">X</button>
-    <div class="ui aligned center aligned">
+    <div class="ui aligned center">
         <h4 class="ui image header"><div class="content">Edit Profile</div></h4>
         <form class="ui form" th:action="@{user/profile/edit}" method="post">
             <div class="ui segment">
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="user icon"></i>
-                        <input type="text" name="username" placeholder="Username"/>
+                        <input type="text" name="username" placeholder="Username" />
                     </div>
                 </div>
                 <div class="field">
