@@ -12,7 +12,7 @@
 
     <!--placeholder trip card-->
     <br />
-    <div class="ui middle aligned padded grid doubling stacked cards">
+    <div class="ui center aligned padded grid doubling stacked cards">
 
         <div th:each="collection : ${collections}">
         <div class="ui card">
@@ -38,17 +38,6 @@
             <br />
         </div>
     </div>
-    <a th:href="@{'/user/trips/' + ${collection.id}}">
-      <div class="ui bottom attached buttons fluid">
-        <div class="ui button">
-            View
-        </div>
-      </div>
-    </a>
-</div>
-</div>
-</div>
-</div>
 
 
 <!--edit profile modal-->
@@ -59,23 +48,23 @@
         <form class="ui form" th:action="@{user/profile/edit}" method="post">
             <div class="ui segment">
                 <div class="field">
-                    <div class="ui left icon input">
-                        <i class="user icon"></i>
+                    <!--<div class="ui left icon input">-->
+                        <!--<i class="user icon"></i>-->
                         <input type="text" name="username" placeholder="Username" />
                         <!--th:value="${user.username}"-->
-                    </div>
+                    <!--</div>-->
                 </div>
                 <div class="field">
-                    <div class="ui left icon input">
-                        <i class="user icon"></i>
+                    <!--<div class="ui left icon input">-->
+                        <!--<i class="user icon"></i>-->
                         <input type="text" name="email" placeholder="Email"/>
-                    </div>
+                    <!--</div>-->
                 </div>
                 <div class="field">
-                    <div class="ui left icon input">
-                        <i class="lock icon"></i>
+                    <!--<div class="ui left icon input">-->
+                        <!--<i class="lock icon"></i>-->
                         <input type="password" name="password" placeholder="Password"/>
-                    </div>
+                    <!--</div>-->
                 </div>
                 <div id="editprofile" class="ui fluid large submit button">Update</div>
             </div>

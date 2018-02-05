@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="fragments/header :: main-header('Guest Search')"></head>
+<head th:replace="fragments/header :: main-header('User Saved')"></head>
 <body>
 <main class="ui container">
+
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
 <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <div th:include="fragments/navbar :: navbar-partial"></div>
         <div class="ui hidden divider" />
             <div id="map"></div>
-                <div class="ui grid doubling stacked cards">
+                <div class="ui centered grid doubling stacked cards">
 
+                    <div th:href="@{'/user/trips/' + ${collection.id}}">
                     <div class="ui card">
                         <div class="content">
                             <div class="header">
                             </div>
-                            <div class="description">
-                                Location name here
-                            </div>
+                            <!--<div class="description"><span th:text="${collection.location}">A Location</span></div>-->
                         </div>
                         <div class="ui two bottom attached buttons">
                             <div class="ui button">
                                 Saved!
                             </div>
-                            <div class="ui button">
+                            <div class="ui button deletebutton">
                                 Delete
                             </div>
                         </div>
                     </div>
+
+
             <!--keep locations within the below div-->
+                </div>
                 </div>
 
     <br />
@@ -110,6 +113,9 @@
               }
 
 
+          $(".deletebutton").on("click", function(){
+              $(this).closest("li").remove();
+          });
       });
        /*]]>*/
 </script>
