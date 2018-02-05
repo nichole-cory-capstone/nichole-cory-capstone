@@ -27,7 +27,7 @@ $(document).ready(function () {
         console.log("click");
         curTerm = $('#search-box').val();
         $('#search-btn').addClass('loading');
-        search(curLocation,curTerm);
+        search(curLocation,val);
     });
 
 
@@ -287,10 +287,9 @@ $(document).ready(function () {
     //     }
     // }
 
-    google.maps.event.addListener(map, 'dragend', function () {
-        var center = map.getCenter();
-        curLocation = {lat: center.lat(), lng: center.lng()};
-        search(curLocation, curTerm);
+    google.maps.event.addListener(marker, 'dragend', function (event) {
+        curLocation = {lat: parseFloat(event.latLng.lat()), lng: parseFloat(event.latLng.lng())};
+        search(curTerm, curLocation);
     });
 
 
