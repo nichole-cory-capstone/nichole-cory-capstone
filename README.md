@@ -18,7 +18,7 @@ Collections
 
 User profiles 
 [] CRUD collections of points of interest
-[] CRUD user profile
+[x] CRUD user profile
 [] Store user image urls
 [] Social network sharing of user images?
 
