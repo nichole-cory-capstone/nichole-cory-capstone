@@ -94,8 +94,7 @@ public class SearchController {
 
         //Get default nearby places
 //        PlacesSearchResponse nearbyResults = googleSearch.nearbySearch(context,    googleSearch.getLatLng(results[0]));
-//        String nearbyJSON = googleSearch.getGMapsJSON(nearbyResults.results);
-
+//        String nearbyJSON = googleSearch.getGMapsJSON(nearbyResults.results
           model.addAttribute("searchTerm", location);
           model.addAttribute("collection", collection);
 //        model.addAttribute("nextPageToken", nearbyResults.nextPageToken);
