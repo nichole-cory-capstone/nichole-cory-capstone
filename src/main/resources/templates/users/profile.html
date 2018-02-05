@@ -45,7 +45,7 @@
              <img class="ui wireframe image" th:src="@{https://maps.googleapis.com/maps/api/place/photo(maxwidth=260,maxheight=216,key=AIzaSyC-Fq2UspbtyX0spv_22WGd4ChnxFIQREQ,photoreference=${collection.imageRef})}" height="216" width="260"/>
         </div>
     </div>
-    <a th:href="@{'/users/trips/' + ${collection.id}}">
+    <a th:href="@{'/user/trips/' + ${collection.id}}">
       <div class="ui bottom attached buttons fluid">
         <div class="ui button">
             View
