@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +74,8 @@ public class UsersController {
     }
 
     @PostMapping("/user/trips/poi")
-    public String savePoint(@ModelAttribute(name = "collection") Collection collection, @RequestParam(name = "placeId")String placeId, @AuthenticationPrincipal User owner) {
+    public @ResponseBody List<PointOfInterest> savePoint(@ModelAttribute(name = "collection") Collection collection, @RequestParam(name = "placeId")String placeId, @AuthenticationPrincipal User owner) {
+
             List<PointOfInterest> pointOfInterestList = collection.getPointsOfInterest();
 
             HashMap<String, PointOfInterest> poiMap = new HashMap<>();
@@ -87,15 +89,15 @@ public class UsersController {
                 PointOfInterest newPoint = new PointOfInterest();
                 newPoint.setPlaceId(placeId);
                 pointOfInterestRepository.save(newPoint);
-                pointOfInterestList.add(point);
+                newPoint = pointOfInterestRepository.findByPlaceId(placeId);
+                pointOfInterestList.add(newPoint);
                 collection.setPointsOfInterest(pointOfInterestList);
                 saveTrip(collection, owner);
             } else if (!poiMap.containsKey(point.getPlaceId())) {
-                System.out.println("collection does not contain");
                 pointOfInterestList.add(point);
                 collection.setPointsOfInterest(pointOfInterestList);
                 saveTrip(collection, owner);
             }
-            return "redirect:/search";
+            return collection.getPointsOfInterest();
     }
 }
