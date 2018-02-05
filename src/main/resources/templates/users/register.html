@@ -24,24 +24,28 @@
             </h2>
 
             <div class="ui stacked segment">
-        <form class="ui large form" th:action="@{/register}" method="post" th:object="${user}">
+        <form id="reg-form" class="ui large form" th:action="@{/register}" method="post" th:object="${user}">
         <div class="form-group spacinghere">
             <label for="username">Username</label>
+        <div class="field">
             <input
                 id="username"
                 class="form-control"
                 autofocus="autofocus"
                 th:field="*{username}"
             />
+            </div>
             <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" />
         </div>
         <div class="form-group spacinghere">
             <label for="email">Email</label>
+          <div class="field">
             <input
                 id="email"
                 class="form-control"
                 th:field="*{email}"
             />
+        </div>
             <div th:if="${#fields.hasErrors('email')}"
                 class="alert alert-danger alert-dismissible"
                 role="alert" >
@@ -50,16 +54,19 @@
         </div>
         <div class="form-group spacinghere">
             <label for="password">Password</label>
+           <div class="field">
             <input
                 type="password"
                 id="password"
                 class="form-control"
                 th:field="*{password}"
             />
+         </div>
             <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" />
         </div>
         <div class="form-group spacinghere">
             <label for="password_confirm">Confirm your password</label>
+           <div class="field">
             <input
                 type="password"
                 class="form-control"
@@ -67,7 +74,9 @@
                 id="password_confirm"
             />
         </div>
-        <button type="submit" class="ui fluid large submit button">Register</button>
+        </div>
+        <button type="submit" id="register-btn" class="ui fluid large submit button">Register</button>
+        <div class="ui error message"></div>
         </form>
             </div>
 
@@ -75,5 +84,63 @@
     </div>
 
     </main>
+    <script>
+      $(document).ready(function() {
+          $('#reg-form')
+            .form({
+              fields: {
+                username: {
+                  identifier  : 'username',
+                  rules: [
+                    {
+                      type   : 'empty',
+                      prompt : 'Please enter your username'
+                    }
+                  ]
+                },
+                email: {
+                                      identifier  : 'email',
+                                      rules: [
+                                        {
+                                          type   : 'empty',
+                                          prompt : 'Please enter your email'
+                                        },
+                                        {
+                                            type:    'email',
+                                            prompt : 'Your email address is invalid'
+                                        }
+                                      ]
+                                    },
+
+                password: {
+                  identifier  : 'password',
+                  rules: [
+                    {
+                      type   : 'empty',
+                      prompt : 'Please enter your password'
+                    },
+                    {
+                      type   : 'length[8]',
+                      prompt : 'Your password must be at least 8 characters'
+                    }
+                  ]
+                },
+                password_confirm: {
+                                  identifier  : 'password_confirm',
+                                  rules: [
+                                    {
+                                      type   : 'empty',
+                                      prompt : 'Please enter your confirmation password'
+                                    },
+                                    {
+                                        type: 'match[password]',
+                                        prompt : 'Your passwords don\'t match!'
+                                    }
+                                  ]
+                               }
+              }
+           })
+        });
+      </script>
 </body>
 </html>
