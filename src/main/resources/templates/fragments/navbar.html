@@ -4,6 +4,7 @@
 </head>
 <body>
 <nav th:fragment="navbar-partial">
+
     <div id="launch button" class="ui application pushed left right sidebar vertical inverted labeled icon menu">
         <a href="/" class="item"><button type="button" class="ui inverted button">Home</button></a>
         <a href="/user/profile" class="item" sec:authorize="isAuthenticated()"><button type="button" class="ui inverted button">Profile</button></a>
@@ -16,6 +17,7 @@
         <div class="dimmed pusher"></div>
         </div>
     <br />
+    <button type="button" class="ui submit button gobackbutton" id="backbutton" onclick="history.back();"> Back </button>
     <button type="button" class="ui submit button" id="sidebutton"> > </button>
     <a class="navbar-brand" href="/"><h1>CADDY</h1></a>
     <br />
@@ -29,16 +31,16 @@
             <form class="ui form" th:action="@{/login}" method="post">
                 <div class="ui segment">
                     <div class="field">
-                        <div class="ui left icon input">
-                            <i class="user icon"></i>
+                        <!--<div class="ui left icon input">-->
+                            <!--<i class="user icon"></i>-->
                             <input type="text" name="username" placeholder="Username"/>
-                        </div>
+                        <!--</div>-->
                     </div>
                     <div class="field">
-                        <div class="ui left icon input">
-                            <i class="lock icon"></i>
+                        <!--<div class="ui left icon input">-->
+                            <!--<i class="lock icon"></i>-->
                             <input type="password" name="password" placeholder="Password"/>
-                        </div>
+                        <!--</div>-->
                     </div>
                     <div id="login" class="ui fluid large submit button">Login</div>
                 </div>
@@ -53,6 +55,10 @@
 
     <script>
         $(document).ready(function() {
+
+//            $('#backbutton').click(function() {
+//                $('.ui.gobackbutton').window.history.back();
+//            });
 
             $('#sidebutton').click(function() {
                 $('.ui.sidebar').sidebar('toggle', 'setting', 'transition', 'overlay');
