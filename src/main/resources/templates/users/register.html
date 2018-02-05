@@ -5,11 +5,26 @@
 <body>
 <main class="ui container">
 <div th:include="fragments/navbar :: navbar-partial"></div>
+    <style type="text/css">
+        body > .grid {
+            height: 100%;
+        }
+        .column {
+            max-width: 450px;
+        }
+    </style>
 
-    <!--<main class="container">-->
-        <header class="page-header"><h1>Register</h1></header>
+    <br />
+    <div class="ui aligned center aligned grid">
+        <div class="column">
+            <h2 class="ui image header">
+                <div class="content">
+                    Register For An Account
+                </div>
+            </h2>
 
-        <form th:action="@{/register}" method="post" th:object="${user}">
+            <div class="ui stacked segment">
+        <form class="ui large form" th:action="@{/register}" method="post" th:object="${user}">
         <div class="form-group spacinghere">
             <label for="username">Username</label>
             <input
@@ -27,11 +42,9 @@
                 class="form-control"
                 th:field="*{email}"
             />
-            <div
-                th:if="${#fields.hasErrors('email')}"
+            <div th:if="${#fields.hasErrors('email')}"
                 class="alert alert-danger alert-dismissible"
-                role="alert"
-            >
+                role="alert" >
                 <span th:errors="*{email}"/>
             </div>
         </div>
@@ -54,8 +67,13 @@
                 id="password_confirm"
             />
         </div>
-        <button type="submit" class="ui submit button spacinghere">Register</button>
+        <button type="submit" class="ui fluid large submit button">Register</button>
         </form>
+            </div>
+
+        </div>
+    </div>
+
     </main>
 </body>
 </html>
