@@ -31,8 +31,7 @@
 
 
         //https://stackoverflow.com/questions/7095574/google-maps-api-3-custom-marker-color-for-default-dot-marker/7686977#7686977
-
-
+        //Listener for the add POI button in the infowindows
         function addListener(placeId) {
             $('#' + placeId).click(function() {
                 $.ajax({
@@ -107,7 +106,8 @@
 
             autocomplete.addListener('place_changed', onPlaceChanged);
 
-            search(curLocation);
+            // search(curLocation);
+            poiLoader(pointsOfInterest);
         }
 
         function onPlaceChanged() {
@@ -162,7 +162,7 @@
 
 
         function addMarker(place) {
-
+             console.log(place);
             var marker = setupMarker(searchByValue(place, pointsOfInterest), place);
 
             markers.push(marker);
@@ -181,7 +181,6 @@
             //     "<br/>" +
             //     "<img class='center-align center' src='" + photo + "' /><br/>";
 
-            console.log(inList);
             if(inList){
                  card = '<div class="ui cards">'+
                     '<div class="card">' +
@@ -269,6 +268,23 @@
             });
             return bool;
            }
+
+        function poiLoader (pointsOfInterest){
+
+            function callback(place, status) {
+                console.log("Callback");
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    console.log(place);
+                    addMarker(place);
+                }
+            }
+
+            for (var i = 0; i < pointsOfInterest.length; i++) {
+                var request = {placeId: "'" + pointsOfInterest[i].placeId + "'"};
+                console.log(request);
+                service.getDetails(request, callback);
+            }
+        }
 
         function setMapOnAll(map) {
             for (var i = 0; i < markers.length; i++) {

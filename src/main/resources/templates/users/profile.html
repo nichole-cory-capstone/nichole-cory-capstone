@@ -13,7 +13,6 @@
     <!--placeholder trip card-->
     <br />
     <div class="ui middle aligned padded grid doubling stacked cards">
-
         <div th:each="collection : ${collections}">
         <div class="ui card">
             <div class="content">
@@ -38,18 +37,6 @@
             <br />
         </div>
     </div>
-    <a th:href="@{'/user/trips/' + ${collection.id}}">
-      <div class="ui bottom attached buttons fluid">
-        <div class="ui button">
-            View
-        </div>
-      </div>
-    </a>
-</div>
-</div>
-</div>
-</div>
-
 
 <!--edit profile modal-->
 <div class="ui demo modal button tiny profilemodal">
