@@ -2,17 +2,20 @@ package host.caddy.models;
 
 import javax.persistence.*;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
 @Table(name = "collections")
-public class Collection {
+public class Collection implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="coll_id")
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     private String longitude;
@@ -24,11 +27,24 @@ public class Collection {
     @JoinColumn (name = "user_id")
     private User owner;
 
+    public User getUser() {
+        return owner;
+    }
+
+
     @Column
     private String imageRef;
 
     @Column(nullable = false)
     private String location;
+
+    @ManyToMany
+    @JoinTable(
+            name="collection_members",
+            joinColumns={@JoinColumn(name="coll_id")},
+            inverseJoinColumns={@JoinColumn(name="poi_id")}
+    )
+    private List<PointOfInterest> pointsOfInterest = new ArrayList<>();
 
     public String getLocation() {
         return location;
@@ -56,31 +72,19 @@ public class Collection {
         this.placeId = placeId;
     }
 
-
-
-    //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "collection")
-//    private List<Image> images;
-
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "collection")
-//    private List<PointOfInterest> pointOfInterestList;
-
-    @ManyToMany
-    @JoinTable(
-            name="collection_members",
-            joinColumns={@JoinColumn(name="coll_id")},
-            inverseJoinColumns={@JoinColumn(name="poi_id")}
-    )
-    private List<PointOfInterest> pointsOfInterest;
-
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    private List<PointOfInterest> pointsOfInterest;
+    public Collection(String longitude, String latitude, User owner, String imageRef, String location, List<PointOfInterest> pointsOfInterest, String placeId) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.owner = owner;
+        this.imageRef = imageRef;
+        this.location = location;
+        this.pointsOfInterest = pointsOfInterest;
+        this.placeId = placeId;
+    }
 
     public Collection() {
     }
 
-    public User getUser() {
-        return owner;
-    }
 
     public void setUser(User user) {
         this.owner = user;
@@ -102,11 +106,11 @@ public class Collection {
         this.pointsOfInterest = pointsOfInterest;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

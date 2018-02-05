@@ -5,11 +5,13 @@ import host.caddy.models.yelp.Business;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "poi_table")
-public class PointOfInterest {
+public class PointOfInterest implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,8 +21,8 @@ public class PointOfInterest {
     @Column(name= "place_id",nullable = false)
     private String placeId;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy="pointsOfInterest")
-    private List<Collection> collections;
+//    @ManyToMany(cascade = CascadeType.ALL, mappedBy="pointsOfInterest")
+//    private List<Collection> collections = new ArrayList<>();
 
 
     public PointOfInterest() {
@@ -43,12 +45,12 @@ public class PointOfInterest {
         this.placeId = placeId;
     }
 
-    public List<Collection> getCollections() {
-        return collections;
-    }
-
-    public void setCollections(List<Collection> collections) {
-        this.collections = collections;
-    }
+//    public List<Collection> getCollections() {
+//        return collections;
+//    }
+//
+//    public void setCollections(List<Collection> collections) {
+//        this.collections = collections;
+//    }
 
 }
