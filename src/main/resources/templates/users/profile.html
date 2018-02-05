@@ -9,41 +9,33 @@
     <h2>My Locations</h2>
     <a href="#" class="item right floated" id="editprofile"><button type="button" class="ui submit button">Edit Profile</button></a>
     <br />
+
+    <!--placeholder trip card-->
     <br />
+    <div class="ui middle aligned padded grid doubling stacked cards">
 
-<div class="ui three column grid">
-<div class="column">
-
-<!--placeholder trip card-->
-<div class="ui card">
-    <div class="content">
-        <div class="header">
-            <!--<img class="ui avatar image" src="">-->
-            Add City
+        <div th:each="collection : ${collections}">
+        <div class="ui card">
+            <div class="content">
+                <div class="header">
+                 <span th:text="${collection.location}">My Trip</span>
+                </div>
+                <div class="image" th:if="${collection.imageRef == null}" >
+                    <img class="ui wireframe image" src="/images/placeholder_image.png" />
+                </div>
+                <div class="image" th:if="${collection.imageRef != null}">
+                     <img class="ui wireframe image" th:src="@{https://maps.googleapis.com/maps/api/place/photo(maxwidth=260,maxheight=216,key=AIzaSyC-Fq2UspbtyX0spv_22WGd4ChnxFIQREQ,photoreference=${collection.imageRef})}" height="216" width="260"/>
+                </div>
+            </div>
+            <a th:href="@{'/user/trips/' + ${collection.id}}">
+              <div class="ui bottom attached buttons fluid">
+                <div class="ui button">
+                    View
+                </div>
+              </div>
+            </a>
         </div>
-        <div class="image">
-            <img class="ui wireframe image" src="/images/placeholder_image.png"/>
-          </div>
-    </div>
-    <div class="ui bottom attached buttons">
-        <div class="ui button">
-            Add
-        </div>
-    </div>
-</div>
-</div>
-<div class="column">
-<div th:each="collection : ${collections}">
-<div class="ui card">
-    <div class="content">
-        <div class="header">
-         <span th:text="${collection.location}">My Trip</span>
-        </div>
-        <div class="image" th:if="${collection.imageRef == null}" >
-            <img class="ui wireframe image" src="/images/placeholder_image.png" />
-        </div>
-        <div class="image" th:if="${collection.imageRef != null}">
-             <img class="ui wireframe image" th:src="@{https://maps.googleapis.com/maps/api/place/photo(maxwidth=260,maxheight=216,key=AIzaSyC-Fq2UspbtyX0spv_22WGd4ChnxFIQREQ,photoreference=${collection.imageRef})}" height="216" width="260"/>
+            <br />
         </div>
     </div>
     <a th:href="@{'/user/trips/' + ${collection.id}}">
@@ -57,6 +49,8 @@
 </div>
 </div>
 </div>
+
+
 <!--edit profile modal-->
 <div class="ui demo modal button tiny profilemodal">
     <button type="button" class="close modalclose" data-dismiss="modal">X</button>
