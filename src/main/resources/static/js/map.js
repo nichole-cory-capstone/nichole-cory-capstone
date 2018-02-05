@@ -29,6 +29,10 @@
             search(curLocation,val);
         });
 
+
+        //https://stackoverflow.com/questions/7095574/google-maps-api-3-custom-marker-color-for-default-dot-marker/7686977#7686977
+
+
         function addListener(placeId) {
             $('#' + placeId).click(function() {
                 $.ajax({
@@ -44,7 +48,7 @@
                 }).done(function (data) {
                     $('#' + placeId).removeClass('loading').addClass('positive').text('Added!');
                     // var result = JSON.parse(data);
-                    console.log(data);
+                    pointsOfInterest = data;
                 }).fail(function (jqXhr, status, error) {
                     $('#' + placeId).removeClass('loading').addClass('negative').text('Error!');
                     console.log("Error");
@@ -158,54 +162,65 @@
 
 
         function addMarker(place) {
+
+            var marker = setupMarker(searchByValue(place, pointsOfInterest), place);
+
+            markers.push(marker);
+        }
+
+        function setupMarker(inList, place) {
+            var card;
+            var pinColor;
             var photos = place.photos;
 
             if (!photos) {
                 return;
             }
-
             var photo = photos[0].getUrl({'maxWidth': 150, 'maxHeight': 150});
-            var content = "<h6>" + place.name + "</h6>" +
-                "<br/>" +
-                "<img class='center-align center' src='" + photo + "' /><br/>";
+            // var content = "<h6>" + place.name + "</h6>" +
+            //     "<br/>" +
+            //     "<img class='center-align center' src='" + photo + "' /><br/>";
 
-            var cardOld = '<div class="ui cards">'+
-                '<div class="card">' +
-                '<div class="content">' +
-                '<div class="header">' + place.name + '</div>' +
-                '<div class="description">' +
-                '<img src="' + photo + '"/>' +
-                '</div>' +
-                '</div>' +
-                '<form action="/user/trips/poi/" method="POST" >' +
-                '<button  class="poi ui bottom attached button fluid">' +
-                '<input type="hidden" name="' + csrfParam
-                + '" value="' + csrfToken + '"/>' +
-                '<input type="hidden" name="placeId" value="'+ place.id + '">' +
-                '<i class="add icon"></i>' +
-                'Add to your collection' +
-                '</button></form>' +
-                '</div>';
+            console.log(inList);
+            if(inList){
+                 card = '<div class="ui cards">'+
+                    '<div class="card">' +
+                    '<div class="content">' +
+                    '<div class="header">' + place.name + '</div>' +
+                    '<div class="description">' +
+                    '<img src="' + photo + '"/>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                pinColor = "0f05fe";
+            }else {
+                 card = '<div class="ui cards">'+
+                    '<div class="card">' +
+                    '<div class="content">' +
+                    '<div class="header">' + place.name + '</div>' +
+                    '<div class="description">' +
+                    '<img src="' + photo + '"/>' +
+                    '</div>' +
+                    '</div>' +
+                    '<button id="'+ place.id + '" class="poi ui bottom attached button fluid">' +
+                    '<i class="add icon"></i>' +
+                    'Add to your collection' +
+                    '</button>' +
+                    '</div>';
+                pinColor = "df691a";
 
-            var card = '<div class="ui cards">'+
-                '<div class="card">' +
-                '<div class="content">' +
-                '<div class="header">' + place.name + '</div>' +
-                '<div class="description">' +
-                '<img src="' + photo + '"/>' +
-                '</div>' +
-                '</div>' +
-                '<button id="'+ place.id + '" class="poi ui bottom attached button fluid">' +
-                '<i class="add icon"></i>' +
-                'Add to your collection' +
-                '</button>' +
-                '</div>';
+            }
+            var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+                new google.maps.Size(21, 34),
+                new google.maps.Point(0,0),
+                new google.maps.Point(10, 34));
 
 
             var marker = new google.maps.Marker({
                 map: map,
                 position: place.geometry.location,
-                title: place.name
+                title: place.name,
+                icon: pinImage
                 // icon: photos[0].getUrl({'maxWidth': 50, 'maxHeight': 50})
             });
             google.maps.event.addListener(marker, 'click', function() {
@@ -225,7 +240,7 @@
 
                 // Remove the white background DIV
                 iwBackground.children(':nth-child(4)').css({'display' : 'none'});
-                 var iwCloseBtn = iwOuter.next();
+                var iwCloseBtn = iwOuter.next();
 
                 //Apply the desired effect to the close button
                 iwCloseBtn.css({
@@ -242,8 +257,18 @@
                 //     $(this).css({opacity: '1'});
                 // });
             });
-            markers.push(marker);
+         return marker;
         }
+
+        function searchByValue (place, pointsOfInterest){
+            var bool = false;
+            pointsOfInterest.forEach(function (value) {
+                if (place.id === value.placeId) {
+                    bool = true;
+                }
+            });
+            return bool;
+           }
 
         function setMapOnAll(map) {
             for (var i = 0; i < markers.length; i++) {
