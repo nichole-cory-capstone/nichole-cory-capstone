@@ -10,7 +10,7 @@
         <header class="page-header" th:case="'Forbidden'">
             <h1>You don't have permission to view this page.</h1>
             <script>
-                setTimeout(function(){location.href="/login"} , 3000);
+                // setTimeout(function(){location.href="/login"} , 3000);
              </script>
         </header>
         <header class="page-header" th:case="'Bad Request'">
@@ -19,7 +19,7 @@
         <header class="page-header" th:case="Unauthorized">
             <h1>Unauthorized</h1>
             <script>
-                setTimeout(function(){location.href="/login"} , 3000);
+                // setTimeout(function(){location.href="/login"} , 3000);
             </script>
         </header>
     </th:block>

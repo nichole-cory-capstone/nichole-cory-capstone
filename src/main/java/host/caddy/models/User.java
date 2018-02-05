@@ -3,14 +3,21 @@ package host.caddy.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
+
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,8 +42,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Image> images;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-    private List<Collection> collections;
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+//    private List<Collection> collections = new ArrayList<>();
+
 
     public User(User copy) {
         id = copy.id;
@@ -88,11 +96,11 @@ public class User {
         this.images = images;
     }
 
-    public List<Collection> getCollections() {
-        return collections;
-    }
-
-    public void setCollections(List<Collection> collections) {
-        this.collections = collections;
-    }
+//    public List<Collection> getCollections() {
+//        return collections;
+//    }
+//
+//    public void setCollections(List<Collection> collections) {
+//        this.collections = collections;
+//    }
 }

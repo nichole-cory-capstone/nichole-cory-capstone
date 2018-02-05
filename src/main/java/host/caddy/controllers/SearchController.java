@@ -11,22 +11,33 @@ import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.PlaceDetails;
 import com.google.maps.model.PlacesSearchResponse;
 import host.caddy.models.Collection;
+import host.caddy.models.PointOfInterest;
+import host.caddy.models.User;
 import host.caddy.repositories.CollectionRepository;
 import host.caddy.services.GMapsService;
+import host.caddy.services.UserWithRoles;
 import host.caddy.services.YelpSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Controller
-@SessionAttributes({"goeApiContext","collection"})
+@SessionAttributes({"collection"})
 public class SearchController {
+
     @Value("${gmaps-api-key}")
     String mapsApiKey;
 
@@ -45,34 +56,51 @@ public class SearchController {
     }
 
     @GetMapping("/search")
-    public String geocodeSearch(@RequestParam(required = false) String location , Model model) throws IOException, InterruptedException, ApiException {
+    public String geocodeSearch(@RequestParam(required = false) String location , Model model, @AuthenticationPrincipal User owner, HttpSession session) throws IOException, InterruptedException, ApiException {
+
+        //Default location
         if (location == null) {
             location = "New York City";
         }
+
         GeoApiContext context = googleSearch.getContext();
-        Collection collection = new Collection();
 
         //Geocode the search terms
         GeocodingResult[] results = googleSearch.geocodeAddress(location, context);
 
-        //Setup the collection object
-        String latLng[] = results[0].geometry.location.toString().split(",");
-        collection.setLatitude(latLng[0]);
-        collection.setLongitude(latLng[1]);
-        collection.setLocation(location);
-        collection.setPlaceId(results[0].placeId);
-        PlaceDetails details = googleSearch.placeDetailsSearch(context,collection.getPlaceId());
-        collection.setImageRef(details.photos[0].photoReference);
+        //Setup this sessions collection object
+        Collection collection = new Collection();
+
+
+        if(owner != null) {
+            List<Collection> collections = collectionRepository.findCollectionsByOwner(owner);
+            for (Collection currentCollection : collections){
+                if(currentCollection.getLocation().equalsIgnoreCase(location)){
+                    collection = currentCollection;
+                }
+            }
+        }
+
+        //If the collection isn't owned by the current user or there is no user logged in populate a new collection
+        if(collection.getId() == null){
+            String latLng[] = results[0].geometry.location.toString().split(",");
+            collection.setLatitude(latLng[0]);
+            collection.setLongitude(latLng[1]);
+            collection.setLocation(location);
+            collection.setPlaceId(results[0].placeId);
+            PlaceDetails details = googleSearch.placeDetailsSearch(context, collection.getPlaceId());
+            collection.setImageRef(details.photos[0].photoReference);
+        }
 
         //Get default nearby places
-        PlacesSearchResponse nearbyResults = googleSearch.nearbySearch(context, googleSearch.getLatLng(results[0]));
-        String nearbyJSON = googleSearch.getGMapsJSON(nearbyResults.results);
+//        PlacesSearchResponse nearbyResults = googleSearch.nearbySearch(context,    googleSearch.getLatLng(results[0]));
+//        String nearbyJSON = googleSearch.getGMapsJSON(nearbyResults.results);
 
-        model.addAttribute("searchTerm", location);
-        model.addAttribute("nextPageToken", nearbyResults.nextPageToken);
-        model.addAttribute("nearBy", nearbyJSON);
-        model.addAttribute("goeApiContext", context);
-        model.addAttribute("collection", collection);
+          model.addAttribute("searchTerm", location);
+          model.addAttribute("collection", collection);
+//        model.addAttribute("nextPageToken", nearbyResults.nextPageToken);
+//        model.addAttribute("nearBy", nearbyJSON);
+//        model.addAttribute("goeApiContext", context);
 
         return "/search/search";
     }

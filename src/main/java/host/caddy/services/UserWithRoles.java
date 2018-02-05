@@ -12,8 +12,9 @@ import java.util.List;
 public class UserWithRoles extends User implements UserDetails {
     private List<String> userRoles;
 
-    public UserWithRoles(User user) {
+    public UserWithRoles(User user,List<String> userRoles) {
         super(user);
+        this.userRoles = userRoles;
     }
 
     @Override
