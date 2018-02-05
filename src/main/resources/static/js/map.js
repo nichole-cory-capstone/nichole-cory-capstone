@@ -43,8 +43,8 @@
                     }
                 }).done(function (data) {
                     $('#' + placeId).removeClass('loading').addClass('positive').text('Added!');
-                    result = JSON.parse(data);
-                    console.log(result);
+                    // var result = JSON.parse(data);
+                    console.log(data);
                 }).fail(function (jqXhr, status, error) {
                     $('#' + placeId).removeClass('loading').addClass('negative').text('Error!');
                     console.log("Error");
@@ -213,6 +213,7 @@
                 infowindow.open(map, this);
             });
 
+            //Found at http://en.marnoto.com/2014/09/5-formas-de-personalizar-infowindow.html
             google.maps.event.addListener(infowindow, 'domready', function(){
                 addListener(place.id);
                 // Reference to the DIV which receives the contents of the infowindow using jQuery
@@ -224,6 +225,22 @@
 
                 // Remove the white background DIV
                 iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+                 var iwCloseBtn = iwOuter.next();
+
+                //Apply the desired effect to the close button
+                iwCloseBtn.css({
+                    // opacity: '1', // by default the close button has an opacity of 0.7
+                    right: '38px', top: '10px' // button repositioning
+                    // border: '7px solid #DF691A', // increasing button border and new color
+                    // 'border-radius': '15px', // circular effect
+                    // 'box-shadow': '0 0 5px #3990B9' // 3D effect to highlight the button
+                });
+
+                // The API automatically applies 0.7 opacity to the button after the mouseout event.
+                // This function reverses this event to the desired value.
+                // iwCloseBtn.mouseout(function(){
+                //     $(this).css({opacity: '1'});
+                // });
             });
             markers.push(marker);
         }
