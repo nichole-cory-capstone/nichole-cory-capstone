@@ -48,14 +48,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                     /* Pages that can be viewed without having to log in */
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/", "/static/**", "/search/**") // anyone can see the home and the ads pages
+                    .antMatchers("/", "/static/**", "/search/**")
                     .permitAll()
                     /* Pages that require athentication */
                     .and()
                     .authorizeRequests()
-                    .antMatchers(
-                            "/user/**" // only authenticated users can create ads
-                    )
+                    .antMatchers("/user/**")
                     .authenticated()
             ;
 //                    .formLogin()
