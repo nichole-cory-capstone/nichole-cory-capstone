@@ -6,26 +6,6 @@
     <div th:include="fragments/navbar :: navbar-partial"></div>
         <div class="ui hidden divider" />
     <div th:include="fragments/map :: map"></div>
-                <div class="ui grid doubling stacked cards">
-                    <div th:href="@{'/user/trips/' + ${collection.id}}">
-                    <div class="ui card">
-                        <div class="content">
-                            <div class="header">
-                            </div>
-                            <!--<div class="description"><span th:text="${collection.location}">A Location</span></div>-->
-                        </div>
-                        <div class="ui two bottom attached buttons">
-                            <div class="ui button">
-                                Saved!
-                            </div>
-                            <div class="ui button deletebutton">
-                                Delete
-                            </div>
-                        </div>
-                    </div>
-            <!--keep locations within the below div-->
-                </div>
-                </div>
     <br />
 </main>
 </body>
