@@ -48,3 +48,7 @@
 #backbutton{
     float: left;
 }
+
+.ui.modal{
+    background-color: #555;
+}
