@@ -8,7 +8,7 @@
     <div id="launch button" class="ui application pushed left right sidebar vertical inverted labeled icon menu">
         <a href="/" class="item"><button type="button" class="ui inverted button">Home</button></a>
         <a href="/user/profile" class="item" sec:authorize="isAuthenticated()"><button type="button" class="ui inverted button">Profile</button></a>
-        <a href="/search" class="item"><button type="button" class="ui inverted button">Search</button></a>
+        <a href="#" class="item"><button id="search-btn-nav" type="button" class="ui inverted button">Search</button></a>
         <a href="/about" class="item"><button type="button" class="ui inverted button">About</button></a>
         <a href="#" id="modalbutton" class="item" sec:authorize="isAnonymous()"><button type="button" class="ui inverted button">Log In</button></a>
             <form class="item" th:action="@{/logout}" th:method="post" sec:authorize="isAuthenticated()">
@@ -23,7 +23,7 @@
     <br />
     <hr />
 
-    <!--semantic modal-->
+    <!--login modal-->
     <div class="ui demo modal button tiny loginmodal">
         <div class="ui aligned center">
                 <h2 class="ui image header"><div class="content">Log in to your account</div></h2>
@@ -52,6 +52,20 @@
         </div>
     </div>
 
+
+    <div id="search-modal" class="ui demo modal button tiny">
+    <div class="ui aligned center">
+    <h2 class="ui image header"><div class="content">Where do you want to go?</div></h2>
+      <div class="ui segment">
+      <div class="ui icon input fluid">
+        <input id="city-input" type="text" placeholder="New York City" />
+        <i id="search-btn-modal" class="inverted circular search link icon"></i>
+      </div>
+      </div>
+    </div>
+    </div>
+
+
     <script>
         $(document).ready(function() {
 
@@ -70,6 +84,7 @@
                     $('#login').click(function(){
                         window.location = "/login";
                     });
+
                     $('.ui.form')
                         .form({
                             fields: {
@@ -96,9 +111,23 @@
                                     ]
                                 }
                             }
-                        })
-                    ;
-                });
+                        });
+
+                    $('#search-btn-nav').click(function() {
+                                    $('#search-modal').modal('toggle');
+                                });
+
+
+                     $('#search-btn-modal').click(function() {
+                         window.location = "/search?location=" + $('#city-input').val();
+                                   });
+
+        $('#city-input').keyup(function (e) {
+                if (e.keyCode === 13){
+                   window.location = "/search?location=" + $('#city-input').val();
+                }
+            });
+ });
     </script>
     </nav>
 </body>

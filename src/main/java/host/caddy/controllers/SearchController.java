@@ -68,6 +68,10 @@ public class SearchController {
         //Geocode the search terms
         GeocodingResult[] results = googleSearch.geocodeAddress(location, context);
 
+        if(results == null){
+            return "redirect:/search/search";
+        }
+
         //Setup this sessions collection object
         Collection collection = new Collection();
 
@@ -88,7 +92,11 @@ public class SearchController {
             collection.setLongitude(latLng[1]);
             collection.setLocation(location);
             PlaceDetails details = googleSearch.placeDetailsSearch(context, results[0].placeId);
-            collection.setImageRef(details.photos[0].photoReference);
+            if(details.photos != null) {
+                collection.setImageRef(details.photos[0].photoReference);
+            }else{
+                collection.setImageRef("/images/placeholder_image.png");
+            }
         }
 
         //Get default nearby places
