@@ -128,7 +128,6 @@ $(document).ready(function () {
         service.nearbySearch({
             location: curLocation,
             radius: 1000,
-            type: ['food'],
             keyword: term
         }, callback);
 
