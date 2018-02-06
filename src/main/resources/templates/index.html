@@ -17,6 +17,15 @@
         </div>
     </div>
     <script src="/js/geocode.js"></script>
+    <script>
+     $(document).ready(function() {
+    $('#city-name').keyup(function (e) {
+                    if (e.keyCode === 13){
+                        window.location = "/search?location=" + $('#city-name').val();
+                    }
+                });
+    });
+</script>
 </main>
 </body>
 </html>
