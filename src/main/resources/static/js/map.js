@@ -230,7 +230,7 @@ $(document).ready(function () {
                 '<i class="add icon"></i>' +
                 'Save' +
                 '</button>' +
-                '<button id="'+ place.place_id + '-more" class="ui info button">' +
+                '<button id="'+ place.place_id + '-more" class="ui info button" id="moreinfo">' +
                 'More Info' +
                 '</button>' +
                 '</div>';
