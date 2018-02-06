@@ -2,7 +2,7 @@ $(document).ready(function () {
     var map;
     var infowindow;
     var service;
-    var curTerm;
+    var curTerm = null;
     var curLocation = {lat: parseFloat(latStr),
         lng: parseFloat(lonStr)
     };
@@ -33,10 +33,19 @@ $(document).ready(function () {
 
     //https://stackoverflow.com/questions/7095574/google-maps-api-3-custom-marker-color-for-default-dot-marker/7686977#7686977
     //Listener for the add POI button in the infowindows
-    function addListener(placeId) {
-        $('#' + placeId).click(function() {
+    function infoWindowListener(placeId) {
+        var url;
+        var buttonText = $('#' + placeId).text();
+
+        if (buttonText === "Save") {
+            url = "/user/trips/poi/";
+        } else if (buttonText === "Remove") {
+            url = "/user/trips/poi/remove";
+        }
+
+        $('#' + placeId).click(function () {
             $.ajax({
-                url: "/user/trips/poi/",
+                url: url,
                 type: "POST",
                 data: {
                     placeId: this.id
@@ -46,11 +55,17 @@ $(document).ready(function () {
                     $('#' + placeId).addClass('loading');
                 }
             }).done(function (data) {
-                $('#' + placeId).removeClass('loading').addClass('positive').text('Added!');
+                $('#' + placeId).removeClass('loading').addClass('positive').text('Success');
                 // var result = JSON.parse(data);
                 pointsOfInterest = data;
+                console.log(pointsOfInterest);
+                clearMarkers();
+                poiLoader(pointsOfInterest);
+                if(curTerm !== null){
+                    search(curLocation,curTerm);
+                }
             }).fail(function (jqXhr, status, error) {
-                $('#' + placeId).removeClass('loading').addClass('negative').text('Error!');
+                $('#' + placeId).removeClass('loading').addClass('negative').text('Error');
                 console.log("Error");
             });
         })
@@ -192,6 +207,13 @@ $(document).ready(function () {
                 '<img src="' + photo + '"/>' +
                 '</div>' +
                 '</div>' +
+                '<div class="ui buttons">'+
+                '<button id="'+ place.place_id + '" class="ui warning button ">' +
+                'Remove' +
+                '</button>' +
+                '<button id="'+ place.place_id + '-more" class="ui info button">' +
+                'More Info' +
+                '</button>' +
                 '</div>';
             pinColor = "2B3E50";
         }else {
@@ -203,9 +225,13 @@ $(document).ready(function () {
                 '<img src="' + photo + '"/>' +
                 '</div>' +
                 '</div>' +
-                '<button id="'+ place.place_id + '" class="poi ui bottom attached button fluid">' +
+                '<div class="ui buttons">'+
+                '<button id="'+ place.place_id + '" class="ui button">' +
                 '<i class="add icon"></i>' +
-                'Add to your collection' +
+                'Save' +
+                '</button>' +
+                '<button id="'+ place.place_id + '-more" class="ui info button">' +
+                'More Info' +
                 '</button>' +
                 '</div>';
             pinColor = "DF691A";
@@ -231,7 +257,7 @@ $(document).ready(function () {
 
         //Found at http://en.marnoto.com/2014/09/5-formas-de-personalizar-infowindow.html
         listenerHandler.push(google.maps.event.addListener(infowindow, 'domready', function(){
-            addListener(place.place_id);
+            infoWindowListener(place.place_id);
             // Reference to the DIV which receives the contents of the infowindow using jQuery
             var iwOuter = $('.gm-style-iw');
             var iwBackground = iwOuter.prev();
@@ -285,7 +311,9 @@ $(document).ready(function () {
     google.maps.event.addListener(map, 'dragend', function () {
         var center = map.getCenter();
         curLocation = {lat: center.lat(), lng: center.lng()};
-        search(curLocation, curTerm);
+        if(curTerm !== null) {
+            search(curLocation, curTerm);
+        }
     });
 
 
