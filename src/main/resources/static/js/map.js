@@ -19,12 +19,12 @@ $(document).ready(function () {
         if (getNextPage) getNextPage();
     };
     var markers = [];
+    var listenerHandler = [];
     var acInput = document.getElementById("autocompleteMap");
     var autocomplete = new google.maps.places.Autocomplete(acInput, autocompleteOptions);
 
     $('#searchForm').on("submit", function(e){
         e.preventDefault();
-        console.log("click");
         curTerm = $('#search-box').val();
         $('#search-btn').addClass('loading');
         search(curLocation,curTerm);
@@ -107,8 +107,8 @@ $(document).ready(function () {
 
         autocomplete.addListener('place_changed', onPlaceChanged);
 
-        search(curLocation);
-        // poiLoader(pointsOfInterest);
+        // search(curLocation);
+        poiLoader(pointsOfInterest);
     }
 
     function onPlaceChanged() {
@@ -138,7 +138,11 @@ $(document).ready(function () {
         for (var i = 0; i < markers.length; i++) {
             if (markers[i]) {
                 markers[i].setMap(null);
+
             }
+        }
+        for(i = 0; i < listenerHandler.length; i++){
+            google.maps.event.removeListener(listenerHandler[i]);
         }
         markers = [];
     }
@@ -154,7 +158,7 @@ $(document).ready(function () {
         for (var i = 0; i < results.length; i++) {
             addMarker(results[i]);
         }
-
+        poiLoader(pointsOfInterest);
         moreButton.disabled = !pagination.hasNextPage;
         getNextPage = pagination.hasNextPage && function() {
             pagination.nextPage();
@@ -163,9 +167,7 @@ $(document).ready(function () {
 
 
     function addMarker(place) {
-        console.log(place);
         var marker = setupMarker(searchByValue(place, pointsOfInterest), place);
-
         markers.push(marker);
     }
 
@@ -192,7 +194,7 @@ $(document).ready(function () {
                 '</div>' +
                 '</div>' +
                 '</div>';
-            pinColor = "0f05fe";
+            pinColor = "2B3E50";
         }else {
             card = '<div class="ui cards">'+
                 '<div class="card">' +
@@ -202,12 +204,12 @@ $(document).ready(function () {
                 '<img src="' + photo + '"/>' +
                 '</div>' +
                 '</div>' +
-                '<button id="'+ place.id + '" class="poi ui bottom attached button fluid">' +
+                '<button id="'+ place.place_id + '" class="poi ui bottom attached button fluid">' +
                 '<i class="add icon"></i>' +
                 'Add to your collection' +
                 '</button>' +
                 '</div>';
-            pinColor = "df691a";
+            pinColor = "DF691A";
 
         }
         var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
@@ -223,14 +225,14 @@ $(document).ready(function () {
             icon: pinImage
             // icon: photos[0].getUrl({'maxWidth': 50, 'maxHeight': 50})
         });
-        google.maps.event.addListener(marker, 'click', function() {
+        listenerHandler.push(google.maps.event.addListener(marker, 'click', function() {
             infowindow.setContent(card);
             infowindow.open(map, this);
-        });
+        }));
 
         //Found at http://en.marnoto.com/2014/09/5-formas-de-personalizar-infowindow.html
-        google.maps.event.addListener(infowindow, 'domready', function(){
-            addListener(place.id);
+        listenerHandler.push(google.maps.event.addListener(infowindow, 'domready', function(){
+            addListener(place.place_id);
             // Reference to the DIV which receives the contents of the infowindow using jQuery
             var iwOuter = $('.gm-style-iw');
             var iwBackground = iwOuter.prev();
@@ -256,36 +258,30 @@ $(document).ready(function () {
             // iwCloseBtn.mouseout(function(){
             //     $(this).css({opacity: '1'});
             // });
-        });
+        }));
         return marker;
     }
 
     function searchByValue (place, pointsOfInterest){
         var bool = false;
-        pointsOfInterest.forEach(function (value) {
-            if (place.id === value.placeId) {
+        for (var i= 0; i < pointsOfInterest.length; i++) {
+            if (place.place_id === pointsOfInterest[i].placeId) {
                 bool = true;
             }
-        });
+        }
         return bool;
     }
 
-    // function poiLoader (pointsOfInterest){
-    //
-    //     function callback(place, status) {
-    //         console.log("Callback");
-    //         if (status === google.maps.places.PlacesServiceStatus.OK) {
-    //             console.log(place);
-    //             addMarker(place);
-    //         }
-    //     }
-    //
-    //     for (var i = 0; i < pointsOfInterest.length; i++) {
-    //         var request = {placeId: "'" + pointsOfInterest[i].placeId + "'"};
-    //         console.log(request);
-    //         service.getDetails(request, callback);
-    //     }
-    // }
+     function poiLoader (pointsOfInterest){
+        for (var i = 0; i < pointsOfInterest.length; i++) {
+            service.getDetails({placeId: pointsOfInterest[i].placeId}, function(place, status){
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    addMarker(place);
+                }
+
+            })
+        }
+    }
 
     google.maps.event.addListener(map, 'dragend', function () {
         var center = map.getCenter();

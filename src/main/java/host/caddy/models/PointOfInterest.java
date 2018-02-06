@@ -1,13 +1,9 @@
 package host.caddy.models;
 
-import com.google.maps.model.PlaceDetails;
-import host.caddy.models.yelp.Business;
-import org.hibernate.validator.constraints.NotBlank;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "poi_table")
@@ -18,8 +14,9 @@ public class PointOfInterest implements Serializable {
     @Column(name="poi_id")
     private int id;
 
-    @Column(name= "place_id",nullable = false)
+    @Column(name= "place_id",nullable = false, unique = true)
     private String placeId;
+
 
 //    @ManyToMany(cascade = CascadeType.ALL, mappedBy="pointsOfInterest")
 //    private List<Collection> collections = new ArrayList<>();

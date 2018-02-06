@@ -13,5 +13,5 @@ public interface PointOfInterestRepository extends CrudRepository<PointOfInteres
    PointOfInterest findByPlaceId(String placeId);
    List<PointOfInterest> findAll();
    void delete(PointOfInterest deleted);
-
+   boolean existsByPlaceId (String placeId);
 }

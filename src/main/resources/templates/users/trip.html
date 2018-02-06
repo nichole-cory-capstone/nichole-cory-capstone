@@ -5,7 +5,7 @@
 <main class="ui container">
     <div th:include="fragments/navbar :: navbar-partial"></div>
         <div class="ui hidden divider" />
-    <div th:include="fragments/tripmap :: map"></div>
+    <div th:include="fragments/map :: map"></div>
                 <div class="ui grid doubling stacked cards">
                     <div th:href="@{'/user/trips/' + ${collection.id}}">
                     <div class="ui card">

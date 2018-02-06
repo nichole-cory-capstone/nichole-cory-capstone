@@ -87,8 +87,7 @@ public class SearchController {
             collection.setLatitude(latLng[0]);
             collection.setLongitude(latLng[1]);
             collection.setLocation(location);
-            collection.setPlaceId(results[0].placeId);
-            PlaceDetails details = googleSearch.placeDetailsSearch(context, collection.getPlaceId());
+            PlaceDetails details = googleSearch.placeDetailsSearch(context, results[0].placeId);
             collection.setImageRef(details.photos[0].photoReference);
         }
 

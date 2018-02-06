@@ -62,24 +62,23 @@ public class Collection implements Serializable {
         this.imageRef = imageRef;
     }
 
-    private String placeId;
+//    private String placeId;
+//
+//    public String getPlaceId() {
+//        return placeId;
+//    }
+//
+//    public void setPlaceId(String placeId) {
+//        this.placeId = placeId;
+//    }
 
-    public String getPlaceId() {
-        return placeId;
-    }
-
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
-    }
-
-    public Collection(String longitude, String latitude, User owner, String imageRef, String location, List<PointOfInterest> pointsOfInterest, String placeId) {
+    public Collection(String longitude, String latitude, User owner, String imageRef, String location, List<PointOfInterest> pointsOfInterest) {
         this.longitude = longitude;
         this.latitude = latitude;
         this.owner = owner;
         this.imageRef = imageRef;
         this.location = location;
         this.pointsOfInterest = pointsOfInterest;
-        this.placeId = placeId;
     }
 
     public Collection() {
