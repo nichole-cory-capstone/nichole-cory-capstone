@@ -70,7 +70,7 @@ public class UsersController {
     }
 
     @PostMapping("/user/trips/poi")
-    public @ResponseBody List<PointOfInterest> savePoint(@ModelAttribute(name = "collection") Collection collection, @RequestParam(name = "placeId")String placeId, @AuthenticationPrincipal User owner) throws  InterruptedException{
+    public @ResponseBody List<PointOfInterest> savePoint(@ModelAttribute(name = "collection") Collection collection, @RequestParam(name = "placeId")String placeId, @AuthenticationPrincipal User owner){
 
             List<PointOfInterest> pointOfInterestList = collection.getPointsOfInterest();
 
@@ -100,4 +100,33 @@ public class UsersController {
             }
             return collection.getPointsOfInterest();
     }
+
+
+    @PostMapping("/user/trips/poi/remove")
+    public @ResponseBody List<PointOfInterest> removePoint(@ModelAttribute(name = "collection") Collection collection, @RequestParam(name = "placeId")String placeId, @AuthenticationPrincipal User owner){
+
+        List<PointOfInterest> pointOfInterestList = collection.getPointsOfInterest();
+
+        HashMap<String, PointOfInterest> poiMap = new HashMap<>();
+        for (PointOfInterest point : pointOfInterestList) {
+            poiMap.put(point.getPlaceId(), point);
+        }
+
+        PointOfInterest point = pointOfInterestRepository.findByPlaceId(placeId);
+
+        if (poiMap.containsKey(point.getPlaceId())) {
+
+            for(int i = 0; i < pointOfInterestList.size(); i++){
+                if (pointOfInterestList.get(i).getPlaceId().equals(point.getPlaceId()))
+                pointOfInterestList.remove(i);
+            }
+
+            collection.setPointsOfInterest(pointOfInterestList);
+            saveTrip(collection, owner);
+        }
+        return collection.getPointsOfInterest();
+    }
+
+
+
 }
