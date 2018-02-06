@@ -12,5 +12,5 @@ public interface CollectionRepository extends CrudRepository<Collection, Long> {
     Collection findOne (Long id);
     List<Collection> findCollectionsByOwner(User owner);
     List<Collection> findAll();
-    Collection findByPlaceId(String placeId);
+    boolean existsById(Long id);
 }

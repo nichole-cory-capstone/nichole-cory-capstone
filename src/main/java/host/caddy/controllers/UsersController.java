@@ -10,13 +10,10 @@ import host.caddy.security.CollectionOwnerExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,10 +48,9 @@ public class UsersController {
 
         Collection collection = collectionRepository.findOne(id);
 
-        if (collection == null) {
+        if (!collectionRepository.existsById(id)) {
             throw new CollectionNotFound(String.format("Collection with ID %d cannot be found", id));
         }
-
             model.addAttribute("collection", collection);
             return "users/trip";
     }
@@ -74,7 +70,7 @@ public class UsersController {
     }
 
     @PostMapping("/user/trips/poi")
-    public @ResponseBody List<PointOfInterest> savePoint(@ModelAttribute(name = "collection") Collection collection, @RequestParam(name = "placeId")String placeId, @AuthenticationPrincipal User owner) {
+    public @ResponseBody List<PointOfInterest> savePoint(@ModelAttribute(name = "collection") Collection collection, @RequestParam(name = "placeId")String placeId, @AuthenticationPrincipal User owner) throws  InterruptedException{
 
             List<PointOfInterest> pointOfInterestList = collection.getPointsOfInterest();
 
@@ -83,9 +79,10 @@ public class UsersController {
                poiMap.put(point.getPlaceId(), point);
              }
 
-            PointOfInterest point = pointOfInterestRepository.findByPlaceId(placeId);
+             PointOfInterest point = pointOfInterestRepository.findByPlaceId(placeId);
 
-            if (point == null) {
+            if (!pointOfInterestRepository.existsByPlaceId(placeId)) {
+                System.out.println(!pointOfInterestRepository.existsByPlaceId(placeId));
                 PointOfInterest newPoint = new PointOfInterest();
                 newPoint.setPlaceId(placeId);
                 pointOfInterestRepository.save(newPoint);
@@ -94,9 +91,12 @@ public class UsersController {
                 collection.setPointsOfInterest(pointOfInterestList);
                 saveTrip(collection, owner);
             } else if (!poiMap.containsKey(point.getPlaceId())) {
+                System.out.println("new to collection");
                 pointOfInterestList.add(point);
                 collection.setPointsOfInterest(pointOfInterestList);
                 saveTrip(collection, owner);
+            }else{
+                System.out.println("Nothing to do");
             }
             return collection.getPointsOfInterest();
     }
