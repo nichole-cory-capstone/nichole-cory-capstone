@@ -198,6 +198,18 @@ $(document).ready(function () {
         //     "<br/>" +
         //     "<img class='center-align center' src='" + photo + "' /><br/>";
 
+        var infomodal = '<div class="ui align center demo modal button tiny tripinfomodal" id="moreinfo">' +
+            '<div class="ui aligned center">' +
+            '<h2 class="ui image header"><div class="content">' + place.name +  '</div></h2>' +
+            '<p>' + place.vicinity + '</p>' +
+            '<p>' + 'Hours: ' + place.opening_hours.weekday_text + '</p>' +
+            '<p>' + 'Rating: ' + place.rating + '</p>' +
+            // '<p>' + '<a href="place.website" /a>' + '</p>' +
+            // '<p>' + UBER DEEP LINK + '</p>' +
+            // '<p>' + OPEN TABLE? + '</p>' +
+            '</div>' +
+            '</div>';
+
         if(inList){
             card = '<div class="ui cards">'+
                 '<div class="card">' +
@@ -214,7 +226,8 @@ $(document).ready(function () {
                 '<button id="'+ place.place_id + '-more" class="ui info button">' +
                 'More Info' +
                 '</button>' +
-                '</div>';
+                '</div>' +
+                infomodal;
             pinColor = "2B3E50";
         }else {
             card = '<div class="ui cards">'+
@@ -230,13 +243,18 @@ $(document).ready(function () {
                 '<i class="add icon"></i>' +
                 'Save' +
                 '</button>' +
-                '<button id="'+ place.place_id + '-more" class="ui info button" id="moreinfo">' +
+                '<button id="'+ place.place_id + '-more" class="ui info button"> ' +
                 'More Info' +
                 '</button>' +
-                '</div>';
+                '</div>' +
+                infomodal;
             pinColor = "DF691A";
 
         }
+
+        console.log(place);
+
+
         var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
             new google.maps.Size(21, 34),
             new google.maps.Point(0,0),
@@ -258,6 +276,7 @@ $(document).ready(function () {
         //Found at http://en.marnoto.com/2014/09/5-formas-de-personalizar-infowindow.html
         listenerHandler.push(google.maps.event.addListener(infowindow, 'domready', function(){
             infoWindowListener(place.place_id);
+            moreInfo(place.place_id);
             // Reference to the DIV which receives the contents of the infowindow using jQuery
             var iwOuter = $('.gm-style-iw');
             var iwBackground = iwOuter.prev();
@@ -285,6 +304,12 @@ $(document).ready(function () {
             // });
         }));
         return marker;
+    }
+
+    function moreInfo(placeId) {
+        $('#' + placeId + '-more').click(function() {
+            $('.tripinfomodal').modal('toggle');
+        });
     }
 
     function searchByValue (place, pointsOfInterest){

@@ -7,30 +7,9 @@
         <div class="ui hidden divider" />
     <div th:include="fragments/map :: map"></div>
 
-    <div class="ui demo modal button tiny tripinfomodal" id="moreinfo">
-        <div class="ui aligned center">
-            <h2 class="ui image header"><div class="content">More Info</div></h2>
-
-            <div class="ui tiny message">
-                New to us? <a href="/register">Sign Up</a>
-            </div>
-        </div>
-    </div>
-
     <br />
+
 </main>
-
-    <script>
-        $(document).ready(function() {
-
-            $('#moreinfo').click(function() {
-                console.log("test");
-            $('.tripinfomodal').modal('toggle');
-            });
-
-        });
-    </script>
-
 </body>
 </html>
 
