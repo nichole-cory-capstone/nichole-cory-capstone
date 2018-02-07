@@ -20,10 +20,24 @@ $(document).ready(function () {
     };
     var markers = [];
     var listenerHandler = [];
+    var fences = [];
     var locationMarker = null;
     var positionTimer = null;
-    var acInput = document.getElementById("autocompleteMap");
-    var autocomplete = new google.maps.places.Autocomplete(acInput, autocompleteOptions);
+    var circleRadius = (.5 * 1000);
+
+    // var acInput = document.getElementById("autocompleteMap");
+    // var autocomplete = new google.maps.places.Autocomplete(acInput, autocompleteOptions);
+
+    google.maps.Circle.prototype.contains = function(latLng) {
+        return this.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
+    };
+
+
+
+
+
+
+
 
     $('#searchForm').on("submit", function(e){
         e.preventDefault();
@@ -101,29 +115,29 @@ $(document).ready(function () {
 
         service = new google.maps.places.PlacesService(map);
 
-        autocomplete.addListener('place_changed', onPlaceChanged);
+        // autocomplete.addListener('place_changed', onPlaceChanged);
 
         // search(curLocation);
         poiLoader(pointsOfInterest);
     }
 
-    function onPlaceChanged() {
-        $("#wrapper").fadeIn();
-        var place = autocomplete.getPlace();
-        if (place.geometry) {
-            map.panTo(place.geometry.location);
-            map.setZoom(15);
-            clearMarkers();
-            search(place.geometry.location);
-        } else {
-            // acInput.setPlaceholder("Type the city, address or zip code");
-        }
-    }
+    // function onPlaceChanged() {
+    //     $("#wrapper").fadeIn();
+    //     var place = autocomplete.getPlace();
+    //     if (place.geometry) {
+    //         map.panTo(place.geometry.location);
+    //         map.setZoom(15);
+    //         clearMarkers();
+    //         search(place.geometry.location);
+    //     } else {
+    //         // acInput.setPlaceholder("Type the city, address or zip code");
+    //     }
+    // }
 
     function search(curLocation,term) {
         service.nearbySearch({
             location: curLocation,
-            radius: 2000,
+            radius: 5000,
             keyword: term
         }, callback);
 
@@ -189,7 +203,7 @@ $(document).ready(function () {
             '<div class="ui aligned center">' +
             '<h2 class="ui image header"><div class="content">' + place.name +  '</div></h2>' +
             '<p>' + place.vicinity + '</p>' +
-            '<p>' + 'Hours: ' + place.opening_hours.weekday_text + '</p>' +
+            '<p>' + 'Hours: ' + place.name + '</p>' +
             '<p>' + 'Rating: ' + place.rating + '</p>' +
             '<p>' + 'Phone: ' + place.formatted_phone_number + '</p>' +
             '<p>' + 'Website: ' + '<a href="'+ place.website +'"> ' + place.website + ' </a>' + '</p>' +
@@ -254,6 +268,12 @@ $(document).ready(function () {
             icon: pinImage
             // icon: photos[0].getUrl({'maxWidth': 50, 'maxHeight': 50})
         });
+
+        //Add geofence if the marker is a saved poi
+        if(inList) {
+            addFence(marker);
+        }
+
         listenerHandler.push(google.maps.event.addListener(marker, 'click', function() {
             infowindow.setContent(card);
             infowindow.open(map, this);
@@ -328,6 +348,27 @@ $(document).ready(function () {
     });
 
 
+    //Geo Fences
+
+
+   function addFence(marker) {
+           var circleOptions = {
+               strokeColor: 'grey',
+               strokeOpacity: 0.4,
+               strokeWeight: .5,
+               fillColor: 'grey',
+               fillOpacity: 0.3,
+               // visible: false,
+               map: map, //pass the map object to show on the map.
+               center: marker.getPosition(), //or you can pass a google.maps.LatLng object
+               radius: parseInt(circleRadius) //radius of the circle in metres
+           };
+           fences.push(new google.maps.Circle(circleOptions));
+       }
+
+    //Geo location
+
+
    function userMarker(latitude, longitude, label) {
        var im = 'https://www.robotwoods.com/dev/misc/bluecircle.png';
 
@@ -352,10 +393,17 @@ $(document).ready(function () {
                 longitude
             )
         );
+      //Check if the user is within the fence
+        fences.forEach(function (fence){
+              if(fence.contains(marker.getPosition())){
+                  alert("Inside Fence!");
+        }
       // Update the title if it was provided.
         if (label){
             marker.setTitle( label );
         }
+     });
+
     }
 
    function enableLocation(){
@@ -368,7 +416,7 @@ $(document).ready(function () {
 
         // Get the location of the user's browser using the
         // native geolocation service. When we invoke this method
-        // only the first callback is requied. The second
+        // only the first callback is required. The second
         // callback - the error handler - and the third
         // argument - our configuration options - are optional.
         navigator.geolocation.getCurrentPosition(
@@ -376,7 +424,7 @@ $(document).ready(function () {
 
                 // Check to see if there is already a location.
                 // There is a bug in FireFox where this gets
-                // invoked more than once with a cahced result.
+                // invoked more than once with a cached result.
                 if (locationMarker) {
                     return;
                 }
@@ -442,9 +490,7 @@ $(document).ready(function () {
         navigator.geolocation.clearWatch( positionTimer );
    }
 
-    $('.ui.checkbox')
-        .checkbox()
-    ;
+    $('.ui.checkbox').checkbox();
 
     $('#location-toggle').change(function() {
         if (this.checked) {
