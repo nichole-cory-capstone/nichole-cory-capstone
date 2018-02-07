@@ -20,6 +20,8 @@ $(document).ready(function () {
     };
     var markers = [];
     var listenerHandler = [];
+    var locationMarker = null;
+    var positionTimer = null;
     var acInput = document.getElementById("autocompleteMap");
     var autocomplete = new google.maps.places.Autocomplete(acInput, autocompleteOptions);
 
@@ -78,41 +80,8 @@ $(document).ready(function () {
 
 
     initMap();
-    // getLocation();
-
-    // Bias the autocomplete object to the user's geographical location,
-    // as supplied by the browser's 'navigator.geolocation' object.
-    function geolocate() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var geolocation = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-                var circle = new google.maps.Circle({
-                    center: geolocation,
-                    radius: position.coords.accuracy
-                });
-                autocomplete.setBounds(circle.getBounds());
-            });
-        }
-    }
-
-    // Geo Location
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(initMap);
-            // $autocomplete.onfocus(geolocate());
-        } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
-        }
-    }
 
     function initMap() {
-
-        // $("#wrapper").fadeIn();
-
-        // var curLocation = {lat: position.coords.latitude, lng: position.coords.longitude};
 
         map = new google.maps.Map(document.getElementById('map'), {
             center: curLocation,
@@ -145,7 +114,7 @@ $(document).ready(function () {
     function search(curLocation,term) {
         service.nearbySearch({
             location: curLocation,
-            radius: 1000,
+            radius: 2000,
             keyword: term
         }, callback);
 
@@ -168,7 +137,12 @@ $(document).ready(function () {
 
         $('#search-btn').removeClass('loading');
         $('#more-btn').removeClass('loading');
-        if (status !== 'OK') return;
+        if (status !== 'OK') {
+            console.log("Search Error");
+            console.log(curLocation);
+            console.log(curTerm);
+            return;
+        }
 
         clearMarkers();
 
@@ -254,8 +228,6 @@ $(document).ready(function () {
             pinColor = "DF691A";
 
         }
-
-
 
 
         var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
@@ -345,9 +317,133 @@ $(document).ready(function () {
     });
 
 
-    function setMapOnAll(map) {
-        for (var i = 0; i < markers.length; i++) {
-            markers[i].setMap(map);
+   function userMarker(latitude, longitude, label) {
+       var im = 'https://www.robotwoods.com/dev/misc/bluecircle.png';
+
+       var marker = new google.maps.Marker({
+               map: map,
+               position: new google.maps.LatLng(
+                   latitude,
+                   longitude
+               ),
+               title: (label || ""),
+               icon: im
+           });
+
+           return( marker );
+       }
+
+    function updateUserMarker( marker, latitude, longitude, label ){
+     // Update the position.
+        marker.setPosition(
+            new google.maps.LatLng(
+                latitude,
+                longitude
+            )
+        );
+      // Update the title if it was provided.
+        if (label){
+            marker.setTitle( label );
         }
     }
+
+   function enableLocation(){
+    if (navigator.geolocation) {
+
+        // This is the location marker that we will be using
+        // on the map. Let's store a reference to it here so
+        // that it can be updated in several places.
+
+
+        // Get the location of the user's browser using the
+        // native geolocation service. When we invoke this method
+        // only the first callback is requied. The second
+        // callback - the error handler - and the third
+        // argument - our configuration options - are optional.
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+
+                // Check to see if there is already a location.
+                // There is a bug in FireFox where this gets
+                // invoked more than once with a cahced result.
+                if (locationMarker) {
+                    return;
+                }
+
+                // Log that this is the initial position.
+                console.log("Initial Position Found");
+
+                // Add a marker to the map using the position.
+                locationMarker = userMarker(
+                    position.coords.latitude,
+                    position.coords.longitude,
+                    "Initial Position"
+                );
+
+            },
+            function (error) {
+                console.log("Something went wrong: ", error);
+            },
+            {
+                timeout: (5 * 1000),
+                maximumAge: (1000 * 60 * 15),
+                enableHighAccuracy: true
+            }
+        );
+    }
+
+
+        positionTimer = navigator.geolocation.watchPosition(
+           function( position ){
+
+               // Log that a newer, perhaps more accurate
+               // position has been found.
+               console.log( "Newer Position Found" );
+
+               // Set the new position of the existing marker.
+               updateUserMarker(
+                   locationMarker,
+                   position.coords.latitude,
+                   position.coords.longitude,
+                   "Updated / Accurate Position"
+               );
+
+           }
+       );
+
+
+               // If the position hasn't updated within 5 minutes, stop
+               // monitoring the position for changes.
+       setTimeout(
+           function(){
+               // Clear the position watcher.
+               navigator.geolocation.clearWatch( positionTimer );
+           },
+           (1000 * 60 * 5)
+       );
+
+   }
+
+
+   function disableLocation(){
+        locationMarker.setMap(null);
+        locationMarker = null;
+        navigator.geolocation.clearWatch( positionTimer );
+   }
+
+    $('.ui.checkbox')
+        .checkbox()
+    ;
+
+    $('#location-toggle').change(function() {
+        if (this.checked) {
+            enableLocation();
+            $('#loc-toggle-label').text("Disable Location")
+        }else if(!this.checked){
+            disableLocation();
+            $('#loc-toggle-label').text("Enable Location")
+
+        }
+    });
+
 });
