@@ -93,9 +93,6 @@ $(document).ready(function () {
 //             map.setCenter(center);
 //         });
 
-        request_permission();
-
-
     initMap();
 
     function initMap() {
