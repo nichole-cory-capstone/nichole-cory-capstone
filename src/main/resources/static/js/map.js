@@ -76,8 +76,17 @@ $(document).ready(function () {
         })
     }
 
-
-
+//
+//     function initialize() {
+//
+//         var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+//
+// // Resize the map on mobile
+//         google.maps.event.addDomListener(window, "resize", function() {
+//             var center = map.getCenter();
+//             google.maps.event.trigger(map, "resize");
+//             map.setCenter(center);
+//         });
 
     initMap();
 
@@ -85,7 +94,7 @@ $(document).ready(function () {
 
         map = new google.maps.Map(document.getElementById('map'), {
             center: curLocation,
-            zoom: 13
+            zoom: 14
         });
 
         infowindow = new google.maps.InfoWindow();
@@ -166,6 +175,7 @@ $(document).ready(function () {
         var card;
         var pinColor;
         var photos = place.photos;
+        console.log(place);
 
         if (!photos) {
             return;
@@ -181,7 +191,8 @@ $(document).ready(function () {
             '<p>' + place.vicinity + '</p>' +
             '<p>' + 'Hours: ' + place.opening_hours.weekday_text + '</p>' +
             '<p>' + 'Rating: ' + place.rating + '</p>' +
-            // '<p>' + '<a href="place.website" /a>' + '</p>' +
+            '<p>' + 'Phone: ' + place.formatted_phone_number + '</p>' +
+            '<p>' + 'Website: ' + '<a href="'+ place.website +'"> ' + place.website + ' </a>' + '</p>' +
             // '<p>' + UBER DEEP LINK + '</p>' +
             // '<p>' + OPEN TABLE? + '</p>' +
             '</div>' +

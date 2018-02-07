@@ -30,3 +30,9 @@ Look and Feel
 [x] Search/Collection create page
 [x] Login/Register Pages/Modal
 [x] Mobile responsive*
+
+To-Do List
+[x] Button to request more info in trip view, modal on profile view to see more info 
+[] Slider for geolocation 
+[x] Delete trip button (profile view)
+[] Android app emulator 
