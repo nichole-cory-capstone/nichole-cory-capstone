@@ -27,7 +27,7 @@
     <div class="ui demo modal button tiny loginmodal">
         <div class="ui aligned center">
                 <h2 class="ui image header"><div class="content">Log in to your account</div></h2>
-            <form class="ui form" th:action="@{/login}">
+            <form id="login-form" th:action="@{/login}" method="POST" class="ui form">
                 <div class="ui segment">
                     <div class="field">
                         <!--<div class="ui left icon input">-->
@@ -79,31 +79,31 @@
             });
 
             function submitForm(fields) {
-                var csrf = $('#_csrf').val();
-                       console.log(fields);
+                var csrf = $("input[name='_csrf']").val();
                                     $.ajax({
-                                         url: "/login/",
+                                         url: "/login",
                                          type: "POST",
                                          data: {
-                                             username: $('#username').val(),
-                                             password:  $('#password').val()
+                                             username: fields.username,
+                                             password: fields.password
                                          },
                                          headers: {'X-CSRF-TOKEN': csrf},
                                          beforeSend: function () {
                                              $('#login').addClass('loading');
                                          }
-                                     }).done(function (data) {
-
-                                         $('#' + placeId).removeClass('loading').addClass('positive').text('Success');
+                                     }).done(function (data, status, response) {
+                                         console.log(response);
+                                         console.log(status)
+                                         $('#login').removeClass('loading').addClass('positive').text('Success');
                                          // var result = JSON.parse(data);
                                          console.log(data);
                                      }).fail(function (jqXhr, status, error) {
-                                         $('#' + placeId).removeClass('loading').addClass('negative').text('Error');
+                                         $('#login').removeClass('loading').addClass('negative').text('Error');
                                          console.log("Error");
                                      })
                                  }
 
-                    $('.ui.form')
+                    $('#login-form')
                         .form({
                             fields: {
                                 email: {
@@ -128,11 +128,11 @@
                                         }
                                     ]
                                 }
-                            },
-                            onSuccess: function(event, fields) {
-                                submitForm(fields);
-                                event.preventDefault();
-                              }
+                            }
+                            // onSuccess: function(event, fields) {
+                            //     submitForm(fields);
+                            //     event.preventDefault();
+                            //   }
                             });
 
                     $('#search-btn-nav').click(function() {
