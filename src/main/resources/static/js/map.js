@@ -182,29 +182,62 @@ $(document).ready(function () {
     function setupMarker(inList, place) {
         var card;
         var pinColor;
-        var photos = place.photos;
+
+        var photos = "";
+        if(place.photos !== undefined){
+            photos = place.photos
+        var photo = photos[0].getUrl({'maxWidth': 150, 'maxHeight': 150});
+        }
+
+        var vicinity = "";
+        if(place.vicinity !== null){
+            vicinity = place.vicinity
+        }
+
+        var hours = "";
+        if(place.opening_hours.weekday_text.length !== 0){
+            hours = place.opening_hours.weekday_text
+        }
+
+        var rating = "";
+        if(place.rating !== null){
+            rating = place.rating
+        }
+
+        var phone = "";
+        if(place.formatted_phone_number !== null){
+            phone = place.formatted_phone_number
+        }
+
+        var website = "";
+        if(place.website !== null){
+            website = place.website
+        }
+
+
         console.log(place);
 
-        if (!photos) {
-            return;
-        }
-        var photo = photos[0].getUrl({'maxWidth': 150, 'maxHeight': 150});
+
         // var content = "<h6>" + place.name + "</h6>" +
         //     "<br/>" +
         //     "<img class='center-align center' src='" + photo + "' /><br/>";
 
+
         var infomodal = '<div class="ui align center demo modal button tiny tripinfomodal" id="moreinfo">' +
             '<div class="ui aligned center">' +
             '<h2 class="ui image header"><div class="content">' + place.name +  '</div></h2>' +
-            '<p>' + place.vicinity + '</p>' +
-            '<p>' + 'Hours: ' + place.name + '</p>' +
-            '<p>' + 'Rating: ' + place.rating + '</p>' +
-            '<p>' + 'Phone: ' + place.formatted_phone_number + '</p>' +
-            '<p>' + 'Website: ' + '<a href="'+ place.website +'"> ' + place.website + ' </a>' + '</p>' +
+            '<p>' + vicinity + '</p>' +
+            '<p>' + 'Hours: ' + hours + '</p>' +
+            '<p>' + 'Rating: ' + rating + '</p>' +
+            '<p>' + 'Phone: ' + phone + '</p>' +
+            '<p>' + 'Website: ' + '<a href="'+ website +'"> ' + ' </a>' + '</p>' +
+
             // '<p>' + UBER DEEP LINK + '</p>' +
             // '<p>' + OPEN TABLE? + '</p>' +
+
             '</div>' +
             '</div>';
+        
 
         if(inList){
             card = '<div class="ui cards">'+
