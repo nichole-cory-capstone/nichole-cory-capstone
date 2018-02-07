@@ -69,6 +69,22 @@ public class UsersController {
         return "redirect:/user/trips/{collection.id}";
     }
 
+
+
+    @GetMapping("/user/trips/{id}/remove")
+    @PreAuthorize("@CollectionOwnerExpression.isOwner(principal, #id)")
+    public String removeTrip(@PathVariable Long id) {
+
+
+        if (!collectionRepository.existsById(id)) {
+            throw new CollectionNotFound(String.format("Collection with ID %d cannot be found", id));
+        }
+         collectionRepository.delete(id);
+
+        return "redirect:/user/profile";
+    }
+
+
     @PostMapping("/user/trips/poi")
     public @ResponseBody List<PointOfInterest> savePoint(@ModelAttribute(name = "collection") Collection collection, @RequestParam(name = "placeId")String placeId, @AuthenticationPrincipal User owner){
 

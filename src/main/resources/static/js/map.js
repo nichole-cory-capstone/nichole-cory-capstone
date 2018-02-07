@@ -44,30 +44,33 @@ $(document).ready(function () {
         }
 
         $('#' + placeId).click(function () {
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: {
-                    placeId: this.id
-                },
-                headers: {'X-CSRF-TOKEN': csrfToken},
-                beforeSend: function () {
-                    $('#' + placeId).addClass('loading');
-                }
-            }).done(function (data) {
-                $('#' + placeId).removeClass('loading').addClass('positive').text('Success');
-                // var result = JSON.parse(data);
-                pointsOfInterest = data;
-                console.log(pointsOfInterest);
-                clearMarkers();
-                poiLoader(pointsOfInterest);
-                if(curTerm !== null){
-                    search(curLocation,curTerm);
-                }
-            }).fail(function (jqXhr, status, error) {
-                $('#' + placeId).removeClass('loading').addClass('negative').text('Error');
-                console.log("Error");
-            });
+            if(authenticated) {
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        placeId: this.id
+                    },
+                    headers: {'X-CSRF-TOKEN': csrfToken},
+                    beforeSend: function () {
+                        $('#' + placeId).addClass('loading');
+                    }
+                }).done(function (data) {
+                    $('#' + placeId).removeClass('loading').addClass('positive').text('Success');
+                    // var result = JSON.parse(data);
+                    pointsOfInterest = data;
+                    clearMarkers();
+                    poiLoader(pointsOfInterest);
+                    if (curTerm !== null) {
+                        search(curLocation, curTerm);
+                    }
+                }).fail(function (jqXhr, status, error) {
+                    $('#' + placeId).removeClass('loading').addClass('negative').text('Error');
+                    console.log("Error");
+                });
+            }else{
+                $('.loginmodal').modal('toggle');
+            }
         })
     }
 
@@ -252,7 +255,7 @@ $(document).ready(function () {
 
         }
 
-        console.log(place);
+
 
 
         var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,

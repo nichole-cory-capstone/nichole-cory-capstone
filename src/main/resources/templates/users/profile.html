@@ -28,13 +28,14 @@
                      <img class="ui wireframe image" th:src="@{https://maps.googleapis.com/maps/api/place/photo(maxwidth=260,maxheight=216,key=AIzaSyC-Fq2UspbtyX0spv_22WGd4ChnxFIQREQ,photoreference=${collection.imageRef})}" height="216" width="260"/>
                 </div>
             </div>
-            <a th:href="@{'/user/trips/' + ${collection.id}}">
-              <div class="ui bottom attached buttons fluid">
-                <div class="ui button">
-                    View
-                </div>
-              </div>
-            </a>
+             <div class="ui buttons">
+              <a class="ui button" th:href="@{'/user/trips/' + ${collection.id}}">
+                <div>View</div>
+              </a>
+              <a class="ui warning button" th:href="@{'/user/trips/' + ${collection.id} + '/remove'}">
+                   <div>Remove</div>
+               </a>
+             </div>
         </div>
             <br />
         </div>

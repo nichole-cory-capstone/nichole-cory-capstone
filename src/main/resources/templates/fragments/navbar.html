@@ -27,7 +27,7 @@
     <div class="ui demo modal button tiny loginmodal">
         <div class="ui aligned center">
                 <h2 class="ui image header"><div class="content">Log in to your account</div></h2>
-            <form class="ui form" th:action="@{/login}" method="post">
+            <form id="login-form" th:action="@{/login}" method="POST" class="ui form">
                 <div class="ui segment">
                     <div class="field">
                         <!--<div class="ui left icon input">-->
@@ -68,6 +68,7 @@
 
     <script>
         $(document).ready(function() {
+            var csrf =
 
             $('#sidebutton').click(function() {
                 $('.ui.sidebar').sidebar('toggle', 'setting', 'transition', 'overlay');
@@ -77,11 +78,32 @@
                 $('.loginmodal').modal('toggle');
             });
 
-                    $('#login').click(function(){
-                        window.location = "/login";
-                    });
+            function submitForm(fields) {
+                var csrf = $("input[name='_csrf']").val();
+                                    $.ajax({
+                                         url: "/login",
+                                         type: "POST",
+                                         data: {
+                                             username: fields.username,
+                                             password: fields.password
+                                         },
+                                         headers: {'X-CSRF-TOKEN': csrf},
+                                         beforeSend: function () {
+                                             $('#login').addClass('loading');
+                                         }
+                                     }).done(function (data, status, response) {
+                                         console.log(response);
+                                         console.log(status)
+                                         $('#login').removeClass('loading').addClass('positive').text('Success');
+                                         // var result = JSON.parse(data);
+                                         console.log(data);
+                                     }).fail(function (jqXhr, status, error) {
+                                         $('#login').removeClass('loading').addClass('negative').text('Error');
+                                         console.log("Error");
+                                     })
+                                 }
 
-                    $('.ui.form')
+                    $('#login-form')
                         .form({
                             fields: {
                                 email: {
@@ -107,7 +129,11 @@
                                     ]
                                 }
                             }
-                        });
+                            // onSuccess: function(event, fields) {
+                            //     submitForm(fields);
+                            //     event.preventDefault();
+                            //   }
+                            });
 
                     $('#search-btn-nav').click(function() {
                                     $('#search-modal').modal('toggle');
