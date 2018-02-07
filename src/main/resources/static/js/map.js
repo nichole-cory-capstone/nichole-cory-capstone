@@ -6,11 +6,7 @@ $(document).ready(function () {
     var curLocation = {lat: parseFloat(latStr),
         lng: parseFloat(lonStr)
     };
-    var autocompleteOptions = {
-        componentRestrictions: {
-            "country": "us"
-        }
-    };
+    var notification = window.Notification || window.mozNotification || window.webkitNotification;
     var getNextPage = null;
     var moreButton = document.getElementById('more-btn');
     moreButton.onclick = function() {
@@ -24,19 +20,14 @@ $(document).ready(function () {
     var locationMarker = null;
     var positionTimer = null;
     var circleRadius = (.5 * 1000);
-
-    // var acInput = document.getElementById("autocompleteMap");
-    // var autocomplete = new google.maps.places.Autocomplete(acInput, autocompleteOptions);
-
     google.maps.Circle.prototype.contains = function(latLng) {
         return this.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
     };
 
-
-
-
-
-
+    if ('undefined' === typeof notification)
+        console.log('Web notification not supported');
+    else
+        notification.requestPermission(function(permission){});
 
 
     $('#searchForm').on("submit", function(e){
@@ -101,6 +92,9 @@ $(document).ready(function () {
 //             google.maps.event.trigger(map, "resize");
 //             map.setCenter(center);
 //         });
+
+        request_permission();
+
 
     initMap();
 
@@ -396,7 +390,7 @@ $(document).ready(function () {
       //Check if the user is within the fence
         fences.forEach(function (fence){
               if(fence.contains(marker.getPosition())){
-                  alert("Inside Fence!");
+                  Notify("Inside Fence!");
         }
       // Update the title if it was provided.
         if (label){
@@ -489,6 +483,36 @@ $(document).ready(function () {
         locationMarker = null;
         navigator.geolocation.clearWatch( positionTimer );
    }
+
+
+    function Notify(titleText, bodyText)
+    {
+        if ('undefined' === typeof notification)
+            return false;       //Not supported....
+        var noty = new notification(
+            titleText, {
+                body: bodyText,
+                dir: 'auto', // or ltr, rtl
+                lang: 'EN', //lang used within the notification.
+                tag: 'notificationPopup', //An element ID to get/set the content
+                icon: '' //The URL of an image to be used as an icon
+            }
+        );
+        noty.onclick = function () {
+            console.log('notification.Click');
+        };
+        noty.onerror = function () {
+            console.log('notification.Error');
+        };
+        noty.onshow = function () {
+            console.log('notification.Show');
+        };
+        noty.onclose = function () {
+            console.log('notification.Close');
+        };
+        return true;
+    }
+
 
     $('.ui.checkbox').checkbox();
 
