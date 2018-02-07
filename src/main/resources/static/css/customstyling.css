@@ -52,3 +52,7 @@
 .ui.modal{
     background-color: #555;
 }
+
+#loc-toggle-label {
+margin: 15px;
+}
