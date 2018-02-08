@@ -49,7 +49,7 @@ public class YelpSearch {
             map.put("Authorization", bearer_token);
             headers.setAll(map);
 
-            String req_payload = "{search(term: \"" + name + "\",latitude: " + lat + ", longitude: " + lon + ", limit: 1, radius: 1600){ business {name id rating url display_phone price photos location{address1 city state zip_code country formatted_address} coordinates {latitude longitude}}}}";
+            String req_payload = "{search(term: \"" + name + "\",latitude: " + lat + ", longitude: " + lon + ", limit: 1, radius: 1600){ business {name id rating url display_phone phone price photos location{address1 city state zip_code country formatted_address} coordinates {latitude longitude}}}}";
             HttpEntity<?> request = new HttpEntity<>(req_payload, headers);
             String url = "https://api.yelp.com/v3/graphql";
             try {
@@ -60,6 +60,7 @@ public class YelpSearch {
                     yelp = objectMapper.readValue(response.getBody(), Yelp.class);
                     return response.getStatusCode().toString();
                 }else {
+                    System.out.println(response.getStatusCode().toString());
                     return response.getStatusCode().toString();
                 }
             } catch (Exception e) {

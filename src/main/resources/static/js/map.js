@@ -19,7 +19,7 @@ $(document).ready(function () {
     var fences = [];
     var locationMarker = null;
     var positionTimer = null;
-    var circleRadius = (.3 * 1000);
+    var circleRadius = (.05 * 1000);
     google.maps.Circle.prototype.contains = function(latLng) {
         return this.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
     };
@@ -128,7 +128,7 @@ $(document).ready(function () {
     function search(curLocation,term) {
         service.nearbySearch({
             location: curLocation,
-            radius: 5000,
+            radius: 4000,
             keyword: term
         }, callback);
 
@@ -173,44 +173,101 @@ $(document).ready(function () {
 
 
     function addMarker(place) {
-        var marker = setupMarker(searchByValue(place, pointsOfInterest), place);
-        markers.push(marker);
+        var yelpData;
+        $.ajax({
+            url: "/search/yelp/",
+            type: "POST",
+            data: {
+                name: place.name,
+                lat: place.geometry.location.lat(),
+                lon: place.geometry.location.lng()
+            },
+            headers: {'X-CSRF-TOKEN': csrfToken}
+        }).done(function (data) {
+           yelpData = JSON.parse(data);
+        }).fail(function (jqXhr, status, error) {
+            yelpData = error;
+            return "error";
+        }).always(function () {
+            var marker = setupMarker(searchByValue(place, pointsOfInterest), place,yelpData);
+            markers.push(marker);
+        });
     }
 
-    function setupMarker(inList, place) {
+    function setupMarker(inList, place, yelpInfo) {
+        console.log(yelpInfo);
         var card;
         var pinColor;
 
         var photos = "";
-        if(place.photos !== undefined){
+        try{
             photos = place.photos;
-        var photo = photos[0].getUrl({'maxWidth': 150, 'maxHeight': 150});
+        }catch (e){
+            if(e){
+                //Boo google
+            }
         }
+        var photo = photos[0].getUrl({'maxWidth': 150, 'maxHeight': 150});
 
         var vicinity = "";
-        if(place.vicinity !== null){
-            vicinity = place.vicinity;
+        try{
+            if( typeof place.vicinity !== "undefined"){
+                vicinity = place.vicinity;
+            }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
         }
 
         var hours = "";
-        if(place.opening_hours.weekday_text.length !== 0){
-            hours = place.opening_hours.weekday_text;
+        try{
+            if(typeof place.opening_hours.weekday_text !== "undefined"){
+                hours = "Hours: " + place.opening_hours.weekday_text;
+            }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
         }
 
         var rating = "";
-        if(place.rating !== null){
-            rating = place.rating;
+        try{
+            if(typeof place.rating !== "undefined"){
+                rating = "Rating: " + place.rating;
+            }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
         }
 
         var phone = "";
-        if(place.formatted_phone_number !== null){
-            phone = place.formatted_phone_number;
+        try{
+            if(typeof place.formatted_phone_number !== "undefined"){
+                phone = "Phone: " + place.formatted_phone_number;
+            }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
         }
 
         var website = "";
-        if(place.website !== null){
-            website = place.website;
+        var websiteText = "";
+        var tagText = "";
+        try{
+            if(typeof place.website !== "undefined"){
+                website = place.website;
+                websiteText = "Website: ";
+                tagText = " " + place.website;
+            }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
         }
+
 
 
         console.log(place);
@@ -219,7 +276,10 @@ $(document).ready(function () {
         var infomodal = '<div class="ui align center demo modal button tiny tripinfomodal" id="moreinfo">' +
             '<div class="ui aligned center">' + '<h2 class="ui image header"><div class="content">' + place.name +  '</div></h2>' +
             '<p>' + vicinity + '</p>' +
-            '<p>' + 'Rating: ' + rating + '</p>'+
+            '<p>' +  hours + '</p>' +
+            '<p>' +  rating + '</p>' +
+            '<p>' +  phone + '</p>' +
+            '<p>' +  websiteText + '<a href="'+ website +'" target="_blank"> ' + tagText + ' </a>' + '</p>' +
             '<p><a href="'+ uberLink + place.formatted_address + '&dropoff[latitude]='+place.geometry.location.lat() + '&dropoff[longitude]='+place.geometry.location.lng() + '"><i class="fab fa-uber fa-3x"></i></a></p>' +
             '<div class="ui accordion">' +
             '<div class="title">' +
@@ -229,8 +289,6 @@ $(document).ready(function () {
             '<p class="transition hidden">yelp content</p>' +
             '</div>' +
             '</div>';
-
-
 
 
 
@@ -336,8 +394,11 @@ $(document).ready(function () {
     }
 
     function moreInfo(placeId) {
-        $('#' + placeId + '-more').click(function() {
-            $('.tripinfomodal').modal('toggle');
+        $('#' + placeId + '-more').click(function () {
+
+            $('.tripinfomodal').modal({onHide: function(){
+                    $('.tripinfomodal').remove();
+                }}).modal('toggle')
         });
         $('.ui.accordion')
             .accordion()
@@ -556,7 +617,6 @@ $(document).ready(function () {
         return true;
     }
 
-
     $('.ui.checkbox').checkbox();
 
     $('#location-toggle').change(function() {
@@ -569,5 +629,6 @@ $(document).ready(function () {
 
         }
     });
+
 
 });
