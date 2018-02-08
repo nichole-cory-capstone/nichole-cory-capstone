@@ -19,7 +19,7 @@ $(document).ready(function () {
     var fences = [];
     var locationMarker = null;
     var positionTimer = null;
-    var circleRadius = (.5 * 1000);
+    var circleRadius = (.3 * 1000);
     google.maps.Circle.prototype.contains = function(latLng) {
         return this.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
     };
@@ -144,6 +144,7 @@ $(document).ready(function () {
         for(i = 0; i < listenerHandler.length; i++){
             google.maps.event.removeListener(listenerHandler[i]);
         }
+        removeFences();
         markers = [];
     }
 
@@ -182,33 +183,33 @@ $(document).ready(function () {
 
         var photos = "";
         if(place.photos !== undefined){
-            photos = place.photos
+            photos = place.photos;
         var photo = photos[0].getUrl({'maxWidth': 150, 'maxHeight': 150});
         }
 
         var vicinity = "";
         if(place.vicinity !== null){
-            vicinity = place.vicinity
+            vicinity = place.vicinity;
         }
 
         var hours = "";
         if(place.opening_hours.weekday_text.length !== 0){
-            hours = place.opening_hours.weekday_text
+            hours = place.opening_hours.weekday_text;
         }
 
         var rating = "";
         if(place.rating !== null){
-            rating = place.rating
+            rating = place.rating;
         }
 
         var phone = "";
         if(place.formatted_phone_number !== null){
-            phone = place.formatted_phone_number
+            phone = place.formatted_phone_number;
         }
 
         var website = "";
         if(place.website !== null){
-            website = place.website
+            website = place.website;
         }
 
 
@@ -390,11 +391,19 @@ $(document).ready(function () {
            fences.push(new google.maps.Circle(circleOptions));
        }
 
+    function removeFences(){
+       fences.forEach(function (fence){
+           fence.setMap(null);
+       });
+        fences = [];
+    }
+
+
     //Geo location
 
 
    function userMarker(latitude, longitude, label) {
-       var im = 'https://www.robotwoods.com/dev/misc/bluecircle.png';
+       var im = '/images/bluecircle.png';
 
        var marker = new google.maps.Marker({
                map: map,
@@ -421,6 +430,7 @@ $(document).ready(function () {
         fences.forEach(function (fence){
               if(fence.contains(marker.getPosition())){
                   Notify("Inside Fence!");
+                  console.log("Inside Fence")
         }
       // Update the title if it was provided.
         if (label){
