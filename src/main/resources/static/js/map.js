@@ -395,8 +395,11 @@ $(document).ready(function () {
     }
 
     function moreInfo(placeId) {
-        $('#' + placeId + '-more').click(function() {
-            $('.tripinfomodal').modal('toggle');
+        $('#' + placeId + '-more').click(function () {
+
+            $('.tripinfomodal').modal({onHide: function(){
+                    $('.tripinfomodal').remove();
+                }}).modal('toggle')
         });
     }
 
