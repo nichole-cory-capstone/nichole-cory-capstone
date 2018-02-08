@@ -17,7 +17,7 @@
         <div class="dimmed pusher"></div>
         </div>
     <br />
-    <button type="button" class="ui submit button gobackbutton" id="backbutton" onclick="history.back();"> Back </button>
+    <button type="button" class="ui submit button gobackbutton" sec:authorize="isAuthenticated()" id="backbutton" onclick="history.back();"> Back </button>
     <button type="button" class="ui submit button" id="sidebutton"> > </button>
     <a class="navbar-brand" href="/"><h1>CADDY</h1></a>
     <br />
