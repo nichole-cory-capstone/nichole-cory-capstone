@@ -198,36 +198,76 @@ $(document).ready(function () {
         console.log(yelpInfo);
         var card;
         var pinColor;
+
         var photos = "";
-        if(place.photos !== undefined){
+        try{
             photos = place.photos;
-        var photo = photos[0].getUrl({'maxWidth': 150, 'maxHeight': 150});
+        }catch (e){
+            if(e){
+                //Boo google
+            }
         }
+        var photo = photos[0].getUrl({'maxWidth': 150, 'maxHeight': 150});
 
         var vicinity = "";
-        if(place.vicinity !== null){
-            vicinity = place.vicinity;
+        try{
+            if( typeof place.vicinity !== "undefined"){
+                vicinity = place.vicinity;
+            }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
         }
 
         var hours = "";
-        if(place.opening_hours.weekday_text.length !== 0){
-            hours = place.opening_hours.weekday_text;
+        try{
+            if(typeof place.opening_hours.weekday_text !== "undefined"){
+                hours = "Hours: " + place.opening_hours.weekday_text;
+            }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
         }
 
         var rating = "";
-        if(place.rating !== null){
-            rating = place.rating;
+        try{
+            if(typeof place.rating !== "undefined"){
+                rating = "Rating: " + place.rating;
+            }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
         }
 
         var phone = "";
-        if(place.formatted_phone_number !== null){
-            phone = place.formatted_phone_number;
+        try{
+            if(typeof place.formatted_phone_number !== "undefined"){
+                phone = "Phone: " + place.formatted_phone_number;
+            }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
         }
 
         var website = "";
-        if(place.website !== null){
-            website = place.website;
+        var websiteText = "";
+        var tagText = "";
+        try{
+            if(typeof place.website !== "undefined"){
+                website = place.website;
+                websiteText = "Website: ";
+                tagText = " " + place.website;
+            }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
         }
+
 
 
         console.log(place);
@@ -242,10 +282,10 @@ $(document).ready(function () {
             '<div class="ui aligned center">' +
             '<h2 class="ui image header"><div class="content">' + place.name +  '</div></h2>' +
             '<p>' + vicinity + '</p>' +
-            '<p>' + 'Hours: ' + hours + '</p>' +
-            '<p>' + 'Rating: ' + rating + '</p>' +
-            '<p>' + 'Phone: ' + phone + '</p>' +
-            '<p>' + 'Website: ' + '<a href="'+ website +'"> ' + ' </a>' + '</p>' +
+            '<p>' +  hours + '</p>' +
+            '<p>' +  rating + '</p>' +
+            '<p>' +  phone + '</p>' +
+            '<p>' +  websiteText + '<a href="'+ website +'" target="_blank"> ' + tagText + ' </a>' + '</p>' +
 
             // '<p>' + UBER DEEP LINK + '</p>' +
             // '<p>' + OPEN TABLE? + '</p>' +
