@@ -19,7 +19,7 @@ $(document).ready(function () {
     var fences = [];
     var locationMarker = null;
     var positionTimer = null;
-    var circleRadius = (.3 * 1000);
+    var circleRadius = (.05 * 1000);
     google.maps.Circle.prototype.contains = function(latLng) {
         return this.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
     };
@@ -128,7 +128,7 @@ $(document).ready(function () {
     function search(curLocation,term) {
         service.nearbySearch({
             location: curLocation,
-            radius: 5000,
+            radius: 4000,
             keyword: term
         }, callback);
 
@@ -173,14 +173,31 @@ $(document).ready(function () {
 
 
     function addMarker(place) {
-        var marker = setupMarker(searchByValue(place, pointsOfInterest), place);
-        markers.push(marker);
+        var yelpData;
+        $.ajax({
+            url: "/search/yelp/",
+            type: "POST",
+            data: {
+                name: place.name,
+                lat: place.geometry.location.lat(),
+                lon: place.geometry.location.lng()
+            },
+            headers: {'X-CSRF-TOKEN': csrfToken}
+        }).done(function (data) {
+           yelpData = JSON.parse(data);
+        }).fail(function (jqXhr, status, error) {
+            yelpData = error;
+            return "error";
+        }).always(function (yelpData) {
+            var marker = setupMarker(searchByValue(place, pointsOfInterest), place,yelpData);
+            markers.push(marker);
+        });
     }
 
-    function setupMarker(inList, place) {
+    function setupMarker(inList, place, yelpInfo) {
+        console.log(yelpInfo);
         var card;
         var pinColor;
-
         var photos = "";
         if(place.photos !== undefined){
             photos = place.photos;
@@ -553,7 +570,6 @@ $(document).ready(function () {
         return true;
     }
 
-
     $('.ui.checkbox').checkbox();
 
     $('#location-toggle').change(function() {
@@ -566,5 +582,6 @@ $(document).ready(function () {
 
         }
     });
+
 
 });
