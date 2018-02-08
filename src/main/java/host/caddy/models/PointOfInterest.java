@@ -5,6 +5,7 @@ package host.caddy.models;
 import javax.persistence.*;
 import java.io.Serializable;
 
+
 @Entity
 @Table(name = "poi_table")
 public class PointOfInterest implements Serializable {
@@ -49,5 +50,6 @@ public class PointOfInterest implements Serializable {
 //    public void setCollections(List<Collection> collections) {
 //        this.collections = collections;
 //    }
+
 
 }

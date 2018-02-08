@@ -215,27 +215,24 @@ $(document).ready(function () {
 
         console.log(place);
 
-
-        // var content = "<h6>" + place.name + "</h6>" +
-        //     "<br/>" +
-        //     "<img class='center-align center' src='" + photo + "' /><br/>";
-
-
+        var uberLink = "https://m.uber.com/ul/?action=setPickup&client_id=t2-NM5_Rw6g3kvW918lcV9I3F6HHlCqx&pickup=my_location&dropoff[formatted_address]=";
         var infomodal = '<div class="ui align center demo modal button tiny tripinfomodal" id="moreinfo">' +
-            '<div class="ui aligned center">' +
-            '<h2 class="ui image header"><div class="content">' + place.name +  '</div></h2>' +
+            '<div class="ui aligned center">' + '<h2 class="ui image header"><div class="content">' + place.name +  '</div></h2>' +
             '<p>' + vicinity + '</p>' +
-            '<p>' + 'Hours: ' + hours + '</p>' +
-            '<p>' + 'Rating: ' + rating + '</p>' +
-            '<p>' + 'Phone: ' + phone + '</p>' +
-            '<p>' + 'Website: ' + '<a href="'+ website +'"> ' + ' </a>' + '</p>' +
-
-            // '<p>' + UBER DEEP LINK + '</p>' +
-            // '<p>' + OPEN TABLE? + '</p>' +
-
+            '<p>' + 'Rating: ' + rating + '</p>'+
+            '<p><a href="'+ uberLink + place.formatted_address + '&dropoff[latitude]='+place.geometry.location.lat() + '&dropoff[longitude]='+place.geometry.location.lng() + '"><i class="fab fa-uber fa-3x"></i></a></p>' +
+            '<div class="ui accordion">' +
+            '<div class="title">' +
+            '<i class="fab fa-yelp fa-3x icon"></i>' +
+            '</div>' +
+            '<div class="content">' +
+            '<p class="transition hidden">yelp content</p>' +
             '</div>' +
             '</div>';
-        
+
+
+
+
 
         if(inList){
             card = '<div class="ui cards">'+
@@ -308,6 +305,7 @@ $(document).ready(function () {
         listenerHandler.push(google.maps.event.addListener(infowindow, 'domready', function(){
             infoWindowListener(place.place_id);
             moreInfo(place.place_id);
+
             // Reference to the DIV which receives the contents of the infowindow using jQuery
             var iwOuter = $('.gm-style-iw');
             var iwBackground = iwOuter.prev();
@@ -341,7 +339,12 @@ $(document).ready(function () {
         $('#' + placeId + '-more').click(function() {
             $('.tripinfomodal').modal('toggle');
         });
+        $('.ui.accordion')
+            .accordion()
+        ;
     }
+
+
 
     function searchByValue (place, pointsOfInterest){
         var bool = false;
