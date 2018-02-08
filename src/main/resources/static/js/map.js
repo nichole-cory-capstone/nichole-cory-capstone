@@ -188,7 +188,7 @@ $(document).ready(function () {
         }).fail(function (jqXhr, status, error) {
             yelpData = error;
             return "error";
-        }).always(function (yelpData) {
+        }).always(function () {
             var marker = setupMarker(searchByValue(place, pointsOfInterest), place,yelpData);
             markers.push(marker);
         });
