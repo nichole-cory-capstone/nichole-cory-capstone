@@ -207,6 +207,46 @@ $(document).ready(function () {
         var card;
         var pinColor;
 
+        var yelpCost = "";
+        try{
+            if (typeof yelpInfo.data.search.business["0"].price !== "undefined" ){
+                yelpCost = "Price: " + yelpInfo.data.search.business["0"].price;
+                console.log(yelpCost);
+            }
+        }catch (e){
+            if(e){
+                //Boo yelp
+            }
+        }
+
+        var yelpRating = "";
+        try{
+            if (typeof yelpInfo.data.search.business["0"].rating !== "undefined" ){
+                yelpRating = "Rating: " + yelpInfo.data.search.business["0"].rating;
+                console.log(yelpRating);
+            }
+        }catch (e){
+            if(e){
+                //Boo yelp
+            }
+        }
+
+        var yelpUrl = "";
+        var yelpUrlText = "";
+        var yelpUrlTag = "";
+        try{
+            if (typeof yelpInfo.data.search.business["0"].url !== "undefined" ){
+                yelpUrl = "Price: " + yelpInfo.data.search.business["0"].url;
+                yelpUrlText = "Yelp Page: ";
+                yelpUrlTag = " " + yelpInfo.data.search.business["0"].name;
+            }
+        }catch (e){
+            if(e){
+                //Boo yelp
+            }
+        }
+
+
         var photos = "";
          try{
             photos = place.photos;
@@ -244,7 +284,7 @@ $(document).ready(function () {
         var rating = "";
         try{
             if(typeof place.rating !== "undefined"){
-                rating = "Rating: " + place.rating;
+                rating = "Google Rating: " + place.rating;
             }
         }catch (e){
             if(e){
@@ -319,7 +359,10 @@ $(document).ready(function () {
             '<i class="fab fa-yelp fa-3x icon modal-icon"></i>' +
             '</div>' +
             '<div class="content">' +
-            '<p class="transition hidden">yelp content</p>' +
+            '<p class="transition hidden">Yelp Info</p>' +
+            '<p>' +  yelpCost + '</p>' +
+            '<p>' +  yelpRating + '</p>' +
+            '<p>' +  yelpUrlText + '<a href="'+ yelpUrl +'" target="_blank"> ' + yelpUrlTag + ' </a>' + '</p>' +
             '</div>' +
             '</div>';
 
