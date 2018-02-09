@@ -203,7 +203,6 @@ $(document).ready(function () {
 
     function setupMarker(inList, place, yelpInfo,otData) {
         console.log(yelpInfo);
-        console.log(otData.restaurants[0].mobile_reserve_url);
         var card;
         var pinColor;
 
@@ -255,7 +254,7 @@ $(document).ready(function () {
         var phone = "";
         try{
              if(typeof place.formatted_phone_number !== "undefined"){
-                phone = "Phone: " + place.formatted_phone_number;
+                phone = "Phone:  " + '<a href="tel:' + place.formatted_phone_number + '">'+ place.formatted_phone_number + '</a>';
              }
         }catch (e){
             if(e){
