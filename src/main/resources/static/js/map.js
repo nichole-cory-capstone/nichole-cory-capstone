@@ -162,8 +162,15 @@ $(document).ready(function () {
         clearMarkers();
 
         for (var i = 0; i < results.length; i++) {
-            addMarker(results[i]);
+            service.getDetails({placeId: results[i].place_id}, function(place, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    addMarker(place);
+                }else{
+                    addMarker(results[i]);
+                }
+            })
         }
+
         poiLoader(pointsOfInterest);
         moreButton.disabled = !pagination.hasNextPage;
         getNextPage = pagination.hasNextPage && function() {
@@ -200,7 +207,7 @@ $(document).ready(function () {
         var pinColor;
 
         var photos = "";
-        try{
+         try{
             photos = place.photos;
         }catch (e){
             if(e){
