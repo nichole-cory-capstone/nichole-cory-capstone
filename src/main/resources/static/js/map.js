@@ -17,9 +17,11 @@ $(document).ready(function () {
     var markers = [];
     var listenerHandler = [];
     var fences = [];
+    var fenceNotify = [];
     var locationMarker = null;
     var positionTimer = null;
     var circleRadius = (.05 * 1000);
+    var locationOn = false;
     google.maps.Circle.prototype.contains = function(latLng) {
         return this.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
     };
@@ -162,8 +164,15 @@ $(document).ready(function () {
         clearMarkers();
 
         for (var i = 0; i < results.length; i++) {
-            addMarker(results[i]);
+            service.getDetails({placeId: results[i].place_id}, function(place, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    addMarker(place);
+                }else{
+                    addMarker(results[i]);
+                }
+            })
         }
+
         poiLoader(pointsOfInterest);
         moreButton.disabled = !pagination.hasNextPage;
         getNextPage = pagination.hasNextPage && function() {
@@ -189,18 +198,17 @@ $(document).ready(function () {
             yelpData = error;
             return "error";
         }).always(function () {
-            var marker = setupMarker(searchByValue(place, pointsOfInterest), place,yelpData);
-            markers.push(marker);
+            openTableSearch(place,yelpData);
         });
     }
 
-    function setupMarker(inList, place, yelpInfo) {
+    function setupMarker(inList, place, yelpInfo,otData) {
         console.log(yelpInfo);
         var card;
         var pinColor;
 
         var photos = "";
-        try{
+         try{
             photos = place.photos;
         }catch (e){
             if(e){
@@ -222,7 +230,9 @@ $(document).ready(function () {
 
         var hours = "";
         try{
-            if(typeof place.opening_hours.weekday_text !== "undefined"){
+            if(place.opening_hours.weekday_text.length === 0 || typeof place.opening_hours.weekday_text === "undefined"){
+               hours = "";
+            }else {
                 hours = "Hours: " + place.opening_hours.weekday_text;
             }
         }catch (e){
@@ -244,9 +254,9 @@ $(document).ready(function () {
 
         var phone = "";
         try{
-            if(typeof place.formatted_phone_number !== "undefined"){
-                phone = "Phone: " + place.formatted_phone_number;
-            }
+             if(typeof place.formatted_phone_number !== "undefined"){
+                phone = "Phone:  " + '<a href="tel:' + place.formatted_phone_number + '">'+ place.formatted_phone_number + '</a>';
+             }
         }catch (e){
             if(e){
                 //Boo google
@@ -257,17 +267,38 @@ $(document).ready(function () {
         var websiteText = "";
         var tagText = "";
         try{
-            if(typeof place.website !== "undefined"){
+             if(typeof place.website !== "undefined"){
                 website = place.website;
                 websiteText = "Website: ";
                 tagText = " " + place.website;
-            }
+             }
         }catch (e){
             if(e){
                 //Boo google
             }
         }
 
+        var mapsUrl = "";
+        try{
+            if(typeof place.url !== "undefined"){
+                mapsUrl =  '<a style="color: #fff;" href="'+ place.url +'" target="_blank"><i class="far fa-map fa-3x modal-icon"></i></a>'
+             }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
+        }
+
+        var openTableUrl = "";
+        try{
+            if(typeof otData.restaurants[0].mobile_reserve_url !== "undefined"){
+                openTableUrl =  '<a style="color: #fff;" href="'+ otData.restaurants[0].mobile_reserve_url +'" target="_blank"><img src="/images/ot_logo.png" class="modal-icon" style="width: 43px; height: 34px;"/></a>'
+            }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
+        }
 
 
         console.log(place);
@@ -280,10 +311,12 @@ $(document).ready(function () {
             '<p>' +  rating + '</p>' +
             '<p>' +  phone + '</p>' +
             '<p>' +  websiteText + '<a href="'+ website +'" target="_blank"> ' + tagText + ' </a>' + '</p>' +
-            '<p><a href="'+ uberLink + place.formatted_address + '&dropoff[latitude]='+place.geometry.location.lat() + '&dropoff[longitude]='+place.geometry.location.lng() + '"><i class="fab fa-uber fa-3x"></i></a></p>' +
-            '<div class="ui accordion">' +
-            '<div class="title">' +
-            '<i class="fab fa-yelp fa-3x icon"></i>' +
+            '<a style="color: #fff;" href="'+ uberLink + place.formatted_address + '&dropoff[latitude]='+place.geometry.location.lat() + '&dropoff[longitude]='+place.geometry.location.lng() + '" target="_blank"><i class="fab fa-uber fa-3x modal-icon"></i></a>' +
+            mapsUrl +
+            openTableUrl +
+            '<div style="display: inline" class="ui accordion">' +
+            '<div style="display: inline" class="title">' +
+            '<i class="fab fa-yelp fa-3x icon modal-icon"></i>' +
             '</div>' +
             '<div class="content">' +
             '<p class="transition hidden">yelp content</p>' +
@@ -434,7 +467,35 @@ $(document).ready(function () {
         if(curTerm !== null) {
             search(curLocation, curTerm);
         }
+        if(locationOn) {
+            enableLocation();
+        }
     });
+
+
+
+    function openTableSearch(place,yelpData){
+        var otData;
+        var city = place.vicinity.split(",").pop(-1).trim();
+        $.ajax({
+            url:  "https://opentable.herokuapp.com/api/restaurants",
+            type: "GET",
+            data: {
+                name: place.name,
+                city: city,
+                per_page: 5
+            }
+        }).done(function (data) {
+            otData = data;
+        }).fail(function (jqXhr, status, error) {
+            console.log("Error");
+        }).always(function () {
+            var marker = setupMarker(searchByValue(place, pointsOfInterest), place,yelpData,otData);
+            markers.push(marker);
+        });
+
+    }
+
 
 
     //Geo Fences
@@ -453,6 +514,7 @@ $(document).ready(function () {
                radius: parseInt(circleRadius) //radius of the circle in metres
            };
            fences.push(new google.maps.Circle(circleOptions));
+           fenceNotify.push(false);
        }
 
     function removeFences(){
@@ -491,22 +553,28 @@ $(document).ready(function () {
             )
         );
       //Check if the user is within the fence
-        fences.forEach(function (fence){
-              if(fence.contains(marker.getPosition())){
-                  Notify("Inside Fence!");
-                  console.log("Inside Fence")
+        for (var i = 0; i < fences.length; i++ ){
+            if(fenceNotify[i] === false){
+                Notify("Your location is nearby!");
+                fenceNotify[i] = true;
+                console.log("Fence Notify");
+            }
         }
+        // fences.forEach(function (fence){
+        //       if(fence.contains(marker.getPosition())){
+        //           Notify("Inside Fence!");
+        //           console.log("Inside Fence")
+        // }
+
       // Update the title if it was provided.
         if (label){
             marker.setTitle( label );
         }
-     });
-
-    }
+     }
 
    function enableLocation(){
     if (navigator.geolocation) {
-
+        locationOn = true;
         // This is the location marker that we will be using
         // on the map. Let's store a reference to it here so
         // that it can be updated in several places.
@@ -586,6 +654,7 @@ $(document).ready(function () {
         locationMarker.setMap(null);
         locationMarker = null;
         navigator.geolocation.clearWatch( positionTimer );
+        locationOn = false;
    }
 
 
