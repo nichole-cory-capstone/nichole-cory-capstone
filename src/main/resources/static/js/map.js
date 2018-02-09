@@ -197,13 +197,13 @@ $(document).ready(function () {
             yelpData = error;
             return "error";
         }).always(function () {
-            var marker = setupMarker(searchByValue(place, pointsOfInterest), place,yelpData);
-            markers.push(marker);
+            openTableSearch(place,yelpData);
         });
     }
 
-    function setupMarker(inList, place, yelpInfo) {
+    function setupMarker(inList, place, yelpInfo,otData) {
         console.log(yelpInfo);
+        console.log(otData.restaurants[0].mobile_reserve_url);
         var card;
         var pinColor;
 
@@ -289,6 +289,16 @@ $(document).ready(function () {
             }
         }
 
+        var openTableUrl = "";
+        try{
+            if(typeof otData.restaurants[0].mobile_reserve_url !== "undefined"){
+                openTableUrl =  '<a style="color: #fff;" href="'+ otData.restaurants[0].mobile_reserve_url +'" target="_blank"><img src="/images/ot_logo.png" class="modal-icon" style="width: 43px; height: 34px;"/></a>'
+            }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
+        }
 
 
         console.log(place);
@@ -303,6 +313,7 @@ $(document).ready(function () {
             '<p>' +  websiteText + '<a href="'+ website +'" target="_blank"> ' + tagText + ' </a>' + '</p>' +
             '<a style="color: #fff;" href="'+ uberLink + place.formatted_address + '&dropoff[latitude]='+place.geometry.location.lat() + '&dropoff[longitude]='+place.geometry.location.lng() + '" target="_blank"><i class="fab fa-uber fa-3x modal-icon"></i></a>' +
             mapsUrl +
+            openTableUrl +
             '<div style="display: inline" class="ui accordion">' +
             '<div style="display: inline" class="title">' +
             '<i class="fab fa-yelp fa-3x icon modal-icon"></i>' +
@@ -458,6 +469,31 @@ $(document).ready(function () {
         }
         enableLocation();
     });
+
+
+
+    function openTableSearch(place,yelpData){
+        var otData;
+        var city = place.vicinity.split(",").pop(-1).trim();
+        $.ajax({
+            url:  "https://opentable.herokuapp.com/api/restaurants",
+            type: "GET",
+            data: {
+                name: place.name,
+                city: city,
+                per_page: 5
+            }
+        }).done(function (data) {
+            otData = data;
+        }).fail(function (jqXhr, status, error) {
+            console.log("Error");
+        }).always(function () {
+            var marker = setupMarker(searchByValue(place, pointsOfInterest), place,yelpData,otData);
+            markers.push(marker);
+        });
+
+    }
+
 
 
     //Geo Fences
