@@ -292,7 +292,7 @@ $(document).ready(function () {
         var openTableUrl = "";
         try{
             if(typeof otData.restaurants[0].mobile_reserve_url !== "undefined"){
-                openTableUrl =  '<a style="color: #fff;" href="'+ otData.restaurants[0].mobile_reserve_url +'" target="_blank"><img src="/images/ot_logo.png" class="modal-icon" style="width: 43px; height: 34px;"/></a>'
+                openTableUrl =  '<a style="color: #fff;  size=9px;" href="'+ otData.restaurants[0].mobile_reserve_url +'" target="_blank"><img src="/images/ot_logo.png" class="modal-icon" style="width: 43px; height: 34px;"/></a>'
             }
         }catch (e){
             if(e){
