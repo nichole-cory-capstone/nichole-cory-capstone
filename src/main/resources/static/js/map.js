@@ -17,6 +17,7 @@ $(document).ready(function () {
     var markers = [];
     var listenerHandler = [];
     var fences = [];
+    var fenceNotify = [];
     var locationMarker = null;
     var positionTimer = null;
     var circleRadius = (.05 * 1000);
@@ -162,8 +163,15 @@ $(document).ready(function () {
         clearMarkers();
 
         for (var i = 0; i < results.length; i++) {
-            addMarker(results[i]);
+            service.getDetails({placeId: results[i].place_id}, function(place, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    addMarker(place);
+                }else{
+                    addMarker(results[i]);
+                }
+            })
         }
+
         poiLoader(pointsOfInterest);
         moreButton.disabled = !pagination.hasNextPage;
         getNextPage = pagination.hasNextPage && function() {
@@ -200,7 +208,7 @@ $(document).ready(function () {
         var pinColor;
 
         var photos = "";
-        try{
+         try{
             photos = place.photos;
         }catch (e){
             if(e){
@@ -222,7 +230,10 @@ $(document).ready(function () {
 
         var hours = "";
         try{
-            if(typeof place.opening_hours.weekday_text !== "undefined"){
+            if(place.opening_hours.weekday_text.length === 0 || typeof place.opening_hours.weekday_text === "undefined"){
+               hours = "";
+            }else {
+                console.log(place.opening_hours.weekday_text.length !== 0);
                 hours = "Hours: " + place.opening_hours.weekday_text;
             }
         }catch (e){
@@ -244,9 +255,9 @@ $(document).ready(function () {
 
         var phone = "";
         try{
-            if(typeof place.formatted_phone_number !== "undefined"){
+            // if(typeof place.formatted_phone_number !== "undefined"){
                 phone = "Phone: " + place.formatted_phone_number;
-            }
+            // }
         }catch (e){
             if(e){
                 //Boo google
@@ -257,11 +268,11 @@ $(document).ready(function () {
         var websiteText = "";
         var tagText = "";
         try{
-            if(typeof place.website !== "undefined"){
+            // if(typeof place.website !== "undefined"){
                 website = place.website;
                 websiteText = "Website: ";
                 tagText = " " + place.website;
-            }
+            // }
         }catch (e){
             if(e){
                 //Boo google
@@ -280,10 +291,10 @@ $(document).ready(function () {
             '<p>' +  rating + '</p>' +
             '<p>' +  phone + '</p>' +
             '<p>' +  websiteText + '<a href="'+ website +'" target="_blank"> ' + tagText + ' </a>' + '</p>' +
-            '<p><a href="'+ uberLink + place.formatted_address + '&dropoff[latitude]='+place.geometry.location.lat() + '&dropoff[longitude]='+place.geometry.location.lng() + '"><i class="fab fa-uber fa-3x"></i></a></p>' +
-            '<div class="ui accordion">' +
-            '<div class="title">' +
-            '<i class="fab fa-yelp fa-3x icon"></i>' +
+            '<a href="'+ uberLink + place.formatted_address + '&dropoff[latitude]='+place.geometry.location.lat() + '&dropoff[longitude]='+place.geometry.location.lng() + '"><i class="fab fa-uber fa-3x modal-icon"></i></a>' +
+            '<div style="display: inline" class="ui accordion">' +
+            '<div style="display: inline" class="title">' +
+            '<i class="fab fa-yelp fa-3x icon modal-icon"></i>' +
             '</div>' +
             '<div class="content">' +
             '<p class="transition hidden">yelp content</p>' +
@@ -434,6 +445,7 @@ $(document).ready(function () {
         if(curTerm !== null) {
             search(curLocation, curTerm);
         }
+        enableLocation();
     });
 
 
@@ -453,6 +465,7 @@ $(document).ready(function () {
                radius: parseInt(circleRadius) //radius of the circle in metres
            };
            fences.push(new google.maps.Circle(circleOptions));
+           fenceNotify.push(false);
        }
 
     function removeFences(){
@@ -491,18 +504,24 @@ $(document).ready(function () {
             )
         );
       //Check if the user is within the fence
-        fences.forEach(function (fence){
-              if(fence.contains(marker.getPosition())){
-                  Notify("Inside Fence!");
-                  console.log("Inside Fence")
+        for (var i = 0; i < fences.length; i++ ){
+            if(fenceNotify[i] === false){
+                Notify("Your location is nearby!");
+                fenceNotify[i] = true;
+                console.log("Fence Notify");
+            }
         }
+        // fences.forEach(function (fence){
+        //       if(fence.contains(marker.getPosition())){
+        //           Notify("Inside Fence!");
+        //           console.log("Inside Fence")
+        // }
+
       // Update the title if it was provided.
         if (label){
             marker.setTitle( label );
         }
-     });
-
-    }
+     }
 
    function enableLocation(){
     if (navigator.geolocation) {
