@@ -233,7 +233,6 @@ $(document).ready(function () {
             if(place.opening_hours.weekday_text.length === 0 || typeof place.opening_hours.weekday_text === "undefined"){
                hours = "";
             }else {
-                console.log(place.opening_hours.weekday_text.length !== 0);
                 hours = "Hours: " + place.opening_hours.weekday_text;
             }
         }catch (e){
@@ -255,9 +254,9 @@ $(document).ready(function () {
 
         var phone = "";
         try{
-            // if(typeof place.formatted_phone_number !== "undefined"){
+             if(typeof place.formatted_phone_number !== "undefined"){
                 phone = "Phone: " + place.formatted_phone_number;
-            // }
+             }
         }catch (e){
             if(e){
                 //Boo google
@@ -268,11 +267,22 @@ $(document).ready(function () {
         var websiteText = "";
         var tagText = "";
         try{
-            // if(typeof place.website !== "undefined"){
+             if(typeof place.website !== "undefined"){
                 website = place.website;
                 websiteText = "Website: ";
                 tagText = " " + place.website;
-            // }
+             }
+        }catch (e){
+            if(e){
+                //Boo google
+            }
+        }
+
+        var mapsUrl = "";
+        try{
+            if(typeof place.url !== "undefined"){
+                mapsUrl =  '<a style="color: #fff;" href="'+ place.url +'" target="_blank"><i class="far fa-map fa-3x modal-icon"></i></a>'
+             }
         }catch (e){
             if(e){
                 //Boo google
@@ -291,7 +301,8 @@ $(document).ready(function () {
             '<p>' +  rating + '</p>' +
             '<p>' +  phone + '</p>' +
             '<p>' +  websiteText + '<a href="'+ website +'" target="_blank"> ' + tagText + ' </a>' + '</p>' +
-            '<a href="'+ uberLink + place.formatted_address + '&dropoff[latitude]='+place.geometry.location.lat() + '&dropoff[longitude]='+place.geometry.location.lng() + '"><i class="fab fa-uber fa-3x modal-icon"></i></a>' +
+            '<a style="color: #fff;" href="'+ uberLink + place.formatted_address + '&dropoff[latitude]='+place.geometry.location.lat() + '&dropoff[longitude]='+place.geometry.location.lng() + '" target="_blank"><i class="fab fa-uber fa-3x modal-icon"></i></a>' +
+            mapsUrl +
             '<div style="display: inline" class="ui accordion">' +
             '<div style="display: inline" class="title">' +
             '<i class="fab fa-yelp fa-3x icon modal-icon"></i>' +
