@@ -17,6 +17,7 @@ $(document).ready(function () {
     var markers = [];
     var listenerHandler = [];
     var fences = [];
+    var fenceNotify = [];
     var locationMarker = null;
     var positionTimer = null;
     var circleRadius = (.05 * 1000);
@@ -222,7 +223,10 @@ $(document).ready(function () {
 
         var hours = "";
         try{
-            if(place.opening_hours.length !==0 || typeof place.opening_hours.weekday_text !== "undefined"){
+            if(place.opening_hours.weekday_text.length === 0 || typeof place.opening_hours.weekday_text === "undefined"){
+               hours = "";
+            }else {
+                console.log(place.opening_hours.weekday_text.length !== 0);
                 hours = "Hours: " + place.opening_hours.weekday_text;
             }
         }catch (e){
@@ -244,9 +248,9 @@ $(document).ready(function () {
 
         var phone = "";
         try{
-            if(typeof place.formatted_phone_number !== "undefined"){
+            // if(typeof place.formatted_phone_number !== "undefined"){
                 phone = "Phone: " + place.formatted_phone_number;
-            }
+            // }
         }catch (e){
             if(e){
                 //Boo google
@@ -257,11 +261,11 @@ $(document).ready(function () {
         var websiteText = "";
         var tagText = "";
         try{
-            if(typeof place.website !== "undefined"){
+            // if(typeof place.website !== "undefined"){
                 website = place.website;
                 websiteText = "Website: ";
                 tagText = " " + place.website;
-            }
+            // }
         }catch (e){
             if(e){
                 //Boo google
@@ -434,6 +438,7 @@ $(document).ready(function () {
         if(curTerm !== null) {
             search(curLocation, curTerm);
         }
+        enableLocation();
     });
 
 
@@ -453,6 +458,7 @@ $(document).ready(function () {
                radius: parseInt(circleRadius) //radius of the circle in metres
            };
            fences.push(new google.maps.Circle(circleOptions));
+           fenceNotify.push(false);
        }
 
     function removeFences(){
@@ -491,18 +497,24 @@ $(document).ready(function () {
             )
         );
       //Check if the user is within the fence
-        fences.forEach(function (fence){
-              if(fence.contains(marker.getPosition())){
-                  Notify("Inside Fence!");
-                  console.log("Inside Fence")
+        for (var i = 0; i < fences.length; i++ ){
+            if(fenceNotify[i] === false){
+                Notify("Your location is nearby!");
+                fenceNotify[i] = true;
+                console.log("Fence Notify");
+            }
         }
+        // fences.forEach(function (fence){
+        //       if(fence.contains(marker.getPosition())){
+        //           Notify("Inside Fence!");
+        //           console.log("Inside Fence")
+        // }
+
       // Update the title if it was provided.
         if (label){
             marker.setTitle( label );
         }
-     });
-
-    }
+     }
 
    function enableLocation(){
     if (navigator.geolocation) {
