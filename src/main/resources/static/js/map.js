@@ -222,7 +222,7 @@ $(document).ready(function () {
 
         var hours = "";
         try{
-            if(typeof place.opening_hours.weekday_text !== "undefined"){
+            if(place.opening_hours.length !==0 || typeof place.opening_hours.weekday_text !== "undefined"){
                 hours = "Hours: " + place.opening_hours.weekday_text;
             }
         }catch (e){
@@ -280,10 +280,10 @@ $(document).ready(function () {
             '<p>' +  rating + '</p>' +
             '<p>' +  phone + '</p>' +
             '<p>' +  websiteText + '<a href="'+ website +'" target="_blank"> ' + tagText + ' </a>' + '</p>' +
-            '<p><a href="'+ uberLink + place.formatted_address + '&dropoff[latitude]='+place.geometry.location.lat() + '&dropoff[longitude]='+place.geometry.location.lng() + '"><i class="fab fa-uber fa-3x"></i></a></p>' +
-            '<div class="ui accordion">' +
-            '<div class="title">' +
-            '<i class="fab fa-yelp fa-3x icon"></i>' +
+            '<a href="'+ uberLink + place.formatted_address + '&dropoff[latitude]='+place.geometry.location.lat() + '&dropoff[longitude]='+place.geometry.location.lng() + '"><i class="fab fa-uber fa-3x modal-icon"></i></a>' +
+            '<div style="display: inline" class="ui accordion">' +
+            '<div style="display: inline" class="title">' +
+            '<i class="fab fa-yelp fa-3x icon modal-icon"></i>' +
             '</div>' +
             '<div class="content">' +
             '<p class="transition hidden">yelp content</p>' +
