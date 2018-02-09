@@ -29,6 +29,8 @@
         <div class="form-group spacinghere">
             <label for="username">Username</label>
         <div class="field">
+            <div class="ui left icon input">
+                <i class="user icon"></i>
             <input
                 id="username"
                 class="form-control"
@@ -36,16 +38,20 @@
                 th:field="*{username}"
             />
             </div>
+            </div>
             <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" />
         </div>
         <div class="form-group spacinghere">
             <label for="email">Email</label>
           <div class="field">
+              <div class="ui left icon input">
+                  <i class="user icon"></i>
             <input
                 id="email"
                 class="form-control"
                 th:field="*{email}"
             />
+              </div>
         </div>
             <div th:if="${#fields.hasErrors('email')}"
                 class="alert alert-danger alert-dismissible"
@@ -56,24 +62,30 @@
         <div class="form-group spacinghere">
             <label for="password">Password</label>
            <div class="field">
+               <div class="ui left icon input">
+                   <i class="lock icon"></i>
             <input
                 type="password"
                 id="password"
                 class="form-control"
                 th:field="*{password}"
             />
+               </div>
          </div>
             <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" />
         </div>
         <div class="form-group spacinghere">
             <label for="password_confirm">Confirm your password</label>
            <div class="field">
+               <div class="ui left icon input">
+                   <i class="lock icon"></i>
             <input
                 type="password"
                 class="form-control"
                 name="password_confirm"
                 id="password_confirm"
             />
+               </div>
         </div>
         </div>
         <button type="submit" id="register-btn" class="ui fluid large submit button">Register</button>
