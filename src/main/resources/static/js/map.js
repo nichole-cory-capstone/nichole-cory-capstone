@@ -21,6 +21,7 @@ $(document).ready(function () {
     var locationMarker = null;
     var positionTimer = null;
     var circleRadius = (.05 * 1000);
+    var locationOn = false;
     google.maps.Circle.prototype.contains = function(latLng) {
         return this.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
     };
@@ -466,7 +467,9 @@ $(document).ready(function () {
         if(curTerm !== null) {
             search(curLocation, curTerm);
         }
-        enableLocation();
+        if(locationOn) {
+            enableLocation();
+        }
     });
 
 
@@ -571,7 +574,7 @@ $(document).ready(function () {
 
    function enableLocation(){
     if (navigator.geolocation) {
-
+        locationOn = true;
         // This is the location marker that we will be using
         // on the map. Let's store a reference to it here so
         // that it can be updated in several places.
@@ -651,6 +654,7 @@ $(document).ready(function () {
         locationMarker.setMap(null);
         locationMarker = null;
         navigator.geolocation.clearWatch( positionTimer );
+        locationOn = false;
    }
 
 
