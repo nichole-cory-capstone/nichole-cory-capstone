@@ -66,6 +66,11 @@ $(document).ready(function () {
                     }
                 }).done(function (data) {
                     $('#' + placeId).removeClass('loading').addClass('positive').text('Success');
+                    swal({
+                        title: "Success!",
+                        icon: "success"
+                    });
+
                     // var result = JSON.parse(data);
                     pointsOfInterest = data;
                     clearMarkers();
@@ -75,7 +80,10 @@ $(document).ready(function () {
                     }
                 }).fail(function (jqXhr, status, error) {
                     $('#' + placeId).removeClass('loading').addClass('negative').text('Error');
-                    console.log("Error");
+                    swal({
+                        title: "Something Went Wrong!",
+                        icon: "error"
+                    });                    console.log("Error: " + error.toString() );
                 });
             }else{
                 $('.loginmodal').modal('toggle');
@@ -152,8 +160,7 @@ $(document).ready(function () {
 
     function callback(results, status, pagination) {
 
-        $('#search-btn').removeClass('loading');
-        $('#more-btn').removeClass('loading');
+
         if (status !== 'OK') {
             console.log("Search Error");
             console.log(curLocation);
@@ -174,6 +181,8 @@ $(document).ready(function () {
         }
 
         poiLoader(pointsOfInterest);
+        $('#search-btn').removeClass('loading');
+        $('#more-btn').removeClass('loading');
         moreButton.disabled = !pagination.hasNextPage;
         getNextPage = pagination.hasNextPage && function() {
             pagination.nextPage();
@@ -332,7 +341,7 @@ $(document).ready(function () {
         var openTableUrl = "";
         try{
             if(typeof otData.restaurants[0].mobile_reserve_url !== "undefined"){
-                openTableUrl =  '<a style="color: #fff;  size=9px;" href="'+ otData.restaurants[0].mobile_reserve_url +'" target="_blank"><img src="/images/ot_logo.png" class="modal-icon" style="width: 43px; height: 34px;"/></a>'
+                openTableUrl =  '<a style="color: #fff;  size=9px;" href="'+ otData.restaurants[0].mobile_reserve_url +'" target="_blank"><img src="/images/ot_logo.png" class="modal-icon" style="width: 55px; height: 46px; margin-bottom: -10px; margin-left: -10px;"/></a>'
             }
         }catch (e){
             if(e){
