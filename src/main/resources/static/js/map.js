@@ -606,7 +606,7 @@ $(document).ready(function () {
         );
       //Check if the user is within the fence
         for (var i = 0; i < fences.length; i++ ){
-            if(fenceNotify[i] === false){
+            if(fenceNotify[i] === false && fences[i].contains(marker.getPosition()){
                 Notify("Your location is nearby!");
                 fenceNotify[i] = true;
                 console.log("Fence Notify");
